@@ -3,8 +3,10 @@
 namespace App;
 
 use Moloquent;
+use Elasticquent\ElasticquentTrait;
 
 class Article extends Moloquent
 {
-    protected $collection = 'article';
+	use ElasticquentTrait;
+	protected $collection = 'article';
 }

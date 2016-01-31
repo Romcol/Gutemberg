@@ -14,8 +14,8 @@ class ArticlesController extends Controller
 
     public function index()
     {
-    	//$articles = DB::collection('article')->get();
     	$articles = Article::all();
+    	//dd($articles);
     	return view('pages.articles', compact('articles'));
     }
 
@@ -23,6 +23,7 @@ class ArticlesController extends Controller
     {
     	$texte = $_GET['texte'];
     	$articles = Article::where('titre', 'regexp', "/$texte/")->get();
+    	dd($articles);
     	return view('pages.articles', compact('articles'));
     }
 }
