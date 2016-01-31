@@ -23,7 +23,7 @@ class ArticlesController extends Controller
     {
     	$texte = $_GET['texte'];
     	$articles = Article::where('titre', 'regexp', "/$texte/")->get();
-    	dd($articles);
+    	//dd($articles);
     	return view('pages.articles', compact('articles'));
     }
 }
