@@ -32,9 +32,9 @@
           <a href="#" class="btn btn-lg btn-default">Learn more</a>
         </p>-->
         <p class="lead">Bienvenue sur Gutemberg
-        <form class="form-inline">
+        <form class="form-inline" action="/recherche">
 		  <div class="form-group">
-		    <input type="text" class="form-control" id="search_input" placeholder="Rechercher">
+		    <input type="text" name="texte" class="form-control" id="search_input" placeholder="Rechercher">
 		  </div>
 		  <div class="form-group">
 		      <select name="type" class="form-control">

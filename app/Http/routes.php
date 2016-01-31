@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('pages.home');
 });
 
+Route::get('articles', 'ArticlesController@index');
+Route::get('recherche', 'ArticlesController@search');
 /*
 |--------------------------------------------------------------------------
 | Application Routes
