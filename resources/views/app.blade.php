@@ -10,7 +10,39 @@
 </head>
 
 <body>
+<div class="site-wrapper">
+
+  <div class="site-wrapper-inner">
+
+    <div class="cover-container">
+
+      <div class="masthead clearfix">
+        <div class="inner">
+          <h3 class="masthead-brand">Gutemberg</h3>
+          <nav>
+            <ul class="nav masthead-nav">
+              <li class="active"><a href="<?= url("/"); ?>">Accueil</a></li>
+              <li><a href="#">S'inscrire</a></li>
+              <li><a href="#">Se connecter</a></li>
+              <li><a href="#">Aide</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+      <div class="inner cover">
 	@yield('page_content')
+	</div>
+	      <div class="mastfoot">
+        <div class="inner">
+          <p>Footer</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 	<script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </body>
