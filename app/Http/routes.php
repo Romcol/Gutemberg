@@ -20,6 +20,7 @@ Route::get('recherche', 'ArticlesController@search');
 Route::get('visionneuse', function () {
     return view('viewer');
 });
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes

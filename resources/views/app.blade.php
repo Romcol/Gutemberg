@@ -34,7 +34,7 @@
 	</div>
 	      <div class="mastfoot">
         <div class="inner">
-          <p>Footer</p>
+          <p>© 2016 - Gutemberg</p>
         </div>
       </div>
 
