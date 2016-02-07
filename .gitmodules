@@ -1,0 +1,3 @@
+[submodule "src/vendor/deepzoom"]
+	path = src/vendor/deepzoom
+	url = git://github.com/nfabre/deepzoom.php.git
