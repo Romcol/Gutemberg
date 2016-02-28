@@ -157,6 +157,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Jenssegers\Mongodb\MongodbServiceProvider::class,
+        Fadion\Bouncy\BouncyServiceProvider::class,
     ],
 
     /*

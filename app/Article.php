@@ -3,12 +3,14 @@
 namespace App;
 
 use Moloquent;
-use Elasticquent\ElasticquentTrait;
+use Fadion\Bouncy\BouncyTrait;
 
 class Article extends Moloquent
 {
-	use ElasticquentTrait;
+  use BouncyTrait;
 	protected $collection = 'Articles';
+  protected $indexName = 'articles';
+  protected $typeName = 'json';
 	//public $fillable = ['titre', 'date', 'titrejournal','auteur'];
 
 	/*protected $mappingProperties = array(

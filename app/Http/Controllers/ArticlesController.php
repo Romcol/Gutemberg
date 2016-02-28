@@ -10,7 +10,6 @@ use App\Article;
 
 class ArticlesController extends Controller
 {
-    //
 
     public function index()
     {
@@ -21,10 +20,19 @@ class ArticlesController extends Controller
 
     public function search()
     {
-    	$texte = $_GET['texte'];
-    	$articles = Article::where('Title', 'regexp', "/$texte/")->get();
-        //$articles = Article::search('bu')->get();
+        $texte = $_GET['texte'];
+        $params = [
+            'query' => [
+                'match' => [
+                    'Title' => $texte
+                ]
+            ]
+        ];
+
+        $articles = Article::search($params);
+
+        //$articles = Article::where('Title', 'regexp', "/$texte/")->get();
         //dd($articles);
-    	return view('pages.articles', compact('articles'));
+        return view('pages.articles', compact('articles'));
     }
 }
