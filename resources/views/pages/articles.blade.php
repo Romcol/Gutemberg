@@ -9,10 +9,10 @@
 
 @foreach ($articles as $article)
 	<article>
-	<h2>{{$article['titre']}}</h2>
-	<div><p>Auteur : {{$article['auteur']}}</p>
-	<p>Journal : {{$article['titrejournal']}}</p>
-	<p>Date : {{$article['date']}}</p></div>
+	<h2>{{$article['Title']}}</h2>
+	<div>
+	<p>Journal : {{$article['TitleNewsPaper']}}</p>
+	<p>Date : {{$article['Date']}}</p></div>
 	</article>
 @endforeach
 

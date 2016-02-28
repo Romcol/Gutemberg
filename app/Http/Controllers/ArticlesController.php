@@ -22,9 +22,9 @@ class ArticlesController extends Controller
     public function search()
     {
     	$texte = $_GET['texte'];
-    	$articles = Article::where('titre', 'regexp', "/$texte/")->get();
-        //$articles = Article::search('force');
-    	//dd($articles);
+    	$articles = Article::where('Title', 'regexp', "/$texte/")->get();
+        //$articles = Article::search('bu')->get();
+        //dd($articles);
     	return view('pages.articles', compact('articles'));
     }
 }

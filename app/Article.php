@@ -8,7 +8,7 @@ use Elasticquent\ElasticquentTrait;
 class Article extends Moloquent
 {
 	use ElasticquentTrait;
-	protected $collection = 'article';
+	protected $collection = 'Articles';
 	//public $fillable = ['titre', 'date', 'titrejournal','auteur'];
 
 	/*protected $mappingProperties = array(
