@@ -29,7 +29,7 @@
           </nav>
         </div>
       </div>
-      <div class="inner cover">
+      <div class="inner cover page_content">
 	@yield('page_content')
 	</div>
 	      <div class="mastfoot">

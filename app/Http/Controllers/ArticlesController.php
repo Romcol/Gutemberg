@@ -30,9 +30,8 @@ class ArticlesController extends Controller
         ];
 
         $articles = Article::search($params);
-
         //$articles = Article::where('Title', 'regexp', "/$texte/")->get();
         //dd($articles);
-        return view('pages.articles', compact('articles'));
+        return view('pages.newarticles', compact('articles'));
     }
 }

@@ -21,6 +21,13 @@ Route::get('visionneuse', function () {
     return view('viewer');
 });
 
+Route::get('home', function () {
+    return view('pages.newhome');
+});
+Route::get('artview', function () {
+    return view('pages.newarticles');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes

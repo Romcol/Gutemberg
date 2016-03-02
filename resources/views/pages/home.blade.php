@@ -11,7 +11,7 @@
           <a href="#" class="btn btn-lg btn-default">Learn more</a>
         </p>-->
         <p class="lead">Bienvenue sur Gutemberg
-        <form class="form-inline" action="/recherche">
+        <form class="form-inline" action="recherche">
 		  <div class="form-group">
 		    <input type="text" name="texte" class="form-control" id="search_input" placeholder="Rechercher">
 		  </div>
