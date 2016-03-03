@@ -13,13 +13,13 @@
         <p class="lead">Bienvenue sur Gutemberg
         <form class="form-inline" action="recherche">
 		  <div class="form-group">
-		    <input type="text" name="texte" class="form-control" id="search_input" placeholder="Rechercher">
+		    <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher">
 		  </div>
 		  <div class="form-group">
 		      <select name="type" class="form-control">
-					<option value="articles">Articles</option>
-					<option value="revues">Revues de presse</option>
-					<option value="journeaux">Journaux</option>
+					<option value="articles">Contenu des articles</option>
+					<!-- <option value="revues">Revues de presse</option> -->
+					<option value="titles">Titres des articles</option>
   				</select>
 		  </div>
 		  <button type="submit" class="btn btn-default">Recherche</button>

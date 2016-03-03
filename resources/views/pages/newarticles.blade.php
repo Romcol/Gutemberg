@@ -1,5 +1,9 @@
 @extends('newapp')
 
+@section('css_includes')
+<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css"> 
+@stop
+
 @section('page_content')
     <!-- Title -->
     <div class="row">
@@ -11,10 +15,11 @@
 @if(!$articles->isEmpty())
 @foreach ($articles as $article)
 	<article>
-	<h2>{{$article['Title']}}</h2>
+	<h3>{{$article['Title']}}</h3>
 	<div>
 	<p>Journal : {{$article['TitleNewsPaper']}}</p>
-	<p>Date : {{$article['Date']}}</p></div>
+	<p>Date : {{$article['Date']}}</p>
+	<p>{{$article['Words']}}</p></div>
 	</article>
 @endforeach
 @else
