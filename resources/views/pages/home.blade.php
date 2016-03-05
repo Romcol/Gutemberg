@@ -13,7 +13,7 @@
         <p class="lead">Bienvenue sur Gutemberg
         <form class="form-inline" action="recherche">
 		  <div class="form-group">
-		    <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher">
+		    <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" required>
 		  </div>
 		  <div class="form-group">
 		      <select name="type" class="form-control">

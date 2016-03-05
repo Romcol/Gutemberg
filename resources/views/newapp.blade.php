@@ -60,12 +60,22 @@
         <!-- /.container -->
     </nav>
 
+
+
     <!-- Page Content -->
     <div class="container">
+        <div class="row">
+             <div class="col-md-3">
+                        @yield('page_row')
+            </div>
+            
+            <div class="col-md-9">
+                @yield('page_content')
+            </div>
+        </div>
+    </div>
 
-    @yield('page_content')
-        <!-- /.row -->
-
+    <div class="container">
         <hr>
 
         <!-- Footer -->
