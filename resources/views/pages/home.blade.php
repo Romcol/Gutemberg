@@ -16,6 +16,7 @@
 		    <input type="text" name="text" class="form-control input-lg" id="search_input" placeholder="Rechercher" required>
 		  </div>
 		  <div class="form-group">
+
 		      <select name="type" class="form-control input-lg">
 					<option value="articles">Contenu des articles</option>
 					<!-- <option value="revues">Revues de presse</option> -->

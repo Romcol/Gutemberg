@@ -119,10 +119,8 @@ class ArticlesController extends Controller
         $dMin = $dMin->format('Y');
         $dMax = $dMax->format('Y');
 
-        //$articles = Article::where('Title', 'regexp', "/$texte/")->get();
-        //dd($articles);
         $builturl="/recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
-        
-        return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'dMin', 'dMax', 'builturl', 'page'));
+
+        return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'dMin', 'dMax', 'builturl', 'type', 'page'));
     }
 }
