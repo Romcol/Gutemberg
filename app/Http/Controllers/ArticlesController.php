@@ -22,6 +22,8 @@ class ArticlesController extends Controller
     {
         $text = $_GET['text'];
         $type = $_GET['type'];
+        $page = isset($_GET['page'])?intval($_GET['page']):1;
+        $from = ($page>0)?(($page-1)*10):0;
 
         if( $type == 'articles'){
 
@@ -38,7 +40,8 @@ class ArticlesController extends Controller
                         ]
                     ]
                 ],
-                'size' => 10
+                'from' => $from,
+                'size' => 11
             ];
 
         }elseif( $type == 'titles'){
@@ -53,7 +56,8 @@ class ArticlesController extends Controller
                         ]
                     ]
                 ],
-                'size' => 10
+                'from' => $from,
+                'size' => 11
             ];
         }
 
@@ -72,7 +76,8 @@ class ArticlesController extends Controller
         }
 
         //Sorting
-        if( isset($_GET['sort']) ){
+        $sort = isset($_GET['sort'])?$_GET['sort']:0;
+        if( $sort ){
             /*if( $_GET['sort'] == 'title'){                      //Nécessite uen configuration spéciale sur elasticsearch
                 $params['sort'] =  'Title';
             }
@@ -81,11 +86,11 @@ class ArticlesController extends Controller
                 $params['sort'] =  'TitleNewsPaper';
             }*/ 
 
-            if( $_GET['sort'] == 'dateAsc'){
+            if( $sort == 'dateAsc'){
                 $params['sort'] =  array( 'Date' => array( 'order' => 'asc'));
             }
 
-            if( $_GET['sort'] == 'dateDsc'){
+            if( $sort == 'dateDsc'){
                 $params['sort'] =  array( 'Date' => array( 'order' => 'desc'));
             }
         }
@@ -116,6 +121,8 @@ class ArticlesController extends Controller
 
         //$articles = Article::where('Title', 'regexp', "/$texte/")->get();
         //dd($articles);
-        return view('pages.newarticles', compact('articles', 'text', 'dateMin', 'dateMax', 'dMin', 'dMax'));
+        $builturl="/recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
+        
+        return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'dMin', 'dMax', 'builturl', 'page'));
     }
 }
