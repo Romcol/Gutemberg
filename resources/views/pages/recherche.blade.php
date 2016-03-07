@@ -24,16 +24,15 @@
       <h4>Filtres :</h4>
         <h5>Date :</h5>
         <div class="form-group">
-          De <input type="date" name="dateMin" class="form-control" id="dateMin_input" placeholder="1875" value={{$dateMin}}>
+          De <input type="date" name="dateMin" class="form-control" id="dateMin_input" placeholder={{$dMin}} value={{$dateMin}}>
         </div>
         <div class="form-group">
-          à <input type="date" name="dateMax" class="form-control" id="dateMax_input" placeholder="1945" value={{$dateMax}}>
+          à <input type="date" name="dateMax" class="form-control" id="dateMax_input" placeholder={{$dMax}} value={{$dateMax}}>
         </div>
       <hr>
       <h4>Trier :</h4>
       <div class="form-group">
-          <select name="sort" class="form-control" placeholder="Critère de tri">
-          <option <?php if( !isset($_GET['sort'])) echo 'selected'; ?> disabled>Choisir un critère de tri</option>
+          <select name="sort" class="form-control" selected="selectDsc">
           <!--<option value="title">de A à Z</option>
           <option value="newspapaer">par journaux</option>-->           <!-- Nécessite une configuration spéciale dans elasticsearch -->
           <option value="dateAsc" <?php if( isset($_GET['sort']) && 'dateAsc'==$_GET['sort']) echo 'selected'; ?> >du - au + récent</option>
@@ -58,15 +57,11 @@
 	@foreach ($articles as $index => $article)
 	@if($index < 10)
 		<article>
-    <div class="panel panel-default">
-      <div class="panel-heading">
-		    <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3>
-      </div>
-  		  <div class="panel-body">
-    		<p>{{$article['Title']}}</p>
-    		<p>{{$article['Words']}}</p>
-      </div>
-    </div>
+		<h3>{{$article['Title']}}</h3>
+		<div>
+		<p>Journal : {{$article['TitleNewsPaper']}}</p>
+		<p>Date : {{$article['Date']}}</p>
+		<p>{{$article['Words']}}</p></div>
     <hr>
 		</article>
 	<nav>
