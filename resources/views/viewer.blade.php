@@ -47,32 +47,19 @@
 		<script src="<?= asset('/openseadragon/openseadragonselection.js') ?>"></script>
 		<script src="<?= asset('/deepzoom-master/src/DeepzoomFactory.php') ?>"></script>
 		<script type="text/javascript">
-		//$deep = new ImageCreator(new File(),new Descriptor(new File()),new Imagick());
-
-//deep.create(realpath('/openseadragon/images/presse.jpg'), '/openseadragon/images/presse.dzi');
-		  // Setup Deepzoom
-			 // $deepzoom = DeepzoomFactory::create([
-			     // 'path' => 'images', // Export path for tiles
-			     // 'driver' => 'imagick', // Choose between gd and imagick support.
-			     // 'format' => 'jpg',
-			  //]);
-			  // folder, file are optional and will default to filename
-			  //$response = $deepzoom=>makeTiles('presse.jpg', 'file', 'folder');
+	
+			
 			var viewer = OpenSeadragon({
 				id: "openseadragon1",
 				showRotationControl: true,
 			    showNavigator:  true,
-				prefixUrl: "/openseadragon/images/",
-				tileSources:  {
-					//type: 'image',
-					//url: '/openseadragon/images/presse2.jpg',
-					type: 'image',
-					url: '/openseadragon/images/presse.jpg'	
-				},
-				sequenceMode: true,   
+				//prefixUrl: "/openseadragon/images/",
+                tileSources:   "/images/presse.dzi",
+				sequenceMode: true   
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
 			});
+
 			var selection = viewer.selection({
 				element:                 null, 
 				showSelectionControl:    true, 
