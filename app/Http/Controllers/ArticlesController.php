@@ -119,7 +119,7 @@ class ArticlesController extends Controller
         $dMin = $dMin->format('Y');
         $dMax = $dMax->format('Y');
 
-        $builturl="/recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
+        $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
         return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'dMin', 'dMax', 'builturl', 'type', 'page'));
     }
