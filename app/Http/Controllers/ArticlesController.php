@@ -95,8 +95,8 @@ class ArticlesController extends Controller
             }
         }
 
-        $dMax = date_create_from_format('Y', '1000');
-        $dMin = date_create('now');
+        /*$dMax = date_create_from_format('Y', '1000');
+        $dMin = date_create('now');*/
         $articles = Article::search($params);
         foreach ($articles as $oneArticle) {
             $i = 0;
@@ -104,23 +104,23 @@ class ArticlesController extends Controller
             foreach ($oneArticle['Words'] as $line) {
                 $sample = $sample.$line['Word'];
                 $i++;
-                if( $i >= 5) break;
+                if( $i >= 10) break;
             }
-            $oneArticle['Words'] = $sample.'...';
-
+            $oneArticle['Words'] = substr($sample, 0, 600).'...';
+            /*
             if( $dMax < date_create($oneArticle['Date'])){
                 $dMax = date_create($oneArticle['Date']);
             }
             if( $dMin > date_create($oneArticle['Date'])){
                 $dMin = date_create($oneArticle['Date']);
-            }
+            }*/
         }
 
-        $dMin = $dMin->format('Y');
-        $dMax = $dMax->format('Y');
+        /*$dMin = $dMin->format('Y');
+        $dMax = $dMax->format('Y');*/
 
         $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
-        return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'dMin', 'dMax', 'builturl', 'type', 'page'));
+        return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page'));
     }
 }
