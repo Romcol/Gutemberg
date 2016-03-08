@@ -10,7 +10,7 @@
              <div class="col-md-3">
                         <form class="form-vertical" action="recherche">
       <div class="form-group">
-        <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value={{$text}} required>
+        <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}" required>
       </div>
       <div class="form-group">
           <select name="type" class="form-control">
@@ -33,6 +33,7 @@
       <h4>Trier :</h4>
       <div class="form-group">
           <select name="sort" class="form-control" selected="selectDsc">
+          <option <?php if( !isset($_GET['sort'])) echo 'selected'; ?> disabled >Choisir un critère de tri</option>
           <!--<option value="title">de A à Z</option>
           <option value="newspapaer">par journaux</option>-->           <!-- Nécessite une configuration spéciale dans elasticsearch -->
           <option value="dateAsc" <?php if( isset($_GET['sort']) && 'dateAsc'==$_GET['sort']) echo 'selected'; ?> >du - au + récent</option>
@@ -57,12 +58,15 @@
 	@foreach ($articles as $index => $article)
 	@if($index < 10)
 		<article>
-		<h3>{{$article['Title']}}</h3>
-		<div>
-		<p>Journal : {{$article['TitleNewsPaper']}}</p>
-		<p>Date : {{$article['Date']}}</p>
-		<p>{{$article['Words']}}</p></div>
-    <hr>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3>
+      </div>
+      <div class="panel-body">
+        <p>{{$article['Title']}}</p>
+        <p>{{$article['Words']}}</p>
+      </div>
+    </div>
 		</article>
 	<nav>
 	@endif
