@@ -32,10 +32,16 @@ class ArticlesController extends Controller
                     'bool' => [
                         'should' => [
                             'match' => [
-                                'Title' => $text
+                                'Title' => [
+                                    'query' => $text,
+                                    'operator' => 'and'
+                                ]
                             ],
                             'match' => [
-                                'Words.Word' => $text
+                                'Words.Word' => [
+                                    'query' => $text,
+                                    'operator' => 'and'
+                                ]
                             ]
                         ]
                     ]
@@ -51,7 +57,10 @@ class ArticlesController extends Controller
                     'bool' => [
                         'must' => [
                             'match' => [
-                                'Title' => $text
+                                'Title' => [
+                                    'query' => $text,
+                                    'operator' => 'and'
+                                ]
                             ]
                         ]
                     ]
