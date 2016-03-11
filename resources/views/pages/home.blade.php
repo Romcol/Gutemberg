@@ -3,10 +3,12 @@
 @section('page_content')
         <!-- Jumbotron Header -->
         <header class="jumbotron hero-spacer">
-            <h2>Bienvenue sur Gutemberg !</h2>
-            <!-- <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa, ipsam, eligendi, in quo sunt possimus non incidunt odit vero aliquid similique quaerat nam nobis illo aspernatur vitae fugiat numquam repellat.</p> -->
-            <!--<p><a class="btn btn-primary btn-large">Call to action!</a>
-            </p>-->
+            <center>
+	            <h1>Bienvenue sur Gutemberg !</h1>
+	            <h3 style="margin-top:20px">Plateforme web de consultation de journaux anciens</h3>
+	            <!--<p><a class="btn btn-primary btn-large">Call to action!</a>
+	            </p>-->
+        	</center>
         </header>
 
         <div class="row text-center">

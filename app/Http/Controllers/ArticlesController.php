@@ -74,13 +74,21 @@ class ArticlesController extends Controller
         $dateMin = "";
         $dateMax = "";
         //Filters
-        if( isset($_GET['dateMin']) && $_GET['dateMin'] != ""){
-            $params['query']['bool']['must']['range']['Date']['gte'] = $_GET['dateMin'];
+        if( isset($_GET['dateMin']) && $_GET['dateMin'] != "" && preg_match('/^[1-2][0-9]{3}/', $_GET['dateMin'])){
+            if( $type == 'titles'){
+                $params['query']['bool']['must']['1']['range']['Date']['gte'] = $_GET['dateMin'];
+            }else{
+                $params['query']['bool']['must']['range']['Date']['gte'] = $_GET['dateMin'];
+            }
             $dateMin = $_GET['dateMin'];
         }
 
-        if( isset($_GET['dateMax']) && $_GET['dateMax'] != ""){
-            $params['query']['bool']['must']['range']['Date']['lte'] = $_GET['dateMax'];
+        if( isset($_GET['dateMax']) && $_GET['dateMax'] != "" && preg_match('/^[1-2][0-9]{3}/', $_GET['dateMax'])){
+            if( $type == 'titles'){
+                $params['query']['bool']['must']['1']['range']['Date']['lte'] = $_GET['dateMax'];
+            }else{
+                $params['query']['bool']['must']['range']['Date']['lte'] = $_GET['dateMax'];
+            }    
             $dateMax = $_GET['dateMax'];
         }
 

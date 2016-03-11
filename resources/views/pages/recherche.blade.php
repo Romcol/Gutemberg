@@ -26,10 +26,10 @@
             <h4>Filtres :</h4>
             <h5>Date :</h5>
             <div class="form-group">
-              De <input type="date" name="dateMin" class="form-control" id="dateMin_input" placeholder="1845" value={{$dateMin}}>
+              De <input name="dateMin" class="form-control" id="dateMin_input" placeholder="1845" value={{$dateMin}}>
             </div>
             <div class="form-group">
-              à <input type="date" name="dateMax" class="form-control" id="dateMax_input" placeholder="1945" value={{$dateMax}}>
+              à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="1945" value={{$dateMax}}>
             </div>
             <hr>
             <h4>Trier :</h4>
@@ -66,8 +66,8 @@
                 <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3>
               </div>
               <div class="panel-body">
-                <p>{{$article['Title']}}</p>
-                <p>{{$article['Words']}}</p>
+                <B>{{$article['Title']}}</B>
+                <p style="margin-top:20px">{{$article['Words']}}</p>
               </div>
             </div>
       		</article>
