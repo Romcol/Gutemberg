@@ -26,3 +26,6 @@ footer {
 	height: 600px;
 }
 
+article .title em{
+	background-color:#E9D460;
+}

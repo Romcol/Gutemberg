@@ -46,6 +46,12 @@ class ArticlesController extends Controller
                         ]
                     ]
                 ],
+                'highlight' => [
+                    'fields' => [
+                        'Title' => new \stdClass,
+                        'Words.Word' => new \stdClass
+                    ]
+                ],
                 'from' => $from,
                 'size' => 11
             ];
@@ -63,6 +69,11 @@ class ArticlesController extends Controller
                                 ]
                             ]
                         ]
+                    ]
+                ],
+                'highlight' => [
+                    'fields' => [
+                        'Title' => new \stdClass
                     ]
                 ],
                 'from' => $from,
@@ -114,14 +125,15 @@ class ArticlesController extends Controller
 
         /*$dMax = date_create_from_format('Y', '1000');
         $dMin = date_create('now');*/
+
         $articles = Article::search($params);
         foreach ($articles as $oneArticle) {
             $i = 0;
             $sample = '';
             foreach ($oneArticle['Words'] as $line) {
-                $sample = $sample.$line['Word'];
+                $sample .= $line['Word'].' ';
                 $i++;
-                if( $i >= 10) break;
+                //if( $i >= 10) break;
             }
             $oneArticle['Words'] = substr($sample, 0, 600).'...';
             /*
@@ -132,7 +144,6 @@ class ArticlesController extends Controller
                 $dMin = date_create($oneArticle['Date']);
             }*/
         }
-
         /*$dMin = $dMin->format('Y');
         $dMax = $dMax->format('Y');*/
 

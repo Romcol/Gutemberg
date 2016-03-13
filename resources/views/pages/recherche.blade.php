@@ -53,6 +53,7 @@
     	    <div class="row">
   		      <div class="col-lg-12">
   		        <h3>Résultats de la recherche pour "{{$text}}"</h3>
+  		        <p>{{$articles->total()}} occurrences trouvées ({{$articles->took()}} ms).</p>
               <hr>
     		    </div>
     		  </div>
@@ -66,7 +67,7 @@
                 <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3>
               </div>
               <div class="panel-body">
-                <B>{{$article['Title']}}</B>
+                <B class="title">@if($article->highlight('Title')) {!! $article->highlight('Title') !!} @else {{$article['Title']}} @endif</B>
                 <p style="margin-top:20px">{{$article['Words']}}</p>
               </div>
             </div>
