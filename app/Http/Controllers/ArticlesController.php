@@ -125,15 +125,40 @@ class ArticlesController extends Controller
 
 
         $articles = Article::search($params);
-        foreach ($articles as $oneArticle) {
-            $i = 0;
-            $sample = '';
-            foreach ($oneArticle['Words'] as $line) {
-                $sample .= $line['Word'].' ';
-                $i++;
-                //if( $i >= 10) break;
+        $configLength = 20;
+        
+        foreach ($articles as $article) {
+            if($article->highlight('Words.Word'))
+            {
+                $wordTab  = [];
+                $i = 0;
+                $j = -1;
+                foreach ($article['Words'] as $line) {
+                    if($line['Word'] == str_replace(['<em>','</em>'],'',$article->highlight('Words.Word'))){
+                        $j = $i+$configLength;
+                        $wordTab[$i] = $article->highlight('Words.Word');
+                    }
+                    else $wordTab[$i] = $line['Word'];
+                    if($j > 0 && $i > $j) break;
+                    $i++;
+                }
+                $beg = (($j-$configLength*2) > 0)?($j-$configLength*2):0;
+                $article['Words'] = '';
+                for($k = $beg; $k<$j ;$k++)
+                {
+                    $article['Words'] .= $wordTab[$k].' ';
+                }
             }
-            $oneArticle['Words'] = substr($sample, 0, 600).'...';
+            else{
+                    $i = 0;
+                    $sample = '';
+                    foreach ($article['Words'] as $line) {
+                        $sample .= $line['Word'].' ';
+                        if($i > $configLength*2) break;
+                        $i++;
+                    }
+                    $article['Words'] = $sample;
+            }
         }
 
         $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
