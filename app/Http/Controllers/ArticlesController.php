@@ -146,6 +146,7 @@ class ArticlesController extends Controller
                 $article['Words'] = '';
                 for($k = $beg; $k<$j ;$k++)
                 {
+                    if(!isset($wordTab[$k])) break;
                     $article['Words'] .= $wordTab[$k].' ';
                 }
             }
