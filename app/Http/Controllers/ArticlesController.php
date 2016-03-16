@@ -125,7 +125,7 @@ class ArticlesController extends Controller
 
 
         $articles = Article::search($params);
-        $configLength = 20;
+        $configLength = 10;
         
         foreach ($articles as $article) {
             if($article->highlight('Words.Word'))
@@ -134,7 +134,8 @@ class ArticlesController extends Controller
                 $i = 0;
                 $j = -1;
                 foreach ($article['Words'] as $line) {
-                    if($line['Word'] == str_replace(['<em>','</em>'],'',$article->highlight('Words.Word'))){
+                    $string = str_replace(['<em>','</em>'],'',$article->highlight('Words.Word'));
+                    if(($j < 0) && (substr($line['Word'], 0, strlen($string)))){
                         $j = $i+$configLength;
                         $wordTab[$i] = $article->highlight('Words.Word');
                     }
@@ -149,6 +150,7 @@ class ArticlesController extends Controller
                     if(!isset($wordTab[$k])) break;
                     $article['Words'] .= $wordTab[$k].' ';
                 }
+                $article['Words'] .= '...';
             }
             else{
                     $i = 0;
@@ -158,7 +160,7 @@ class ArticlesController extends Controller
                         if($i > $configLength*2) break;
                         $i++;
                     }
-                    $article['Words'] = $sample;
+                    $article['Words'] = $sample.'...';
             }
         }
 
