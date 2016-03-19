@@ -29,21 +29,26 @@ class ArticlesController extends Controller
 
             $params = [
                 'query' => [
-                    'bool' => [
-                        'should' => [
-                            'match' => [
-                                'Title' => [
-                                    'query' => $text,
-                                    'operator' => 'and'
-                                ]
-                            ],
-                            'match' => [
-                                'Words.Word' => [
-                                    'query' => $text,
-                                    'operator' => 'and'
+                    'filtered' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    'match' => [
+                                        'Title' => [
+                                            'query' => $text,
+                                            'operator' => 'and'
+                                        ]
+                                    ],
+                                    'match' => [
+                                        'Words.Word' => [
+                                            'query' => $text,
+                                            'operator' => 'and'
+                                        ]
+                                    ]
                                 ]
                             ]
-                        ]
+                        ],
+                        'filter' => []
                     ]
                 ],
                 'highlight' => [
@@ -56,19 +61,25 @@ class ArticlesController extends Controller
                 'size' => 11
             ];
 
+
         }elseif( $type == 'titles'){
 
             $params = [
                 'query' => [
-                    'bool' => [
-                        'must' => [
-                            'match' => [
-                                'Title' => [
-                                    'query' => $text,
-                                    'operator' => 'and'
+                    'filtered' => [
+                        'query' => [
+                            'bool' => [
+                                'must' => [
+                                    'match' => [
+                                        'Title' => [
+                                            'query' => $text,
+                                            'operator' => 'and'
+                                        ]
+                                    ]
                                 ]
                             ]
-                        ]
+                        ],
+                        'filter' => []
                     ]
                 ],
                 'highlight' => [
@@ -81,26 +92,53 @@ class ArticlesController extends Controller
             ];
         }
 
+        $regex = '/^[1-2][0-9]{3}(-([1-9]|0[1-9]|1[0-2])(-[0-9]{1,2})?)?$/';
+        $defaultMin = '1845-01-01';
+        $defaultMax = '1945-12-31';
 
-        $dateMin = "";
-        $dateMax = "";
         //Filters
-        if( isset($_GET['dateMin']) && $_GET['dateMin'] != "" && preg_match('/^[1-2][0-9]{3}/', $_GET['dateMin'])){
-            if( $type == 'titles'){
-                $params['query']['bool']['must']['1']['range']['Date']['gte'] = $_GET['dateMin'];
-            }else{
-                $params['query']['bool']['must']['range']['Date']['gte'] = $_GET['dateMin'];
-            }
+        if( isset($_GET['dateMin']) && $_GET['dateMin'] != '' ){
+
             $dateMin = $_GET['dateMin'];
+            $tabDate = explode('-', $_GET['dateMin']);
+
+            if( preg_match($regex, $_GET['dateMin']) && (count($tabDate) < 3 || checkdate(intval($tabDate[1]), intval($tabDate[2]), intval($tabDate[0])))){
+
+                $params['query']['filtered']['filter']['bool']['must']['range']['Date']['gte'] = $dateMin;
+
+
+            }else{
+
+                $defaultMin = 'Date erronée !';
+                $dateMin = '';
+
+            }
+
+        }else{
+
+            $dateMin = '';
+
         }
 
-        if( isset($_GET['dateMax']) && $_GET['dateMax'] != "" && preg_match('/^[1-2][0-9]{3}/', $_GET['dateMax'])){
-            if( $type == 'titles'){
-                $params['query']['bool']['must']['1']['range']['Date']['lte'] = $_GET['dateMax'];
-            }else{
-                $params['query']['bool']['must']['range']['Date']['lte'] = $_GET['dateMax'];
-            }    
+        if( isset($_GET['dateMax']) && $_GET['dateMax'] != ''){
+
             $dateMax = $_GET['dateMax'];
+            $tabDate = explode('-', $_GET['dateMax']);
+
+            if( preg_match($regex, $_GET['dateMax']) && (count($tabDate) < 3 || checkdate(intval($tabDate[1]), intval($tabDate[2]), intval($tabDate[0])))){
+
+                $params['query']['filtered']['filter']['bool']['must']['range']['Date']['lte'] = $dateMax;
+
+            }else{
+
+                $defaultMax = 'Date erronée !';
+                $dateMax = '';
+
+            }
+        }else{
+
+            $dateMax = '';
+            
         }
 
         //Sorting
@@ -164,8 +202,8 @@ class ArticlesController extends Controller
             }
         }
 
-        $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
+        $builturl='recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=';
 
-        return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page'));
+        return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax'));
     }
 }

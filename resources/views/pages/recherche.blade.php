@@ -26,10 +26,10 @@
             <h4>Filtres :</h4>
             <h5>Date :</h5>
             <div class="form-group">
-              De <input name="dateMin" class="form-control" id="dateMin_input" placeholder="1845" value={{$dateMin}}>
+              De <input name="dateMin" class="form-control" id="dateMin_input" placeholder="{{$defaultMin}}" value={{$dateMin}}>
             </div>
             <div class="form-group">
-              à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="1945" value={{$dateMax}}>
+              à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
             </div>
             <hr>
             <h4>Trier :</h4>
