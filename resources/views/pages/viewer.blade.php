@@ -5,7 +5,26 @@
 @stop
 
 @section('page_content')
-     <div id="openseadragon1" style="width: 800px; height: 600px; border: 1px solid black;background-color: grey;" >
+<div>
+    <div id="toolbarDiv" class="toolbar">
+        <span style='float:right;margin:10px 20px 0 0'>
+            | <a id="zoom-in" href="#zoom-in">Zoom In</a> 
+            | <a id="zoom-out" href="#zoom-out">Zoom Out</a>
+            | <a id="home" href="#home">Home</a> 
+            | <a id="full-page" href="#full-page">Full Page</a> 
+        </span>
+        <span style='float:left;margin:10px 0 0 20px'>
+        &lt;&nbsp;
+            <a id="previous" href="#previous-page">Previous</a> 
+            | <a id="next" href="#next-page">Next</a> 
+            &nbsp;&gt;
+            <span id='currentpage'> 1 of 3 </span>
+        </span>
+    </div>
+    <div id="openseadragon1" 
+         class="openseadragon"></div>
+</div>
+
 		<script src="<?= asset('/openseadragon/openseadragon.min.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/selection.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/selectionoverlay.js') ?>"></script>
@@ -19,11 +38,21 @@
 				showRotationControl: true,
 			    showNavigator:  true,
 				prefixUrl: "/openseadragon/images/",
+		        toolbar:        "toolbarDiv",
+		        zoomInButton:   "zoom-in",
+		        zoomOutButton:  "zoom-out",
+		        homeButton:     "home",
+		        fullPageButton: "full-page",
+		        nextButton:     "next",
+		        previousButton: "previous",
+		        showNavigator:  true,
+		        sequenceMode: true,
 				tileSources:"/images/dzi/presse.dzi",
 				//sequenceMode: true,   
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
 			});
+
 			var selection = viewer.selection({
 				element:                 null, 
 				showSelectionControl:    true, 
@@ -62,6 +91,5 @@
 			selection.enable();
 			//selection.toggleState();
 		</script>
-	</div>
 
 @stop
