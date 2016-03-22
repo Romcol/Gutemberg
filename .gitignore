@@ -3,4 +3,5 @@
 Homestead.yaml
 Homestead.json
 .env
-/public/openseadragon/images
+/public/images
+/public/deepzoom.py
