@@ -163,17 +163,19 @@ class ArticlesController extends Controller
 
 
         $articles = Article::search($params);
+        //dd($articles);
         $configLength = 10;
         
         foreach ($articles as $article) {
             if($article->highlight('Words.Word'))
             {
-                $wordTab  = [];
+                $wordTab = [];
                 $i = 0;
                 $j = -1;
                 foreach ($article['Words'] as $line) {
                     $string = str_replace(['<em>','</em>'],'',$article->highlight('Words.Word'));
-                    if(($j < 0) && (substr($line['Word'], 0, strlen($string)))){
+                    //if(($j < 0) && ((substr($line['Word'], 0, strlen($string))) == $string)){
+                    if(($j < 0) && (strpos($line['Word'],$string) !== false)){
                         $j = $i+$configLength;
                         $wordTab[$i] = $article->highlight('Words.Word');
                     }
@@ -181,6 +183,7 @@ class ArticlesController extends Controller
                     if($j > 0 && $i > $j) break;
                     $i++;
                 }
+                //print_r($wordTab);
                 $beg = (($j-$configLength*2) > 0)?($j-$configLength*2):0;
                 $article['Words'] = '';
                 for($k = $beg; $k<$j ;$k++)
@@ -202,7 +205,7 @@ class ArticlesController extends Controller
             }
         }
 
-        $builturl='recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=';
+        $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
         return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax'));
     }
