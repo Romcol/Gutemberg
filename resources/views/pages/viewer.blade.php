@@ -18,11 +18,10 @@
             <a id="previous" href="#previous-page">Previous</a> 
             | <a id="next" href="#next-page">Next</a> 
             &nbsp;&gt;
-            <span id='currentpage'> 1 of 3 </span>
         </span>
     </div>
     <div id="openseadragon1" 
-         class="openseadragon"></div>
+         class="openseadragon" style="width: 100%; height: 600px;"></div>
 </div>
 
 		<script src="<?= asset('/openseadragon/openseadragon.min.js') ?>"></script>
@@ -30,7 +29,6 @@
 		<script src="<?= asset('/openseadragon/selectionoverlay.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/selectionrect.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/openseadragonselection.js') ?>"></script>
-		<script src="<?= asset('/deepzoom-master/src/DeepzoomFactory.php') ?>"></script>
 		<script type="text/javascript">
 		
 			var viewer = OpenSeadragon({
@@ -47,7 +45,7 @@
 		        previousButton: "previous",
 		        showNavigator:  true,
 		        sequenceMode: true,
-				tileSources:"/images/dzi/presse.dzi",
+				tileSources:"openseadragon/images/presse.dzi",
 				//sequenceMode: true,   
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',

@@ -64,7 +64,7 @@
       		<article>
             <div class="panel panel-default">
               <div class="panel-heading">
-                <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3>
+               <a href="/visionneuse?id={{$article['IdPage']}}"> <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3></a>
               </div>
               <div class="panel-body">
                 <B class="title">@if($article->highlight('Title')) {!! $article->highlight('Title') !!} @else {{$article['Title']}} @endif</B>
