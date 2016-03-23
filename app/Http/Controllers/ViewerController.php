@@ -13,8 +13,16 @@ class ViewerController extends Controller
 
     public function index()
     {
-    	$pages = Page::all();
+        $id = $_GET['id'];
+        $params = [
+            'query' => [
+                'match' => [
+                    '_id' => $id
+                ]
+            ]
+        ];
+    	$pages = Page::search($params);
         //dd($pages);
-    	return view('pages.viewer');
+    	return view('pages.viewer', compact('pages'));
     }
 }

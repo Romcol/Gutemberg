@@ -45,7 +45,7 @@
 		        previousButton: "previous",
 		        showNavigator:  true,
 		        sequenceMode: true,
-				tileSources:"openseadragon/images/presse.dzi",
+				tileSources:"openseadragon/images/{{$pages[0]['Picture']}}.dzi",
 				//sequenceMode: true,   
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
