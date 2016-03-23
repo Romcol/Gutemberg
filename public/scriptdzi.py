@@ -7,7 +7,7 @@ import os
 os.listdir('.')
 
 for element in os.listdir('.'):
-	if element.endswith('.JPG'):
+	if element.endswith('.JPG') or element.endswith('.jpg'):
 		name,ext=element.split(".")
 
 		# Specify your source image
