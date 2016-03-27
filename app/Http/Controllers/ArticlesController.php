@@ -99,10 +99,10 @@ class ArticlesController extends Controller
         //Filters
         if( isset($_GET['dateMin']) && $_GET['dateMin'] != '' ){
 
-            $dateMin = $_GET['dateMin'];
+            $dateMin = str_replace(' ', '', $_GET['dateMin']);
             $tabDate = explode('-', $_GET['dateMin']);
 
-            if( preg_match($regex, $_GET['dateMin']) && (count($tabDate) < 3 || checkdate(intval($tabDate[1]), intval($tabDate[2]), intval($tabDate[0])))){
+            if( preg_match($regex, $dateMin) && (count($tabDate) < 3 || checkdate(intval($tabDate[1]), intval($tabDate[2]), intval($tabDate[0])))){
 
                 $params['query']['filtered']['filter']['bool']['must']['range']['Date']['gte'] = $dateMin;
 
@@ -122,10 +122,10 @@ class ArticlesController extends Controller
 
         if( isset($_GET['dateMax']) && $_GET['dateMax'] != ''){
 
-            $dateMax = $_GET['dateMax'];
+            $dateMax = str_replace(' ', '', $_GET['dateMax']);
             $tabDate = explode('-', $_GET['dateMax']);
 
-            if( preg_match($regex, $_GET['dateMax']) && (count($tabDate) < 3 || checkdate(intval($tabDate[1]), intval($tabDate[2]), intval($tabDate[0])))){
+            if( preg_match($regex, $dateMax) && (count($tabDate) < 3 || checkdate(intval($tabDate[1]), intval($tabDate[2]), intval($tabDate[0])))){
 
                 $params['query']['filtered']['filter']['bool']['must']['range']['Date']['lte'] = $dateMax;
 
@@ -144,14 +144,6 @@ class ArticlesController extends Controller
         //Sorting
         $sort = isset($_GET['sort'])?$_GET['sort']:0;
         if( $sort ){
-            /*if( $_GET['sort'] == 'title'){                      //Nécessite uen configuration spéciale sur elasticsearch
-                $params['sort'] =  'Title';
-            }
-
-            if( $_GET['sort'] == 'newspaper'){
-                $params['sort'] =  'TitleNewsPaper';
-            }*/ 
-
             if( $sort == 'dateAsc'){
                 $params['sort'] =  array( 'Date' => array( 'order' => 'asc'));
             }
