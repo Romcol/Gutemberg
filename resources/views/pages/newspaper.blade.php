@@ -51,34 +51,30 @@
     	    <div class="row">
   		      <div class="col-lg-12">
   		        <h3>Résultats de la recherche pour "{{$text}}"</h3>
-  		        <p>{{$articles->total()}} occurrences trouvées ({{$articles->took()}} ms)</p>
+  		        <p>{{$pages->total()}} occurrences trouvées ({{$pages->took()}} ms)</p>
               <hr>
     		    </div>
     		  </div>
   	    <!-- /.row -->
-      	@if(!$articles->isEmpty())
-      	@foreach ($articles as $index => $article)
+      	@if(!$pages->isEmpty())
+      	@foreach ($pages as $index => $onePage)
       	@if($index < 10)
-      		<article>
+      		<page>
             <div class="panel panel-default">
               <div class="panel-heading">
-               <a href="/visionneuse?id={{$article['IdPage']}}"> <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3></a>
-              </div>
-              <div class="panel-body">
-                <B class="title">@if($article->highlight('Title')) {!! $article->highlight('Title') !!} @else {{$article['Title']}} @endif</B>
-                <p style="margin-top:20px">{!! $article['Words'] !!}</p>
+               <a href="visionneuse?id={{$onePage['Id']}}"> <h3 class="panel-title">{{$onePage['Title']}}, {{$onePage['Date']}}</h3></a>
               </div>
             </div>
-      		</article>
+      		</page>
       	  <nav>
       	@endif
       	@endforeach
-      	@if((count($articles)==11 && $page==1) || ($page>1))
+      	@if((count($pages)==11 && $page==1) || ($page>1))
       	   <ul class="pager">
       	  @if($page>1)
       	     <li class="previous"><a href="<?= $builturl.($page-1) ?>">Précédent</a></li>
       	  @endif
-      	  @if(count($articles)==11)
+      	  @if(count($pages)==11)
       	     <li class="next"><a href="<?= $builturl.($page+1) ?>">Suivant</a></li>
       	  @endif
       	   </ul>

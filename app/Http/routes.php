@@ -15,8 +15,8 @@ Route::get('/', function () {
     return view('pages.home');
 });
 
-Route::get('articles', 'ArticlesController@index');
-Route::get('recherche', 'ArticlesController@search');
+Route::get('articles', 'SearchController@index');
+Route::get('recherche', 'SearchController@search');
 Route::get('visionneuse', 'ViewerController@index');
 
 /*

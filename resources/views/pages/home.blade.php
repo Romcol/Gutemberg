@@ -20,8 +20,8 @@
 		  <div class="form-group">
 
 		      <select name="type" class="form-control input-lg">
-					<option value="articles">Contenu des articles</option>
-					<!-- <option value="revues">Revues de presse</option> -->
+					<option value="articles">Contenus des articles</option>
+					<option value="newspaper">Journaux</option>
 					<option value="titles">Titres des articles</option>
   				</select>
 		  </div>
