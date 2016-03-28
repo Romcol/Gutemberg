@@ -159,6 +159,10 @@ class SearchController extends Controller
                 if( $sort == 'dateDsc'){
                     $params['sort'] =  array( 'Date' => array( 'order' => 'desc'));
                 }
+
+                if( $sort == 'viewsDsc'){
+                    $params['sort'] =  array( 'Views' => array( 'order' => 'desc'));
+                }
             }
 
 
@@ -220,6 +224,7 @@ class SearchController extends Controller
         $text = $_GET['text'];
         $type = $_GET['type'];
         $page = isset($_GET['page'])?intval($_GET['page']):1;
+        $from = ($page>0)?(($page-1)*10):0;
 
 
         $params = [
@@ -244,6 +249,7 @@ class SearchController extends Controller
                 ]
             ],
             'from' => $from,
+            'size' => 11
         ];
 
 
@@ -306,6 +312,10 @@ class SearchController extends Controller
             if( $sort == 'dateDsc'){
                 $params['sort'] =  array( 'Date' => array( 'order' => 'desc'));
             }
+
+            if( $sort == 'viewsDsc'){
+                $params['sort'] =  array( 'Views' => array( 'order' => 'desc'));
+            }            
         }
 
 

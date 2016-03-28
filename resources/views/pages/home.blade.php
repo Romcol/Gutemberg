@@ -31,4 +31,68 @@
 
         <hr>
 
+        <!-- PHP code for the next articles list -->
+        <?php
+        use App\Article;
+
+        $params = [
+          'sort' => [
+            'Views' => [
+              'order' => 'desc'
+            ]
+          ],
+          'size' => 5
+        ];
+
+        $articles = Article::search($params);
+        ?>
+        <!-- /.row -->
+        <!-- Page Features -->
+        <div class="row text-center">
+
+            <div class="col-md-4 col-sm-6 hero-feature">
+			<!-- Title -->
+				<h3 style="margin-bottom:30px">Articles les plus vus</h3>
+				@foreach ($articles as $index => $article)
+		      		<article>
+		            <div class="panel panel-default">
+		              <div class="panel-heading">
+		               <a href="/visionneuse?id={{$article['IdPage']}}"> <h4 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h4></a>
+		              </div>
+		              <div class="panel-body">
+		                <B class="title">{{$article['Title']}}</B>
+		              </div>
+		            </div>
+		      		</article>
+			     @endforeach
+            </div>
+            <!--
+            <div class="col-md-4 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="http://placehold.it/800x500" alt="">
+                    <div class="caption">
+                        <h3>Feature Label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6 hero-feature">
+                <div class="thumbnail">
+                    <img src="http://placehold.it/800x500" alt="">
+                    <div class="caption">
+                        <h3>Feature Label</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                        <p>
+                            <a href="#" class="btn btn-primary">Buy Now!</a> <a href="#" class="btn btn-default">More Info</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        -->
+
+        </div>
 @stop

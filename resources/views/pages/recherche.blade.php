@@ -38,6 +38,7 @@
                 <option <?php if( !isset($_GET['sort'])) echo 'selected'; ?> disabled >Choisir un critère de tri</option>
                 <option value="dateAsc" <?php if( isset($_GET['sort']) && 'dateAsc'==$_GET['sort']) echo 'selected'; ?> >du - au + récent</option>
                 <option value="dateDsc" <?php if( isset($_GET['sort']) && 'dateDsc'==$_GET['sort']) echo 'selected'; ?> >du + au - récent</option>
+                <option value="viewsDsc" <?php if( isset($_GET['sort']) && 'viewsDsc'==$_GET['sort']) echo 'selected'; ?> >les + vus</option>
               </select>
             </div>
             <hr>
