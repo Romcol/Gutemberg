@@ -51,6 +51,17 @@
 				//referenceStripScroll: 'vertical',
 			});
 
+			var elt = document.createElement("div");
+	      	@foreach ($articles as $index => $pages[0]['Articles'])
+				viewer.addOverlay({
+					element: elt,
+					location: new OpenSeadragon.Rect({{$articles['Coord'][0]}},
+														{{$articles['Coord'][1]}},
+														{{$articles['Coord'][2]}},
+														{{$articles['Coord'][3]}}) 
+				})
+	      	@endforeach
+
 			var selection = viewer.selection({
 				element:                 null, 
 				showSelectionControl:    true, 
@@ -86,7 +97,7 @@
 					},
 				}
 			});
-			selection.enable();
+			//selection.enable();
 			//selection.toggleState();
 		</script>
 
