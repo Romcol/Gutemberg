@@ -1,0 +1,59 @@
+/*!
+ * Start Bootstrap - Heroic Features HTML Template (http://startbootstrap.com)
+ * Code licensed under the Apache License v2.0.
+ * For details, see http://www.apache.org/licenses/LICENSE-2.0.
+ */
+
+body {
+    /*padding-top: 70px;*/
+/* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+}
+
+.hero-spacer {
+    margin-top: 50px;
+}
+
+.hero-feature {
+    margin-bottom: 30px;
+}
+
+footer {
+    margin: 50px 0;
+}
+
+#searchRow {
+	Background-Color: #E6E6FA;
+	height: 600px;
+}
+
+article em{
+	background-color:#E9D460;
+}
+
+#section {
+	background-color: #E6E6FA;
+	padding:20px;
+	/*arrondir les coins en haut à gauche et en bas à droite*/
+	-moz-border-radius:10px 0;
+	-webkit-border-radius:10px 0;
+	border-radius:20px;
+
+    width: 90%;
+
+    margin: auto;
+
+    font-size: 125%;
+}
+
+#subsection {
+	background-color: #F8F8FF;
+	padding:20px;
+	/*arrondir les coins en haut à gauche et en bas à droite*/
+	-moz-border-radius:10px 0;
+	-webkit-border-radius:10px 0;
+	border-radius:40px;
+
+	border:20px solid #E6E6FA ;
+
+
+}

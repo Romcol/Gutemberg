@@ -3,5 +3,7 @@
 Homestead.yaml
 Homestead.json
 .env
-/public/images
+/public/images/*
 /public/deepzoom.py
+/public/temp
+/xml

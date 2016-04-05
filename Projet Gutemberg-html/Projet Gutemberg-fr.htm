@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Jumbotron Template for Bootstrap</title>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+    <!-- Custom styles for this template -->
+    <link href="project.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-2">
+            <img src="Image1.png" alt="INSA Rennes">
+          </div>
+          <div class="col-md-8">
+            <center>
+            <h1>Projet Gutemberg</h1>
+            <h2>Réalisation d'une plateforme collaborative appliquée aux journaux anciens</h2>
+            </center>
+          </div>
+          <div class="col-md-2">
+            <img src="Image2.png" alt="Intuidoc" width="350px" align="right">
+            <!--<img src="Image3.png" alt="Archives">-->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <!-- Example row of columns -->
+        <div id="section">
+          <h2 style="font-weight:bold;">Présentation</h2>
+          <p>Ce projet, inscrit dans le cadre de la formation de 4ème année du département Informatique de l’INSA de Rennes et proposé par l’équipe Intuidoc de l’Irisa, a pour but d’améliorer l’accès aux archives de presse locale et ancienne. Notre projet concerne donc la mise à disposition de documents de presse ancienne au travers d’une plateforme accessible à tous. C’est à partir d’un prototype, conçu par l’équipe Intuidoc, que nous avons créé cette plateforme.
+          Ce prototype permet d’interpréter des images de journaux anciens (XIXe et XXe) afin de produire une représentation structurée du contenu de chaque page. Par ailleurs, Yoann Royer, chef de projet chez Sopra Steria et ancien diplômé de l’INSA, nous offre son accompagnement et ses conseils tout au long du projet. </p>
+          <h3 style="font-weight:bold;text-align:center;">L’accès aux documents anciens à l’ère du numérique est une problématique réelle</h3>
+          <p style="margin-top:20px">Plusieurs millions de journaux datant de la révolution française jusqu’à aujourd’hui sont actuellement
+          présents dans les archives. De manière générale, l’accès aux documents d’archives est
+          améliorable. En effet, celui-ci est restreint pour des raisons de conservation du document. De plus, certaines archives contiennent des kilométrages de rayons et, même
+          si dans le cadre de la presse ancienne le nombre de documents stockés est moindre, il n’en reste que l'accès à des documents traitant d'un sujet précis en est d'autant plus complexe. Cependant la numérisation ne résoud pas entièrement le problème de l’accessibilité. Il est aussi nécessaire de rendre ces documents accessibles par internet et accompagné d'outils rendant cet accès simplifié.</p>
+        </div>
+
+        <hr style="margin:20px">
+
+        <div class="row" id="section">
+          <h2 align="center" style="font-weight:bold;">Objectifs</h2>
+          <p style="margin-bottom:20px" align="center">Les objectifs et les fonctionnalités de notre plateforme se décrivent autour de trois grands axes : </p>
+  
+          <div class="col-md-4" id="subsection">
+            <h3 style="font-weight:bold; margin-bottom:20px" align="center">Rechercher</h3>
+            <p>L'utilisateur doit pouvoir obtenir facilement des articles traitant d'un sujet particulier. De même, celui-ci aura la possibilité d'affiner sa recherche à l'aide d'outils de tri et de filtrage. Enfin, l'utilisateur pourra aussi simplement trouver l'édition particulière d'un journal.</p>
+            <p>Notre plateforme est donc pourvue d'un moteur de recherche performant qui permet de rechercher dans le contenu des articles. Ce moteur permet de plus de filtrer les résultats et de les trier en fonction de leur date de parution. Les articles obtenus avec la recherche sont présentés avec leur titre, nom du journal, date et un extrait centré sur les mots-clés recherchés. De la même façon, un utilisateur peut retrouver l'édition d'un journal d'une date particulière.</p>
+          </div>
+          <div class="col-md-4" id="subsection">
+            <h3 style="font-weight:bold; margin-bottom:20px" align="center">Visualiser</h3>
+            <p>La visualisation des journaux doit être appropriée à des grandes images et faciliter la lecture. De même, les informations sur le journal et l'article doivent être affichées. Enfin, des articles proches seront aussi proposés à l'utilisateur afin de l'aider à approfondir sa recherche.</p>
+            <p>Notre visionneuse affiche la page de manière à éviter un chargement trop long. Elle permet de zoomer et dézoomer sur l'image. Des calques transparents mettent en évidence les différents articles de la page avec l'article recherché qui est mis en avant. Les informations du journal ( nom, date, liste des titres ) ainsi que celles de l'article sélectionné, sont affichées à côté de la visionneuse. Des articles proches sont proposés en fonction des mots-clés recherchés, de la date...  
+          </div>
+          <div class="col-md-4" id="subsection">
+            <h3 style="font-weight:bold; margin-bottom:20px" align="center">Contribuer</h3>
+            <p>Il est aussi essentiel de mettre en avant la richesse de la presse ancienne. Notre plateforme propose donc le système de revue de presse. C'est-à-dire un ensemble d'articles ayant un thème en commun que les utilisateurs veulent mettre en avant. Chaque utilisateur pourra contribuer à ces revues.</p>
+            <p>Lors de la consultation d'un article, l'utilisateur peut l'ajouter à une revue de presse. La liste des revues auxquelles il a contribué est accessible. Il est aussi possible de faire une recherche parmi les revues. L'utilisateur peut aussi ajouter l'article à ses favoris ou y ajouter des tags.</p>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p style="margin-left:20px">Copyright &copy; Gutemberg 2016</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

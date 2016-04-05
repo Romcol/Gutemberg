@@ -166,7 +166,8 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
           'TitleCoord' => $coordTitle,
           'Coord' => $coord,
           'Reviews' => array(),
-          'Words' => $words
+          'Words' => $words,
+          'Views' => 0
         );
 
       //Légendes des images non ajoutées
