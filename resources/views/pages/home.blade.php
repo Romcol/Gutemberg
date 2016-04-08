@@ -46,6 +46,8 @@
 
         $articles = Article::search($params);
         ?>
+        <!-- /PHP -->
+
         <!-- /.row -->
         <!-- Page Features -->
         <div class="row text-center">

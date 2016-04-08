@@ -18,10 +18,10 @@ for db in *.res.xml
        		echo "Le Petit Journal" > "$nameFile.test"
        	fi
 
-       		echo ${date:0:4}-${date:4:2}-${date:6:2} >> "$nameFile.test"
-       		echo $name >> "$nameFile.test"
+		echo ${date:0:4}-${date:4:2}-${date:6:2} >> "$nameFile.test"
+		echo $name >> "$nameFile.test"
 
-       else
+       elif [[ -f  "$nameFile.test" ]]; then
 
        	echo $name >> "$nameFile.test"
 

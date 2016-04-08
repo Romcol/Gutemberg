@@ -32,14 +32,8 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
   $titlePage = $dataXML->pageRecoTitre->titreJournal;
   $titlePageText = '';
 
-  if(!is_null($titlePage)){
-    foreach($titlePage->xpath('.//mot') as $titlePageWord){
-      $titlePageText = $titlePageText.$titlePageWord->children('http://irisa.fr/intuidoc/lp')->str.' ';
-   }
-  }else{
-    //If no title in the page, write here the title
-    $titlePageText = $providedTitlePage; 
-  }
+  $titlePageText = $providedTitlePage; 
+
 
   //insertion into database
   $dataPage = array(
