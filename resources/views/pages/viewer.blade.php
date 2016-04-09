@@ -11,7 +11,7 @@
             | <a id="zoom-in" href="#zoom-in">Zoom In</a> 
             | <a id="zoom-out" href="#zoom-out">Zoom Out</a>
             | <a id="home" href="#home">Home</a> 
-            | <a id="full-page" href="#full-page">Full Page</a> 
+            | <button id="toggle-overlay">Désactiver les calques</button> 
         </span>
         <span style='float:left;margin:10px 0 0 20px'>
         &lt;&nbsp;
@@ -20,15 +20,20 @@
             &nbsp;&gt;
         </span>
     </div>
+
     <div id="openseadragon1" 
          class="openseadragon" style="width: 100%; height: 600px;"></div>
 </div>
+@stop
+
+@section('scripts')
 
 		<script src="<?= asset('/openseadragon/openseadragon.min.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/selection.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/selectionoverlay.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/selectionrect.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/openseadragonselection.js') ?>"></script>
+		<!-- Initialization script -->
 		<script type="text/javascript">
 		
 			var pages =  <?php echo $pages; ?> ;
@@ -71,6 +76,8 @@
 				overlays: overlays,
 			});
 
+
+
 	
 
 			var selection = viewer.selection({
@@ -110,6 +117,27 @@
 			});
 			//selection.enable();
 			//selection.toggleState();
+
+		</script>
+
+		<!-- Scripts for change on the fly -->
+		<script type="text/javascript">
+
+		var toggle = true;
+		$("#toggle-overlay").click(function() {
+			if (toggle) {
+				viewer.clearOverlays();
+				$('#toggle-overlay').text('Activer les calques');
+			} else {
+				for(var i = 0; i<overlays.length; i++){
+					viewer.addOverlay(overlays[i]);
+				}
+				$('#toggle-overlay').text('Désactiver les calques');
+			}
+			toggle = !toggle;
+		});
+
 		</script>
 
 @stop
+
