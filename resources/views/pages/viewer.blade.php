@@ -31,6 +31,26 @@
 		<script src="<?= asset('/openseadragon/openseadragonselection.js') ?>"></script>
 		<script type="text/javascript">
 		
+			var pages =  <?php echo $pages; ?> ;
+			var page = pages[0];
+			var articles = page.Articles;
+
+			var overlays = [];
+
+			for(var i = 0; i< articles.length; i++) {
+				var number  = Math.floor(Math.random()*10);
+				for(var j = 0; j< articles[i].Coord.length; j++){
+					overlays.push({
+						id: 'i:'+i+' '+'j:'+j,
+				        px: articles[i].Coord[j][0], 
+				        py: articles[i].Coord[j][1],
+				        width: articles[i].Coord[j][2] - articles[i].Coord[j][0], 
+				        height: articles[i].Coord[j][3] - articles[i].Coord[j][1],
+				        className: 'overlay'+number
+					});
+				}
+			}
+
 			var viewer = OpenSeadragon({
 				id: "openseadragon1",
 				showRotationControl: true,
@@ -46,21 +66,12 @@
 		        showNavigator:  true,
 		        sequenceMode: true,
 				tileSources:"images/{{$pages[0]['Picture']}}.dzi",
-				//sequenceMode: true,   
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
+				overlays: overlays,
 			});
 
-			var elt = document.createElement("div");
-	      	@foreach ($articles as $index => $pages[0]['Articles'])
-				viewer.addOverlay({
-					element: elt,
-					location: new OpenSeadragon.Rect({{$articles['Coord'][0]}},
-														{{$articles['Coord'][1]}},
-														{{$articles['Coord'][2]}},
-														{{$articles['Coord'][3]}}) 
-				})
-	      	@endforeach
+	
 
 			var selection = viewer.selection({
 				element:                 null, 

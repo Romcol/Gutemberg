@@ -29,3 +29,54 @@ footer {
 article em{
 	background-color:#E9D460;
 }
+
+
+.overlay1 {
+    opacity:0.3;
+    background-color: yellowgreen;
+}
+
+.overlay2 {
+    opacity:0.3;
+    background-color: yellow;
+}
+
+.overlay3 {
+    opacity:0.3;
+    background-color: red;
+}
+
+.overlay4 {
+    opacity:0.3;
+    background-color: green;
+}
+
+.overlay5 {
+    opacity:0.3;
+    background-color: orange;
+}
+
+.overlay6 {
+    opacity:0.3;
+    background-color: blue;
+}
+
+.overlay7 {
+    opacity:0.3;
+    background-color: cyan;
+}
+
+.overlay8 {
+    opacity:0.3;
+    background-color: purple;
+}
+
+.overlay9 {
+    opacity:0.3;
+    background-color: magenta;
+}
+
+.overlay0 {
+    opacity:0.3;
+    background-color: orangered;
+}
