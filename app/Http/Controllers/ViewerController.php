@@ -25,7 +25,7 @@ class ViewerController extends Controller
     	$pages = Page::search($params);
         //dd($pages);
 
-        $article = null;
+        $article = 'null';
         if( isset($_GET['article']) ){
             $id = $_GET['article'];
             $paramsArticle = [

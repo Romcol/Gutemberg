@@ -57,16 +57,18 @@
 			}
 
 			var article =  <?php echo $article; ?> ;
-			article = article[0];
-			for( var i = 0; i<article.Coord.length; i++){
-				overlays.push({
-					id: 'overlaySelected'+i,
-			        px: article.Coord[i][0], 
-			        py: article.Coord[i][1],
-			        width: article.Coord[i][2] - article.Coord[i][0], 
-			        height: article.Coord[i][3] - article.Coord[i][1],
-			        className: 'overlayArt'
-				});
+			if( article != null ){
+				article = article[0];
+				for( var i = 0; i<article.Coord.length; i++){
+					overlays.push({
+						id: 'overlaySelected'+i,
+				        px: article.Coord[i][0], 
+				        py: article.Coord[i][1],
+				        width: article.Coord[i][2] - article.Coord[i][0], 
+				        height: article.Coord[i][3] - article.Coord[i][1],
+				        className: 'overlayArt'
+					});
+				}
 			}
 
 
@@ -134,6 +136,30 @@
 		<!-- Scripts for change on the fly -->
 		<script type="text/javascript">
 
+		$(window).load(function() {
+			var px = article.TitleCoord[0];
+			var py = article.TitleCoord[1];
+			var ppx = article.TitleCoord[2];
+			var ppy = article.TitleCoord[3];
+			for( var i=0; i<article.Coord.length; i++){
+				px = Math.min(px, article.Coord[i][0]);
+				py = Math.min(py, article.Coord[i][1]);
+				ppx = Math.max(ppx, article.Coord[i][2]);
+				ppy = Math.max(ppy, article.Coord[i][3]);
+			}
+
+			var pxr = px - 100;
+			var pyr = py - 100;
+			var ppxr = ppx - pxr + 100;
+			var ppyr = ppy - pyr + 100;
+
+
+			var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
+			point = viewer.viewport.imageToViewportRectangle(point);
+			viewer.viewport.fitBounds(point, false);
+		});
+
+
 		var toggle = true;
 		$("#toggle-overlay").click(function() {
 			if (toggle) {
@@ -142,8 +168,10 @@
 			} else {
 				for(var i = 0; i<overlays.length; i++){
 					viewer.addOverlay(overlays[i]);
+
 				}
 				$('#toggle-overlay').text('Désactiver les calques');
+
 			}
 			toggle = !toggle;
 		});
