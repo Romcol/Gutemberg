@@ -86,3 +86,9 @@ article em{
     opacity:0.3;
     background-color: orangered;
 }
+
+.not-active {
+   pointer-events: none;
+   cursor: default;
+   color: #C0C0C0;
+}

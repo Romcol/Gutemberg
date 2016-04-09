@@ -15,11 +15,14 @@
         </span>
         <span style='float:left;margin:10px 0 0 20px'>
         &lt;&nbsp;
-            <a id="previous" href="#previous-page">Previous</a> 
-            | <a id="next" href="#next-page">Next</a> 
+            <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>>Page précédente</a> 
+            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>>Page suivante</a>
             &nbsp;&gt;
         </span>
     </div>
+
+    
+     
 
     <div id="openseadragon1" 
          class="openseadragon" style="width: 100%; height: 600px;"></div>
@@ -137,26 +140,36 @@
 		<script type="text/javascript">
 
 		$(window).load(function() {
-			var px = article.TitleCoord[0];
-			var py = article.TitleCoord[1];
-			var ppx = article.TitleCoord[2];
-			var ppy = article.TitleCoord[3];
-			for( var i=0; i<article.Coord.length; i++){
-				px = Math.min(px, article.Coord[i][0]);
-				py = Math.min(py, article.Coord[i][1]);
-				ppx = Math.max(ppx, article.Coord[i][2]);
-				ppy = Math.max(ppy, article.Coord[i][3]);
+			if( article != null ){
+				if( article.TitleCoord.length != 0){
+					var px = article.TitleCoord[0];
+					var py = article.TitleCoord[1];
+					var ppx = article.TitleCoord[2];
+					var ppy = article.TitleCoord[3];
+				}else{
+					var px = 10000;
+					var py = 10000;
+					var ppx = 0;
+					var ppy = 0;
+				}
+
+				for( var i=0; i<article.Coord.length; i++){
+					px = Math.min(px, article.Coord[i][0]);
+					py = Math.min(py, article.Coord[i][1]);
+					ppx = Math.max(ppx, article.Coord[i][2]);
+					ppy = Math.max(ppy, article.Coord[i][3]);
+				}
+
+				var pxr = px - 100;
+				var pyr = py - 100;
+				var ppxr = ppx - pxr + 100;
+				var ppyr = ppy - pyr + 100;
+
+
+				var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
+				point = viewer.viewport.imageToViewportRectangle(point);
+				viewer.viewport.fitBounds(point, false);
 			}
-
-			var pxr = px - 100;
-			var pyr = py - 100;
-			var ppxr = ppx - pxr + 100;
-			var ppyr = ppy - pyr + 100;
-
-
-			var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
-			point = viewer.viewport.imageToViewportRectangle(point);
-			viewer.viewport.fitBounds(point, false);
 		});
 
 
