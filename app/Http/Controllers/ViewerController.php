@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Page;
+use App\Article;
 
 class ViewerController extends Controller
 {
@@ -23,6 +24,20 @@ class ViewerController extends Controller
         ];
     	$pages = Page::search($params);
         //dd($pages);
-    	return view('pages.viewer', compact('pages'));
+
+        $article = null;
+        if( isset($_GET['article']) ){
+            $id = $_GET['article'];
+            $paramsArticle = [
+                'query' => [
+                    'match' => [
+                        '_id' => $id
+                    ]
+                ]
+            ];
+            $article =  Article::search($paramsArticle);
+        }
+
+    	return view('pages.viewer', compact('pages', 'article'));
     }
 }

@@ -35,7 +35,7 @@
 		<script src="<?= asset('/openseadragon/openseadragonselection.js') ?>"></script>
 		<!-- Initialization script -->
 		<script type="text/javascript">
-		
+
 			var pages =  <?php echo $pages; ?> ;
 			var page = pages[0];
 			var articles = page.Articles;
@@ -56,6 +56,20 @@
 				}
 			}
 
+			var article =  <?php echo $article; ?> ;
+			article = article[0];
+			for( var i = 0; i<article.Coord.length; i++){
+				overlays.push({
+					id: 'overlaySelected'+i,
+			        px: article.Coord[i][0], 
+			        py: article.Coord[i][1],
+			        width: article.Coord[i][2] - article.Coord[i][0], 
+			        height: article.Coord[i][3] - article.Coord[i][1],
+			        className: 'overlayArt'
+				});
+			}
+
+
 			var viewer = OpenSeadragon({
 				id: "openseadragon1",
 				showRotationControl: true,
@@ -75,9 +89,6 @@
 				//referenceStripScroll: 'vertical',
 				overlays: overlays,
 			});
-
-
-
 	
 
 			var selection = viewer.selection({
