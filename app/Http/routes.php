@@ -16,8 +16,11 @@ Route::get('/', function () {
 });
 
 Route::get('articles', 'SearchController@index');
+
 Route::get('recherche', 'SearchController@search');
+
 Route::get('visionneuse', 'ViewerController@index');
+Route::get( 'changeArticle', 'ViewerController@searchArticle');
 
 /*
 |--------------------------------------------------------------------------

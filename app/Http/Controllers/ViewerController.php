@@ -25,6 +25,18 @@ class ViewerController extends Controller
     	$pages = Page::search($params);
         //dd($pages);
 
+        $article = $this->searchArticle();
+
+        $filename = $pages[0]['Picture'].'.dzi';
+
+        if ( !file_exists(public_path().'\\images\\'.$filename)) {
+           $filename = 'default.dzi';
+        }
+                
+    	return view('pages.viewer', compact('pages','article', 'filename'));
+    }
+
+    public function searchArticle(){
         $article = 'null';
         if( isset($_GET['article']) ){
             $id = $_GET['article'];
@@ -36,8 +48,21 @@ class ViewerController extends Controller
                 ]
             ];
             $article =  Article::search($paramsArticle);
+
+/*
+            require 'vendor/autoload.php';
+            $client = new MongoClient();             
+            $db = $client->test;
+
+            $ArticleCollection = $db->Articles;
+
+            $ArticleCollection->update(array('_id' => $id), array('$inc' => array('Views' => 1)));*/
+
         }
 
-    	return view('pages.viewer', compact('pages', 'article'));
+        
+
+        return $article;
+
     }
 }

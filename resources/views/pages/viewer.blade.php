@@ -12,6 +12,8 @@
             | <a id="zoom-out" href="#zoom-out">Zoom Out</a>
             | <a id="home" href="#home">Home</a> 
             | <button id="toggle-overlay">Désactiver les calques</button> 
+            | <button id="zoomOnArticle">Zoomer sur l'article</button>
+            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
         </span>
         <span style='float:left;margin:10px 0 0 20px'>
         &lt;&nbsp;
@@ -36,8 +38,12 @@
 		<script src="<?= asset('/openseadragon/selectionoverlay.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/selectionrect.js') ?>"></script>
 		<script src="<?= asset('/openseadragon/openseadragonselection.js') ?>"></script>
+
 		<!-- Initialization script -->
 		<script type="text/javascript">
+
+			var zoom = true;
+			var filename = '<?php echo $filename ?>';
 
 			var pages =  <?php echo $pages; ?> ;
 			var page = pages[0];
@@ -45,33 +51,40 @@
 
 			var overlays = [];
 
-			for(var i = 0; i< articles.length; i++) {
-				var number  = Math.floor(Math.random()*10);
-				for(var j = 0; j< articles[i].Coord.length; j++){
-					overlays.push({
-						id: 'i:'+i+' '+'j:'+j,
-				        px: articles[i].Coord[j][0], 
-				        py: articles[i].Coord[j][1],
-				        width: articles[i].Coord[j][2] - articles[i].Coord[j][0], 
-				        height: articles[i].Coord[j][3] - articles[i].Coord[j][1],
-				        className: 'overlay'+number
-					});
+			if( filename != 'default.dzi'){
+				for(var i = 0; i< articles.length; i++) {
+					var number  = Math.floor(Math.random()*10);
+					for(var j = 0; j< articles[i].Coord.length; j++){
+						overlays.push({
+							id: 'i:'+i+' '+'j:'+j,
+					        px: articles[i].Coord[j][0], 
+					        py: articles[i].Coord[j][1],
+					        width: articles[i].Coord[j][2] - articles[i].Coord[j][0], 
+					        height: articles[i].Coord[j][3] - articles[i].Coord[j][1],
+					        className: 'overlay'+number
+						});
+					}
 				}
-			}
 
-			var article =  <?php echo $article; ?> ;
-			if( article != null ){
-				article = article[0];
-				for( var i = 0; i<article.Coord.length; i++){
-					overlays.push({
-						id: 'overlaySelected'+i,
-				        px: article.Coord[i][0], 
-				        py: article.Coord[i][1],
-				        width: article.Coord[i][2] - article.Coord[i][0], 
-				        height: article.Coord[i][3] - article.Coord[i][1],
-				        className: 'overlayArt'
-					});
+
+				var article =  <?php echo $article; ?> ;
+				if( article != null ){
+					article = article[0];
+					for( var i = 0; i<article.Coord.length; i++){
+						overlays.push({
+							id: 'overlaySelected'+i,
+					        px: article.Coord[i][0], 
+					        py: article.Coord[i][1],
+					        width: article.Coord[i][2] - article.Coord[i][0], 
+					        height: article.Coord[i][3] - article.Coord[i][1],
+					        className: 'overlayArt'
+						});
+					}
 				}
+
+			}else{
+				$('#toggle-overlay').remove();
+				$('#zoomOnArticle').remove();
 			}
 
 
@@ -89,7 +102,7 @@
 		        previousButton: "previous",
 		        showNavigator:  true,
 		        sequenceMode: true,
-				tileSources:"images/{{$pages[0]['Picture']}}.dzi",
+				tileSources:"images/"+filename,
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
 				overlays: overlays,
@@ -135,41 +148,109 @@
 			//selection.toggleState();
 
 		</script>
+		<!-- End of initialization script -->
+
+		<!-- Functions definition -->
+		<script type="text/javascript">
+
+			function zoomOnArticle(articleparam){
+
+					if( articleparam != null && zoom){
+						if( articleparam.TitleCoord.length != 0){
+							var px = articleparam.TitleCoord[0];
+							var py = articleparam.TitleCoord[1];
+							var ppx = articleparam.TitleCoord[2];
+							var ppy = articleparam.TitleCoord[3];
+						}else{
+							var px = 10000;
+							var py = 10000;
+							var ppx = 0;
+							var ppy = 0;
+						}
+
+						for( var i=0; i<articleparam.Coord.length; i++){
+							px = Math.min(px, articleparam.Coord[i][0]);
+							py = Math.min(py, articleparam.Coord[i][1]);
+							ppx = Math.max(ppx, articleparam.Coord[i][2]);
+							ppy = Math.max(ppy, articleparam.Coord[i][3]);
+						}
+
+						var pxr = px - 100;
+						var pyr = py - 100;
+						var ppxr = ppx - pxr + 100;
+						var ppyr = ppy - pyr + 100;
+
+
+						var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
+						point = viewer.viewport.imageToViewportRectangle(point);
+						viewer.viewport.fitBounds(point, false);
+					}
+			}
+
+			function CoordToNewArticleId(px, py){
+				for(var i = 0; i< articles.length; i++) {
+					for(var j = 0; j< articles[i].Coord.length; j++){
+						if( px >= articles[i].Coord[j][0] && px <= articles[i].Coord[j][2]){
+							if( py >= articles[i].Coord[j][1] && py <= articles[i].Coord[j][3]){
+								if( articles[i].IdArticle != article._id){
+									return articles[i].IdArticle;
+								}else{
+									return null;
+								}
+							}
+						}
+					}
+				}
+
+				return null;
+			}
+
+			function activateZoom(){
+				zoom = !zoom;
+			}
+
+		</script>
+		<!-- End of functions definition -->
 
 		<!-- Scripts for change on the fly -->
 		<script type="text/javascript">
 
 		$(window).load(function() {
-			if( article != null ){
-				if( article.TitleCoord.length != 0){
-					var px = article.TitleCoord[0];
-					var py = article.TitleCoord[1];
-					var ppx = article.TitleCoord[2];
-					var ppy = article.TitleCoord[3];
-				}else{
-					var px = 10000;
-					var py = 10000;
-					var ppx = 0;
-					var ppy = 0;
-				}
 
-				for( var i=0; i<article.Coord.length; i++){
-					px = Math.min(px, article.Coord[i][0]);
-					py = Math.min(py, article.Coord[i][1]);
-					ppx = Math.max(ppx, article.Coord[i][2]);
-					ppy = Math.max(ppy, article.Coord[i][3]);
-				}
+			 zoomOnArticle(article);
 
-				var pxr = px - 100;
-				var pyr = py - 100;
-				var ppxr = ppx - pxr + 100;
-				var ppyr = ppy - pyr + 100;
+		});
 
+		viewer.addHandler('canvas-click', function(event) {
+			var viewportPoint = viewer.viewport.pointFromPixel(event.position);
+			var imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint.x, viewportPoint.y);
+			
+			var clickx = imagePoint.x;
+			var clicky = imagePoint.y;
 
-				var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
-				point = viewer.viewport.imageToViewportRectangle(point);
-				viewer.viewport.fitBounds(point, false);
+			var articleId = CoordToNewArticleId(clickx, clicky);
+
+			if( articleId != null){
+
+				$.get(
+
+				    'changeArticle', // Le fichier cible côté serveur.
+
+				    {
+				    	article: articleId
+				    },
+
+				    function(data){
+
+			   			article = data[0];
+			   			zoomOnArticle(article);
+
+					}
+
+				);
+
 			}
+
 		});
 
 
@@ -188,6 +269,13 @@
 			}
 			toggle = !toggle;
 		});
+
+		$("#zoomOnArticle").click(function() {
+			
+			zoomOnArticle(article);
+
+		});
+	
 
 		</script>
 
