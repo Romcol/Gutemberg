@@ -87,8 +87,7 @@ return [
 
         'mongodb' => array(
             'driver'   => 'mongodb',
-            'host'     => '127.0.0.1',
-            'port'     => 27017,
+            'host'     => 'localhost',
             'database' => 'test',
             'options' => array(
                 'db' => 'admin' // sets the authentication database required by mongo 3

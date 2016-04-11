@@ -43,6 +43,7 @@
 		<script type="text/javascript">
 
 			var zoom = true;
+			var toggle = true;
 			var filename = '<?php echo $filename ?>';
 
 			var pages =  <?php echo $pages; ?> ;
@@ -68,6 +69,7 @@
 
 
 				var article =  <?php echo $article; ?> ;
+				var nOverlay = 0;
 				if( article != null ){
 					article = article[0];
 					for( var i = 0; i<article.Coord.length; i++){
@@ -79,6 +81,7 @@
 					        height: article.Coord[i][3] - article.Coord[i][1],
 					        className: 'overlayArt'
 						});
+						nOverlay++;
 					}
 				}
 
@@ -209,6 +212,43 @@
 				zoom = !zoom;
 			}
 
+			function removeSelectedOverlays(){
+
+				for( var i=0; i<overlays.length;  i++){
+					if(typeof overlays[i] != 'undefined')
+						var name = overlays[i].id.substring(0, overlays[i].id.length - 1);
+						if( name == 'overlaySelected'){
+							delete overlays[i];
+						}
+				}
+
+				for( var j=0; j<nOverlay; j++){
+					viewer.removeOverlay('overlaySelected'+j);
+				}
+
+			}
+
+			function addSelectedOverlays(articleparam){
+				nOverlay = 0;
+				for( var i = 0; i<articleparam.Coord.length; i++){
+
+					var elt = {
+						id: 'overlaySelected'+i,
+				        px: articleparam.Coord[i][0], 
+				        py: articleparam.Coord[i][1],
+				        width: articleparam.Coord[i][2] - articleparam.Coord[i][0], 
+				        height: articleparam.Coord[i][3] - articleparam.Coord[i][1],
+				        className: 'overlayArt'
+					};
+
+					overlays.push(elt);
+
+					if(toggle) viewer.addOverlay(elt);
+
+					nOverlay++;
+				}
+			}
+
 		</script>
 		<!-- End of functions definition -->
 
@@ -244,17 +284,21 @@
 
 			   			article = data[0];
 			   			zoomOnArticle(article);
+			   			removeSelectedOverlays();
+						addSelectedOverlays(article);
 
 					}
 
 				);
+
+
 
 			}
 
 		});
 
 
-		var toggle = true;
+
 		$("#toggle-overlay").click(function() {
 			if (toggle) {
 				viewer.clearOverlays();
