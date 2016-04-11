@@ -192,7 +192,7 @@
 					for(var j = 0; j< articles[i].Coord.length; j++){
 						if( px >= articles[i].Coord[j][0] && px <= articles[i].Coord[j][2]){
 							if( py >= articles[i].Coord[j][1] && py <= articles[i].Coord[j][3]){
-								if( articles[i].IdArticle != article._id){
+								if( article == null || articles[i].IdArticle != article._id){
 									return articles[i].IdArticle;
 								}else{
 									return null;

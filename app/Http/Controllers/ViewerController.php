@@ -49,14 +49,9 @@ class ViewerController extends Controller
             ];
             $article =  Article::search($paramsArticle);
 
-/*
-            require 'vendor/autoload.php';
-            $client = new MongoClient();             
-            $db = $client->test;
-
-            $ArticleCollection = $db->Articles;
-
-            $ArticleCollection->update(array('_id' => $id), array('$inc' => array('Views' => 1)));*/
+            $viewArticle = Article::find($id);
+            $viewArticle->Views = $viewArticle->Views + 1;
+            $viewArticle->save();
 
         }
 

@@ -85,17 +85,15 @@ return [
             'prefix'   => '',
         ],
 
-        'mongodb' => [
-            'driver' => 'mongodb',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', 27017),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'options' => [
+        'mongodb' => array(
+            'driver'   => 'mongodb',
+            'host'     => '127.0.0.1',
+            'port'     => 27017,
+            'database' => 'test',
+            'options' => array(
                 'db' => 'admin' // sets the authentication database required by mongo 3
-            ]
-        ],
+            )
+        ),
 
     ],
 
