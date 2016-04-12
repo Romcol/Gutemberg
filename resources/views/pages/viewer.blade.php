@@ -1,16 +1,31 @@
 @extends('app')
 
 @section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css"> 
+<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css">
+<link rel="stylesheet" href="<?= asset('css/viewer.css') ?>" type="text/css"> 
 @stop
 
 @section('page_content')
-<div>
+<div class="row" id="visionneuse">
+	<div id="pageInfo" class="col-md-2">
+	<h4>Informations sur le journal</h4>
+	<hr>
+	<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
+	<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
+	<hr>
+	<h4>Informations sur la page</h4>
+	<hr>
+	@foreach($pages[0]['Articles'] as $idx => $art)
+	<p><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
+	@endforeach
+	</div>
+	<div class="col-md-10">
     <div id="toolbarDiv" class="toolbar">
         <span style='float:right;margin:10px 20px 0 0'>
             | <a id="zoom-in" href="#zoom-in">Zoom In</a> 
             | <a id="zoom-out" href="#zoom-out">Zoom Out</a>
             | <a id="home" href="#home">Home</a> 
+            | <a id="full-page" href="#full-page">Full Page</a>
             | <button id="toggle-overlay">Désactiver les calques</button> 
             | <button id="zoomOnArticle">Zoomer sur l'article</button>
             | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
@@ -26,8 +41,8 @@
     
      
 
-    <div id="openseadragon1" 
-         class="openseadragon" style="width: 100%; height: 600px;"></div>
+    <div id="openseadragon1" class="openseadragon" style="height: 600px;" ></div>
+    </div>
 </div>
 @stop
 
@@ -96,7 +111,7 @@
 				showRotationControl: true,
 			    showNavigator:  true,
 				prefixUrl: "/openseadragon/images/",
-		        toolbar:        "toolbarDiv",
+		        toolbar:        "visionneuse",
 		        zoomInButton:   "zoom-in",
 		        zoomOutButton:  "zoom-out",
 		        homeButton:     "home",

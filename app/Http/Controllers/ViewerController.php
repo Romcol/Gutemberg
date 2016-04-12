@@ -32,7 +32,9 @@ class ViewerController extends Controller
         if ( !file_exists(public_path().'\\images\\'.$filename)) {
            $filename = 'default.dzi';
         }
-                
+
+       // dd($pages);
+
     	return view('pages.viewer', compact('pages','article', 'filename'));
     }
 
