@@ -30,6 +30,7 @@
 		<h4>Informations sur l'article</h4>
 		<hr>
 		<strong>Titre :</strong> <span id="currentTitle"></span>
+		<strong>Vues :</strong> <span id="currentViews"></span>
 		</div>
 	</div>
 	<div id="infoHidden">
@@ -77,6 +78,7 @@
 			if(article != null)
 			{
 				$("#currentTitle").text(article.Title);
+				$("#currentViews").text(article.Views);
 				$("#currentArticle").show();
 			}
 			else{
