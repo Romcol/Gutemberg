@@ -29,7 +29,7 @@ class ViewerController extends Controller
 
         $filename = $pages[0]['Picture'].'.dzi';
 
-        if ( !file_exists(public_path().'\\images\\'.$filename)) {
+        if ( !file_exists(public_path().'/images/'.$filename)) {
            $filename = 'default.dzi';
         }
 
