@@ -51,7 +51,7 @@
 				  <div class="form-group">
 				    <input id="search_input" onchange="newSearch()">
 				  </div>
-				  <button type="button">Recherche</button>
+				  <button type="button" id="search_button">Recherche</button>
 				</form>
 	        </span>
 	        <span style='float:left;margin:10px 0 0 20px'>
@@ -234,6 +234,8 @@
 		</script>
 		<!-- End of initialization script -->
 
+
+
 		<!-- Functions definition -->
 		<script type="text/javascript">
 
@@ -410,6 +412,8 @@
 		</script>
 		<!-- End of functions definition -->
 
+
+
 		<!-- Scripts for change on the fly -->
 		<script type="text/javascript">
 
@@ -456,6 +460,13 @@
 			
 			zoomOnArticle(article);
 
+		});
+
+		$('#search_input').keydown(function(e) {
+		  if (e.which == 13) {
+		    if (e.preventDefault) e.preventDefault();
+		    newSearch();
+		  }
 		});
 	
 
