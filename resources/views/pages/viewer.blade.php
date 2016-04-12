@@ -18,6 +18,12 @@
 	@foreach($pages[0]['Articles'] as $idx => $art)
 	<p><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
 	@endforeach
+	<div id="currentArticle" style="display:none;">
+	<hr>
+	<h4>Information sur l'article</h4>
+	<hr>
+	<strong>Titre :</strong> <span id="currentTitle"></span>
+	</div>
 	</div>
 	<div class="col-md-10">
     <div id="toolbarDiv" class="toolbar">
@@ -37,8 +43,6 @@
             &nbsp;&gt;
         </span>
     </div>
-
-    
      
 
     <div id="openseadragon1" class="openseadragon" style="height: 600px;" ></div>
@@ -56,6 +60,16 @@
 
 		<!-- Initialization script -->
 		<script type="text/javascript">
+		function updateCurrentArticle(article){
+			if(article != null)
+			{
+				$("#currentTitle").text(article.Title);
+				$("#currentArticle").show();
+			}
+			else{
+				$("#currentArticle").hide();
+			}
+		}
 
 			var zoom = true;
 			var toggle = true;
@@ -84,9 +98,11 @@
 
 
 				var article =  <?php echo $article; ?> ;
+				updateCurrentArticle(article);
 				var nOverlay = 0;
 				if( article != null ){
 					article = article[0];
+					updateCurrentArticle(article);
 					for( var i = 0; i<article.Coord.length; i++){
 						overlays.push({
 							id: 'overlaySelected'+i,
@@ -298,6 +314,7 @@
 				    function(data){
 
 			   			article = data[0];
+			   			updateCurrentArticle(article);
 			   			zoomOnArticle(article);
 			   			removeSelectedOverlays();
 						addSelectedOverlays(article);
@@ -317,12 +334,14 @@
 		$("#toggle-overlay").click(function() {
 			if (toggle) {
 				viewer.clearOverlays();
+				$("#currentArticle").hide();
 				$('#toggle-overlay').text('Activer les calques');
 			} else {
 				for(var i = 0; i<overlays.length; i++){
 					viewer.addOverlay(overlays[i]);
 
 				}
+				if(article != null) $("#currentArticle").show();
 				$('#toggle-overlay').text('Désactiver les calques');
 
 			}
