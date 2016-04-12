@@ -22,7 +22,7 @@
 		<hr>
 		<div id="pageArticlesList">
 		@foreach($pages[0]['Articles'] as $idx => $art)
-		<p><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
+		<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}')"><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
 		@endforeach
 		</div>
 		<div id="currentArticle" style="display:none;">
@@ -379,6 +379,33 @@
 				}
 			}
 
+			function selectArticle(idArticle){
+
+				if( idArticle != null){
+
+					$.get(
+
+					    'changeArticle', // Le fichier cible côté serveur.
+
+					    {
+					    	article: idArticle
+					    },
+
+					    function(data){
+
+				   			article = data[0];
+				   			updateCurrentArticle(article);
+				   			zoomOnArticle(article);
+				   			removeSelectedOverlays();
+							addSelectedOverlays(article);
+
+						}
+
+					);
+
+				}
+			}
+
 
 		</script>
 		<!-- End of functions definition -->
@@ -401,29 +428,7 @@
 
 			var articleId = CoordToNewArticleId(clickx, clicky);
 
-			if( articleId != null){
-
-				$.get(
-
-				    'changeArticle', // Le fichier cible côté serveur.
-
-				    {
-				    	article: articleId
-				    },
-
-				    function(data){
-
-			   			article = data[0];
-			   			updateCurrentArticle(article);
-			   			zoomOnArticle(article);
-			   			removeSelectedOverlays();
-						addSelectedOverlays(article);
-
-					}
-
-				);
-
-			}
+			selectArticle(articleId);
 
 		});
 
@@ -432,7 +437,7 @@
 		$("#toggle-overlay").click(function() {
 			if (toggle) {
 				viewer.clearOverlays();
-				$("#currentArticle").hide();
+				//$("#currentArticle").hide();
 				$('#toggle-overlay').text('Activer les calques');
 			} else {
 				var allOverlays = overlays.concat(overlaysSlt, overlaysKwd);
@@ -440,7 +445,7 @@
 				for(var i = 0; i<allOverlays.length; i++){
 					viewer.addOverlay(allOverlays[i]);
 				}
-				if(article != null) $("#currentArticle").show();
+				//if(article != null) $("#currentArticle").show();
 				$('#toggle-overlay').text('Désactiver les calques');
 
 			}
