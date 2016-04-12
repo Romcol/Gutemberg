@@ -6,46 +6,54 @@
 @stop
 
 @section('page_content')
-<div class="row" id="visionneuse">
-	<div id="pageInfo" class="col-md-2">
-	<h4>Informations sur le journal</h4>
-	<hr>
-	<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
-	<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
-	<hr>
-	<h4>Informations sur la page</h4>
-	<hr>
-	@foreach($pages[0]['Articles'] as $idx => $art)
-	<p><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
-	@endforeach
-	<div id="currentArticle" style="display:none;">
-	<hr>
-	<h4>Information sur l'article</h4>
-	<hr>
-	<strong>Titre :</strong> <span id="currentTitle"></span>
+<div class="row">
+	<div id="pageInfo">
+		<div class="text-right">
+			<button id="hideInfo" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer infos">
+		  	<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+			</button>
+		</div>
+		<h4>Informations sur le journal</h4>
+		<hr>
+		<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
+		<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
+		<hr>
+		<h4>Informations sur la page</h4>
+		<hr>
+		<div id="pageArticlesList">
+		@foreach($pages[0]['Articles'] as $idx => $art)
+		<p><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
+		@endforeach
+		</div>
+		<div id="currentArticle" style="display:none;">
+		<hr>
+		<h4>Informations sur l'article</h4>
+		<hr>
+		<strong>Titre :</strong> <span id="currentTitle"></span>
+		</div>
 	</div>
+	<div id="infoHidden">
+			<button id="showInfo" type="button" class="btn btn-default btn-sm" aria-label="Show" title="Afficher infos">
+		  	<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+			</button>
 	</div>
-	<div class="col-md-10">
-    <div id="toolbarDiv" class="toolbar">
-        <span style='float:right;margin:10px 20px 0 0'>
-            | <a id="zoom-in" href="#zoom-in">Zoom In</a> 
-            | <a id="zoom-out" href="#zoom-out">Zoom Out</a>
-            | <a id="home" href="#home">Home</a> 
-            | <a id="full-page" href="#full-page">Full Page</a>
-            | <button id="toggle-overlay">Désactiver les calques</button> 
-            | <button id="zoomOnArticle">Zoomer sur l'article</button>
-            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
-        </span>
-        <span style='float:left;margin:10px 0 0 20px'>
-        &lt;&nbsp;
-            <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>>Page précédente</a> 
-            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>>Page suivante</a>
-            &nbsp;&gt;
-        </span>
-    </div>
-     
-
-    <div id="openseadragon1" class="openseadragon" style="height: 600px;" ></div>
+	<div id="viewer">
+	    <div id="toolbarDiv" class="toolbar">
+	        <span style='float:right;margin:10px 20px 0 0'>
+	            | <a id="zoom-in" href="#zoom-in">(+)</a> 
+	            | <a id="zoom-out" href="#zoom-out">(-)</a>
+	            | <a id="home" href="#home">[H]</a> 
+	            | <a id="full-page" href="#full-page">[F]</a>
+	            | <button id="toggle-overlay">Désactiver les calques</button> 
+	            | <button id="zoomOnArticle">Zoomer sur l'article</button>
+	            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
+	        </span>
+	        <span style='float:left;margin:10px 0 0 20px'>
+	            <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>>&lt;-</a> 
+	            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>>-&gt;</a>
+	        </span>
+	    </div>
+	    <div id="openseadragon1" class="openseadragon" style="height: 600px;" ></div>
     </div>
 </div>
 @stop
@@ -60,6 +68,17 @@
 
 		<!-- Initialization script -->
 		<script type="text/javascript">
+
+		$("#hideInfo").click(function(){
+    		$("#pageInfo").hide();
+    		$("#infoHidden").show();
+		});
+
+		$("#showInfo").click(function(){
+			$("#infoHidden").hide();
+    		$("#pageInfo").show();
+		});
+
 		function updateCurrentArticle(article){
 			if(article != null)
 			{
@@ -127,7 +146,7 @@
 				showRotationControl: true,
 			    showNavigator:  true,
 				prefixUrl: "/openseadragon/images/",
-		        toolbar:        "visionneuse",
+		        toolbar:        "toolbarDiv",
 		        zoomInButton:   "zoom-in",
 		        zoomOutButton:  "zoom-out",
 		        homeButton:     "home",

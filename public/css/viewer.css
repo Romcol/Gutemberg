@@ -1,8 +1,30 @@
 #pageInfo {
-	Background-Color: #E6E6FA;
-	padding:10px 0 0 10px;
+	background-color: #E6E6FA;
+	padding:10px;
+	float:left;
+	width:15%;
+}
+#viewer{
+	float:left;
+	width:85%;
 }
 
 #pageInfo strong {
 	font-weight: bold;
+}
+
+#pageInfo #pageArticlesList {
+	max-height: 150px;
+	overflow-y: auto;
+}
+
+#infoHidden{
+	float:left;
+	display:none;
+	background-color: #E6E6FA;
+	width:55px;
+	padding:10px 0 10px 0;
+}
+#infoHidden button{
+	margin-left: 10px;
 }
