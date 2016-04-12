@@ -33,9 +33,18 @@ class ViewerController extends Controller
            $filename = 'default.dzi';
         }
 
+        $keywords = '';
+        $searchedKeywords = [];
+        if( isset($_GET['search']) ){
+            $keywords = $_GET['search'];
+            $searchedKeywords = $this->searchKeyword();
+        }
+
+        $searchedKeywords = json_encode($searchedKeywords);
+
        // dd($pages);
 
-    	return view('pages.viewer', compact('pages','article', 'filename'));
+    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords'));
     }
 
     public function searchArticle(){
@@ -61,5 +70,55 @@ class ViewerController extends Controller
 
         return $article;
 
+    }
+
+    public function searchKeyword(){
+        $id = $_GET['id'];
+        $keywords = $_GET['search'];
+        $paramsSearch = [
+            'query' => [
+                'bool' => [
+                    'should' => [
+                        'match' => [
+                            'Title' => [
+                                'query' => $keywords,
+                                'operator' => 'and'
+                            ]
+                        ],
+                        'match' => [
+                            'Words.Word' => [
+                                'query' => $keywords,
+                                'operator' => 'and'
+                            ]
+                        ]
+                    ],
+                    'must' => [
+                        'match' => [
+                            'IdPage' => $id
+                        ]
+                    ]
+                ]
+            ],
+            'size' => 20
+        ];
+
+        $result = Article::search($paramsSearch);
+        $wordTab = [];
+        $keywordTab = explode(' ', $keywords);
+        foreach($keywordTab as $word){
+            foreach ($result as $article) {
+                foreach($article['Words'] as $line){
+                    if( strpos(strtolower($line['Word']), strtolower($word)) !== false ){
+                        array_push($wordTab, $line['Coord']);
+                    }
+                }
+
+                if( strpos(strtolower($article['Title']), strtolower($word)) !== false ){
+                    array_push($wordTab, $article['TitleCoord']);
+                }
+            }
+        }
+
+        return $wordTab;
     }
 }

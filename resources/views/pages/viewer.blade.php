@@ -47,6 +47,12 @@
 	            | <button id="toggle-overlay">Désactiver les calques</button> 
 	            | <button id="zoomOnArticle">Zoomer sur l'article</button>
 	            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
+				| <form id="search_form">
+				  <div class="form-group">
+				    <input id="search_input" onchange="newSearch()">
+				  </div>
+				  <button type="button">Recherche</button>
+				</form>
 	        </span>
 	        <span style='float:left;margin:10px 0 0 20px'>
 	            <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>>&lt;-</a> 
@@ -94,6 +100,10 @@
 			var toggle = true;
 			var filename = '<?php echo $filename ?>';
 
+			var keywords = '<?php echo $keywords; ?>' ;
+
+			$('#search_input').val(keywords);
+
 			var pages =  <?php echo $pages; ?> ;
 			var page = pages[0];
 			var articles = page.Articles;
@@ -115,15 +125,14 @@
 					}
 				}
 
-
+				var overlaysSlt = [];
 				var article =  <?php echo $article; ?> ;
 				updateCurrentArticle(article);
-				var nOverlay = 0;
 				if( article != null ){
 					article = article[0];
 					updateCurrentArticle(article);
 					for( var i = 0; i<article.Coord.length; i++){
-						overlays.push({
+						overlaysSlt.push({
 							id: 'overlaySelected'+i,
 					        px: article.Coord[i][0], 
 					        py: article.Coord[i][1],
@@ -131,13 +140,35 @@
 					        height: article.Coord[i][3] - article.Coord[i][1],
 					        className: 'overlayArt'
 						});
-						nOverlay++;
+					}
+				}
+
+				var search = <?php echo $searchedKeywords; ?>;
+				var overlaysKwd = [];
+
+				function newImage() {
+			        var img = document.createElement("img");
+			        img.src = "http://upload.wikimedia.org/wikipedia/commons/7/7a/Red_Arrow_Right.svg";
+			        img.width = 20;
+			        return img;
+			    }
+
+				if( search.length != 0){
+					for( var i=0; i< search.length ; i++){
+						var elt = {
+							id: newImage(),
+					        px: search[i][0], 
+					        py: (search[i][3] - search[i][1])/2 + search[i][1],
+					        placement: 'RIGHT'
+						};
+						overlaysKwd.push(elt);
 					}
 				}
 
 			}else{
 				$('#toggle-overlay').remove();
 				$('#zoomOnArticle').remove();
+				$('#search_form').remove();
 			}
 
 
@@ -158,7 +189,7 @@
 				tileSources:"images/"+filename,
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
-				overlays: overlays,
+				overlays: overlays.concat(overlaysKwd, overlaysSlt),
 			});
 	
 
@@ -264,24 +295,17 @@
 
 			function removeSelectedOverlays(){
 
-				for( var i=0; i<overlays.length;  i++){
-					if(typeof overlays[i] != 'undefined')
-						var name = overlays[i].id.substring(0, overlays[i].id.length - 1);
-						if( name == 'overlaySelected'){
-							delete overlays[i];
-						}
-				}
-
-				for( var j=0; j<nOverlay; j++){
+				for( var j=0; j<overlaysSlt.length; j++){
 					viewer.removeOverlay('overlaySelected'+j);
 				}
+
+				overlaysSlt = [];
 
 			}
 
 			function addSelectedOverlays(articleparam){
-				nOverlay = 0;
-				for( var i = 0; i<articleparam.Coord.length; i++){
 
+				for( var i = 0; i<articleparam.Coord.length; i++){
 					var elt = {
 						id: 'overlaySelected'+i,
 				        px: articleparam.Coord[i][0], 
@@ -291,13 +315,70 @@
 				        className: 'overlayArt'
 					};
 
-					overlays.push(elt);
+					overlaysSlt.push(elt);
 
 					if(toggle) viewer.addOverlay(elt);
-
-					nOverlay++;
 				}
 			}
+
+			function removeKeywordOverlays(){
+
+				viewer.clearOverlays();
+				var allOverlays = overlays.concat(overlaysSlt);
+
+				for(var i = 0; i<allOverlays.length; i++){
+					viewer.addOverlay(allOverlays[i]);
+				}
+
+				overlaysKwd = [];
+
+			}
+
+			function addKeywordOverlays(searchparam){
+				for( var i = 0; i<searchparam.length; i++){
+
+					var elt = {
+						id: newImage(),
+				        px: search[i][0], 
+				        py: (search[i][3] - search[i][1])/2 + search[i][1],
+				        placement: 'RIGHT'
+					};
+
+					overlaysKwd.push(elt);
+
+					if(toggle) viewer.addOverlay(elt);
+				}
+			}
+
+			function newSearch(){
+				var keywd = $('#search_input').val();
+
+				removeKeywordOverlays();
+
+				if( keywd != ''){
+
+					$.get(
+
+					    'newSearch', // Le fichier cible côté serveur.
+
+					    {
+					    	id: page._id,
+					    	search: keywd
+					    },
+
+					    function(data){
+
+				   			search = data;
+				   			console.log(search);
+							addKeywordOverlays(search);
+
+						}
+
+					);
+
+				}
+			}
+
 
 		</script>
 		<!-- End of functions definition -->
@@ -342,8 +423,6 @@
 
 				);
 
-
-
 			}
 
 		});
@@ -356,9 +435,10 @@
 				$("#currentArticle").hide();
 				$('#toggle-overlay').text('Activer les calques');
 			} else {
-				for(var i = 0; i<overlays.length; i++){
-					viewer.addOverlay(overlays[i]);
+				var allOverlays = overlays.concat(overlaysSlt, overlaysKwd);
 
+				for(var i = 0; i<allOverlays.length; i++){
+					viewer.addOverlay(allOverlays[i]);
 				}
 				if(article != null) $("#currentArticle").show();
 				$('#toggle-overlay').text('Désactiver les calques');

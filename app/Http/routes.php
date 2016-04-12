@@ -21,6 +21,7 @@ Route::get('recherche', 'SearchController@search');
 
 Route::get('visionneuse', 'ViewerController@index');
 Route::get( 'changeArticle', 'ViewerController@searchArticle');
+Route::get( 'newSearch', 'ViewerController@searchKeyword');
 
 /*
 |--------------------------------------------------------------------------
