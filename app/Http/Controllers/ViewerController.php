@@ -64,6 +64,46 @@ class ViewerController extends Controller
             $viewArticle->Views = $viewArticle->Views + 1;
             $viewArticle->save();
 
+
+            $id = $article[0]['IdPage'];
+            $titleNews = $article[0]['TitleNewsPaper'];
+            $date = $article[0]['Date'];
+            $title = ($article[0]['Title'] != '(Sans Titre)')? $article[0]['Title'] : '';
+            $paramsClose = [
+                'query' => [
+                    'bool' => [
+                        'should' => [
+                            'match' => [
+                                'TitleNewsPaper' => [
+                                    'query' => $titleNews,
+                                    'operator' => 'and'
+                                ]
+                            ],
+                            'match' => [
+                                'Date' => [
+                                    'query' => $date
+                                ]
+                            ]
+                        ],
+                        'must_not' =>[
+                            'match' => [
+                                'IdPage' => $id
+                            ],
+                            'match' => [
+                                'Title' => [
+                                    'query' => '(Sans titre)',
+                                    'operator' => 'and'
+                                ]
+                            ]
+                        ]
+                    ]
+                ]
+            ];
+
+            $result = Article::search($paramsClose);
+
+            $article[0]['Close'] = $result;
+
         }
 
         

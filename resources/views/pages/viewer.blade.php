@@ -47,19 +47,17 @@
 	            | <button id="toggle-overlay">Désactiver les calques</button> 
 	            | <button id="zoomOnArticle">Zoomer sur l'article</button>
 	            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
-				| <form id="search_form">
-				  <div class="form-group">
+	          	| <div class="form-group">
 				    <input id="search_input" onchange="newSearch()">
+				    <button type="button" id="search_button">Recherche</button>
 				  </div>
-				  <button type="button" id="search_button">Recherche</button>
-				</form>
 	        </span>
 	        <span style='float:left;margin:10px 0 0 20px'>
 	            <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>>&lt;-</a> 
 	            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>>-&gt;</a>
 	        </span>
 	    </div>
-	    <div id="openseadragon1" class="openseadragon" style="height: 600px;" ></div>
+	    <div id="openseadragon1" class="openseadragon" style="height: 600px; margin-bottom: 80px" ></div>
     </div>
 </div>
 @stop
@@ -74,16 +72,6 @@
 
 		<!-- Initialization script -->
 		<script type="text/javascript">
-
-		$("#hideInfo").click(function(){
-    		$("#pageInfo").hide();
-    		$("#infoHidden").show();
-		});
-
-		$("#showInfo").click(function(){
-			$("#infoHidden").hide();
-    		$("#pageInfo").show();
-		});
 
 		function updateCurrentArticle(article){
 			if(article != null)
@@ -467,6 +455,16 @@
 		    if (e.preventDefault) e.preventDefault();
 		    newSearch();
 		  }
+		});
+
+		$("#hideInfo").click(function(){
+    		$("#pageInfo").hide();
+    		$("#infoHidden").show();
+		});
+
+		$("#showInfo").click(function(){
+			$("#infoHidden").hide();
+    		$("#pageInfo").show();
 		});
 	
 
