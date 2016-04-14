@@ -50,7 +50,7 @@
 	            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
 	          	| <div class="form-group">
 				    <input id="search_input" onchange="newSearch()">
-				    <button type="button" id="search_button">Recherche</button>
+				    <button type="button" id="search_button">Recherche</button>   <span id="occurrence"></span> occurrence(s)
 				  </div>
 	        </span>
 	        <span style='float:left;margin:10px 0 0 20px'>
@@ -154,6 +154,7 @@
 						overlaysKwd.push(elt);
 					}
 				}
+				$('#occurrence').text(search.length);
 
 			}else{
 				$('#toggle-overlay').remove();
@@ -363,6 +364,7 @@
 				   			search = data;
 				   			console.log(search);
 							addKeywordOverlays(search);
+							$('#occurrence').text(search.length);
 
 						}
 
