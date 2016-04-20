@@ -7,7 +7,7 @@
 
 @section('page_content')
 <div class="row">
-	<div id="pageInfo">
+	<div id="pageInfo" class="col-lg-2">
 		<div class="text-right">
 			<button id="hideInfo" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer infos">
 		  	<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
@@ -38,7 +38,7 @@
 		  	<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 			</button>
 	</div>
-	<div id="viewer">
+	<div id="viewer" class="col-lg-8">
 	    <div id="toolbarDiv" class="toolbar">
 	        <span style='float:right;margin:10px 20px 0 0'>
 	            | <a id="zoom-in" href="#zoom-in">(+)</a> 
@@ -60,6 +60,23 @@
 	    </div>
 	    <div id="openseadragon1" class="openseadragon" style="height: 600px; margin-bottom: 80px" ></div>
     </div>
+    <div id="pageGuide" class="col-lg-2">
+		<div class="text-left">
+			<button id="hideGuide" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer guidage">
+		  	<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
+			</button>
+		</div>
+		<h4>Articles proches</h4>
+		<hr>
+		<div id="closeArticlesList">
+
+		</div>
+	</div>
+	<div id="guideHidden">
+			<button id="showGuide" type="button" class="btn btn-default btn-sm" aria-label="Show" title="Afficher guidage">
+		  	<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+			</button>
+	</div>
 </div>
 @stop
 
@@ -131,6 +148,10 @@
 					        className: 'overlayArt'
 						});
 					}
+
+					for( var j=0; j<article.Close.length; j++){
+                        $('#closeArticlesList').append('<p class="closeArticle"><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+                    }
 				}
 
 				var search = <?php echo $searchedKeywords; ?>;
@@ -373,6 +394,15 @@
 				}
 			}
 
+			function updateCloseArticles(param){
+
+                $('.closeArticle').remove();
+
+                for( var j=0; j<param.Close.length; j++){
+                    $('#closeArticlesList').append('<p class="closeArticle"><strong>'+param.Close[j].Title+', </strong>'+param.Close[j].TitleNewsPaper+', '+param.Close[j].Date+'</p>');
+                }
+            }
+
 			function selectArticle(idArticle){
 
 				if( idArticle != null){
@@ -389,6 +419,7 @@
 
 				   			article = data[0];
 				   			updateCurrentArticle(article);
+				   			updateCloseArticles(article);
 				   			zoomOnArticle(article);
 				   			removeSelectedOverlays();
 							addSelectedOverlays(article);
@@ -397,6 +428,26 @@
 
 					);
 
+				}
+			}
+
+			function enlargeViewer(){
+				if( $('#viewer').attr('class') == 'col-lg-8'){
+					$('#viewer').removeClass('col-lg-8').addClass('col-lg-9');
+					$('#viewer').css('width', '80%');
+				}else{
+					$('#viewer').removeClass('col-lg-9').addClass('col-lg-10');
+					$('#viewer').css('width', '94%');
+				}
+			}
+
+			function reduceViewer(){
+				if( $('#viewer').attr('class') == 'col-lg-10'){
+					$('#viewer').removeClass('col-lg-10').addClass('col-lg-9');
+					$('#viewer').css('width', '80%');
+				}else{
+					$('#viewer').removeClass('col-lg-9').addClass('col-lg-8');
+					$('#viewer').css('width', '');
 				}
 			}
 
@@ -464,11 +515,25 @@
 		$("#hideInfo").click(function(){
     		$("#pageInfo").hide();
     		$("#infoHidden").show();
+    		enlargeViewer();
 		});
 
 		$("#showInfo").click(function(){
 			$("#infoHidden").hide();
     		$("#pageInfo").show();
+    		reduceViewer();
+		});
+
+		$("#hideGuide").click(function(){
+    		$("#pageGuide").hide();
+    		$("#guideHidden").show();
+    		enlargeViewer();
+		});
+
+		$("#showGuide").click(function(){
+			$("#guideHidden").hide();
+    		$("#pageGuide").show();
+    		reduceViewer();
 		});
 	
 

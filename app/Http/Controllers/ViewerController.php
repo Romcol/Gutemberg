@@ -83,6 +83,11 @@ class ViewerController extends Controller
                                 'Date' => [
                                     'query' => $date
                                 ]
+                            ],
+                            'match' => [
+                                'Title' => [
+                                    'query' => $title
+                                ]
                             ]
                         ],
                         'must_not' =>[
