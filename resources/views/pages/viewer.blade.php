@@ -48,7 +48,7 @@
 	            | <button id="toggle-overlay">Désactiver les calques</button> 
 	            | <button id="zoomOnArticle">Zoomer sur l'article</button>
 	            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
-	          	| <div class="form-group">
+	          	| <div class="form-group" style="display:inline-block;">
 				    <input id="search_input" onchange="newSearch()">
 				    <button type="button" id="search_button">Recherche</button>   <span id="occurrence"></span> occurrence(s)
 				  </div>
