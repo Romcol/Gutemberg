@@ -16,6 +16,12 @@
 
 }
 
+.viewer-icon
+{
+    height:20px;
+    color:blue;
+}
+
 #pageInfo strong {
 	font-weight: bold;
 }
