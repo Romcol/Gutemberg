@@ -108,32 +108,6 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
             $coordx2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[0];
             $coordy2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[1];
 
-            //For article coordinates
-            $i = 0;
-            for($i ; $i<count($x1) ; $i++){
-              if(intval($coordx1/500) == intval($x1[$i]/500)) break;
-            }
-
-            if($i != count($x1)){
-              if(intval($coordx1) < $x1[$i]){
-                $x1[$i] = intval($coordx1);
-              }
-              if(intval($coordy1) < $y1[$i]){
-                $y1[$i] = intval($coordy1);
-              }
-              if(intval($coordx2) > $x2[$i]){
-                $x2[$i] = intval($coordx2);
-              }
-              if(intval($coordy2) > $y2[$i]){
-                $y2[$i] = intval($coordy2);
-              }
-            }else{
-              array_push($x1, intval($coordx1));
-              array_push($y1, intval($coordy1));
-              array_push($x2, intval($coordx2));
-              array_push($y2, intval($coordy2));
-            }
-
             //For article content
             $paragText = '';
             $list = $parag->children('http://irisa.fr/intuidoc/lp')->list;
@@ -144,6 +118,41 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
 
             array_push($words, array('Coord' => array(intval($coordx1), intval($coordy1), intval($coordx2), intval($coordy2)), 'Word' => $paragText));
           }
+
+        foreach($content->xpath('.//parText') as $parag){
+
+          $coordx1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[0];
+          $coordy1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[1];
+          $coordx2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[0];
+          $coordy2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[1];
+
+          //For article coordinates
+          $i = 0;
+          for($i ; $i<count($x1) ; $i++){
+            if( abs(intval($coordx1) - intval($x1[$i]))/(intval($x2[$i]) - intval($x1[$i])) <= 0.6 && abs(intval($coordy1) - intval($y2[$i]))/(intval($y2[$i]) - intval($y1[$i])) <= 1 ) break;
+          }
+
+          if($i != count($x1)){
+            if(intval($coordx1) < $x1[$i]){
+              $x1[$i] = intval($coordx1);
+            }
+            if(intval($coordy1) < $y1[$i]){
+              $y1[$i] = intval($coordy1);
+            }
+            if(intval($coordx2) > $x2[$i]){
+              $x2[$i] = intval($coordx2);
+            }
+            if(intval($coordy2) > $y2[$i]){
+              $y2[$i] = intval($coordy2);
+            }
+          }else{
+            array_push($x1, intval($coordx1));
+            array_push($y1, intval($coordy1));
+            array_push($x2, intval($coordx2));
+            array_push($y2, intval($coordy2));
+          }
+
+        }
       }
 
       $coord = array();
@@ -208,47 +217,56 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
 
       foreach($article->xpath('.//lineText') as $parag){
 
-          $coordx1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[0];
-          $coordy1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[1];
-          $coordx2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[0];
-          $coordy2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[1];
+        $coordx1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[0];
+        $coordy1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[1];
+        $coordx2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[0];
+        $coordy2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[1];
 
-          //For article coordinates
-          $i = 0;
-          for($i ; $i<count($x1) ; $i++){
-            if(intval($coordx1/500) == intval($x1[$i]/500)) break;
-          }
+        //For article content
+        $paragText = '';
 
-          if($i != count($x1)){
-            if(intval($coordx1) < $x1[$i]){
-                $x1[$i] = intval($coordx1);
-            }
-            if(intval($coordy1) < $y1[$i]){
-              $y1[$i] = intval($coordy1);
-            }
-            if(intval($coordx2) > $x2[$i]){
-              $x2[$i] = intval($coordx2);
-            }
-            if(intval($coordy2) > $y2[$i]){
-              $y2[$i] = intval($coordy2);
-            }
-
-          }else{
-            array_push($x1, intval($coordx1));
-            array_push($y1, intval($coordy1));
-            array_push($x2, intval($coordx2));
-            array_push($y2, intval($coordy2));
-          }
-
-          //For article content
-          $paragText = '';
-
-          foreach($parag->xpath('.//mot') as $Words){
-            $paragText = $paragText.$Words->children('http://irisa.fr/intuidoc/lp')->str.' ';
-          }
-
-          array_push($words, array('Coord' => array(intval($coordx1), intval($coordy1), intval($coordx2), intval($coordy2)), 'Word' => $paragText));
+        foreach($parag->xpath('.//mot') as $Words){
+          $paragText = $paragText.$Words->children('http://irisa.fr/intuidoc/lp')->str.' ';
         }
+
+        array_push($words, array('Coord' => array(intval($coordx1), intval($coordy1), intval($coordx2), intval($coordy2)), 'Word' => $paragText));
+      }
+
+      foreach($article->xpath('.//parText') as $parag){
+
+        $coordx1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[0];
+        $coordy1 = $parag->ccx->coorDeb->children('http://irisa.fr/intuidoc/lp')->num[1];
+        $coordx2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[0];
+        $coordy2 = $parag->ccx->coorFin->children('http://irisa.fr/intuidoc/lp')->num[1];
+
+        //For article coordinates
+        $i = 0;
+        for($i ; $i<count($x1) ; $i++){
+          if( abs(intval($coordx1) - intval($x1[$i]))/(intval($x2[$i]) - intval($x1[$i])) <= 0.6 && abs(intval($coordy1) - intval($y2[$i]))/(intval($y2[$i]) - intval($y1[$i])) <= 1 ) break;
+        }
+
+        if($i != count($x1)){
+          if(intval($coordx1) < $x1[$i]){
+              $x1[$i] = intval($coordx1);
+          }
+          if(intval($coordy1) < $y1[$i]){
+            $y1[$i] = intval($coordy1);
+          }
+          if(intval($coordx2) > $x2[$i]){
+            $x2[$i] = intval($coordx2);
+          }
+          if(intval($coordy2) > $y2[$i]){
+            $y2[$i] = intval($coordy2);
+          }
+
+        }else{
+          array_push($x1, intval($coordx1));
+          array_push($y1, intval($coordy1));
+          array_push($x2, intval($coordx2));
+          array_push($y2, intval($coordy2));
+        }
+
+      }
 
       $coord = array();
       for($i=0; $i<count($x1) ; $i++){

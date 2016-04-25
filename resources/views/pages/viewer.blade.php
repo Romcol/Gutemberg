@@ -43,7 +43,6 @@
 	        <span style='float:right;margin:10px 20px 0 0'>
 	        <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
 	            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
-
 	            | <a id="zoom-in" href="#zoom-in"><img src="<?= asset('resources/viewer/zoom_in.svg') ?>" alt="Zoom plus" class="viewer-icon"/></a> 
 	            | <a id="zoom-out" href="#zoom-out"><img src="<?= asset('resources/viewer/zoom_out.svg') ?>" alt="Zoom moins" class="viewer-icon"/></a>
 	            | <a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
@@ -149,7 +148,7 @@
 					}
 
 					for( var j=0; j<article.Close.length; j++){
-                        $('#closeArticlesList').append('<p class="closeArticle"><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+                        $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'location.href="visionneuse?id='+article.Close[j].IdPage+'&article='+article.Close[j]._id+'"\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
                     }
 				}
 
@@ -398,7 +397,7 @@
                 $('.closeArticle').remove();
 
                 for( var j=0; j<param.Close.length; j++){
-                    $('#closeArticlesList').append('<p class="closeArticle"><strong>'+param.Close[j].Title+', </strong>'+param.Close[j].TitleNewsPaper+', '+param.Close[j].Date+'</p>');
+                    $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'location.href="visionneuse?id='+article.Close[j].IdPage+'&article='+article.Close[j]._id+'"\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
                 }
             }
 
