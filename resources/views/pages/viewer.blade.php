@@ -22,7 +22,7 @@
 		<hr>
 		<div id="pageArticlesList">
 		@foreach($pages[0]['Articles'] as $idx => $art)
-		<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}')"><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
+		<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
 		@endforeach
 		</div>
 		<div id="currentArticle" style="display:none;">
@@ -200,8 +200,11 @@
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
 				overlays: overlays.concat(overlaysKwd, overlaysSlt),
+
 			});
-	
+
+			viewer.gestureSettingsMouse.clickToZoom = false;
+			viewer.gestureSettingsMouse.dblClickToZoom = true;
 
 			var selection = viewer.selection({
 				element:                 null, 
@@ -401,7 +404,7 @@
                 }
             }
 
-			function selectArticle(idArticle){
+			function selectArticle(idArticle, zoomBool){
 
 				if( idArticle != null){
 
@@ -418,7 +421,7 @@
 				   			article = data[0];
 				   			updateCurrentArticle(article);
 				   			updateCloseArticles(article);
-				   			zoomOnArticle(article);
+				   			if(zoomBool) zoomOnArticle(article);
 				   			removeSelectedOverlays();
 							addSelectedOverlays(article);
 
@@ -473,7 +476,7 @@
 
 			var articleId = CoordToNewArticleId(clickx, clicky);
 
-			selectArticle(articleId);
+			selectArticle(articleId, false);
 
 		});
 
