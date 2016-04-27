@@ -71,33 +71,41 @@ class ViewerController extends Controller
             $title = ($article[0]['Title'] != '(Sans Titre)')? $article[0]['Title'] : '';
             $paramsClose = [
                 'query' => [
-                    'bool' => [
-                        'should' => [
-                            'match' => [
-                                'TitleNewsPaper' => [
-                                    'query' => $titleNews,
-                                    'operator' => 'and'
-                                ]
-                            ],
-                            'match' => [
-                                'Date' => [
-                                    'query' => $date
-                                ]
-                            ],
-                            'match' => [
-                                'Title' => [
-                                    'query' => $title
+                    'filtered' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    'match' => [
+                                        'TitleNewsPaper' => [
+                                            'query' => $titleNews,
+                                            'operator' => 'and'
+                                        ]
+                                    ],
+                                    'match' => [
+                                        'Date' => [
+                                            'query' => $date
+                                        ]
+                                    ],
+                                    'match' => [
+                                        'Title' => [
+                                            'query' => $title
+                                        ]
+                                    ]
+                                ],
+                                'must_not' =>[
+                                    'match' => [
+                                        'Title' => [
+                                            'query' => '(Sans titre)',
+                                            'operator' => 'and'
+                                        ]
+                                    ]
                                 ]
                             ]
                         ],
-                        'must_not' =>[
-                            'match' => [
-                                'IdPage' => $id
-                            ],
-                            'match' => [
-                                'Title' => [
-                                    'query' => '(Sans titre)',
-                                    'operator' => 'and'
+                        'filter' => [
+                            'not' => [
+                                'term' => [
+                                    'IdPage' => $id
                                 ]
                             ]
                         ]
