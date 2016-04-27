@@ -41,21 +41,21 @@
 	</div>
 	<div id="viewer" class="col-lg-8">
 	    <div id="toolbarDiv" class="toolbar">
-	        <span style='float:right;margin:10px 20px 0 0'>
-	        <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
-	            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
-	            | <a id="zoom-in" href="#zoom-in"><img src="<?= asset('resources/viewer/zoom_in.svg') ?>" alt="Zoom plus" class="viewer-icon"/></a> 
-	            | <a id="zoom-out" href="#zoom-out"><img src="<?= asset('resources/viewer/zoom_out.svg') ?>" alt="Zoom moins" class="viewer-icon"/></a>
-	            | <a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
-	            | <a id="full-page" href="#full-page"><img src="<?= asset('resources/viewer/fullscreen.svg') ?>" alt="Plein ecran" class="viewer-icon"/></a>
-	            | <button id="toggle-overlay">Désactiver les calques</button> 
-	            | <button id="zoomOnArticle">Zoomer sur l'article</button>
-	            | <input type="checkbox" name="dmc" onclick="activateZoom()" checked>Zoom auto
-	          	| <div class="form-group" style="display:inline-block;">
-				    <input id="search_input" onchange="newSearch()">
-				    <button type="button" id="search_button">Recherche</button>   <span id="occurrence"></span> occurrence(s)
-				  </div>
-	        </span>
+		    <form class="form-inline" style='float:right;margin:10px 20px 10px 0'>
+		        <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
+		            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
+		            | <a id="zoom-in" href="#zoom-in"><img src="<?= asset('resources/viewer/zoom_in.svg') ?>" alt="Zoom plus" class="viewer-icon"/></a> 
+		            | <a id="zoom-out" href="#zoom-out"><img src="<?= asset('resources/viewer/zoom_out.svg') ?>" alt="Zoom moins" class="viewer-icon"/></a>
+		            | <a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
+		            | <a id="full-page" href="#full-page"><img src="<?= asset('resources/viewer/fullscreen.svg') ?>" alt="Plein ecran" class="viewer-icon"/></a>
+		            | <button id="toggle-overlay" class="btn btn-default btn-sm">Désactiver les calques</button> 
+		            | <button id="zoomOnArticle" class="btn btn-default btn-sm">Zoomer sur l'article</button>
+		            | <div class="checkbox"><label><input type="checkbox" name="dmc" onclick="activateZoom()" checked> Zoom auto</span></label></div>
+		          	| <div class="form-group" style="display:inline-block;">
+					    <input id="search_input" onchange="newSearch()">
+					    <button type="button" id="search_button" class="btn btn-default btn-sm">Recherche</button>   <span id="occurrence"></span> occurrence(s)
+					  </div>
+		    </form>
 	    </div>
 	    <div id="openseadragon1" class="openseadragon" style="height: 600px; margin-bottom: 80px" ></div>
     </div>
@@ -500,11 +500,13 @@
 
 			}
 			toggle = !toggle;
+			return false;
 		});
 
 		$("#zoomOnArticle").click(function() {
 			
 			zoomOnArticle(article);
+			return false;
 
 		});
 
