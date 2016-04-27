@@ -17,6 +17,7 @@
 		<hr>
 		<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
 		<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
+		<strong>Page :</strong> <?= $pages[0]['NumberPage'] ?> <br>
 		<hr>
 		<h4>Informations sur la page</h4>
 		<hr>
@@ -104,6 +105,7 @@
 			var zoom = true;
 			var toggle = true;
 			var filename = '<?php echo $filename ?>';
+			var image = filename != 'default.dzi';
 
 			var keywords = '<?php echo $keywords; ?>' ;
 
@@ -115,7 +117,7 @@
 
 			var overlays = [];
 
-			if( filename != 'default.dzi'){
+			if(image){
 				for(var i = 0; i< articles.length; i++) {
 					var number  = Math.floor(Math.random()*10);
 					for(var j = 0; j< articles[i].Coord.length; j++){
@@ -254,7 +256,7 @@
 
 			function zoomOnArticle(articleparam){
 
-					if( articleparam != null && zoom){
+					if( articleparam != null && zoom  && image){
 						if( articleparam.TitleCoord.length != 0){
 							var px = articleparam.TitleCoord[0];
 							var py = articleparam.TitleCoord[1];
