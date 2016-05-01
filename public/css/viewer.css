@@ -24,6 +24,7 @@
 
 #pageInfo strong {
 	font-weight: bold;
+
 }
 
 #pageGuide strong {
@@ -36,7 +37,7 @@
 }
 
 #pageGuide #closeArticlesList {
-    max-height: 600px;
+    height: 530px;
     overflow-y: auto;
 }
 
@@ -67,6 +68,11 @@
 #articleList:hover{
 	cursor:  pointer;
 	text-decoration: underline;
+}
+
+#infoCurrentArticle {
+    height: 120px;
+    overflow-y: auto;
 }
 
 
