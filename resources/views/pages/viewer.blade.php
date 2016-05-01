@@ -44,15 +44,15 @@
 	<div id="viewer" class="col-lg-8">
 	    <div id="toolbarDiv" class="toolbar">
 		    <form class="form-inline" style='float:right;margin:10px 20px 10px 0'>
-		        <a href="visionneuse?id={{$pages[0]['PreviousPage']}}" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
-		            | <a href="visionneuse?id={{$pages[0]['NextPage']}}" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
+		        <a id="otherPage" onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
+		            | <a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
 		            | <a id="zoom-in" href="#zoom-in"><img src="<?= asset('resources/viewer/zoom_in.svg') ?>" alt="Zoom plus" class="viewer-icon"/></a> 
 		            | <a id="zoom-out" href="#zoom-out"><img src="<?= asset('resources/viewer/zoom_out.svg') ?>" alt="Zoom moins" class="viewer-icon"/></a>
 		            | <a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
 		            | <a id="full-page" href="#full-page"><img src="<?= asset('resources/viewer/fullscreen.svg') ?>" alt="Plein ecran" class="viewer-icon"/></a>
 		            | <button id="toggle-overlay" class="btn btn-default btn-sm">Désactiver les calques</button> 
 		            | <button id="zoomOnArticle" class="btn btn-default btn-sm">Zoomer sur l'article</button>
-		            | <div class="checkbox"><label><input type="checkbox" name="dmc" onclick="activateZoom()" checked> Zoom auto</span></label></div>
+		            | <button id="zoomOnRead" type="button" class="btn btn-default btn-sm">Mode lecture</button>
 		          	| <div class="form-group" style="display:inline-block;">
 					    <input id="search_input" onchange="newSearch()">
 					    <button type="button" id="search_button" class="btn btn-default btn-sm">Recherche</button>   <span id="occurrence"></span> occurrence(s)
@@ -182,6 +182,7 @@
 			}else{
 				$('#toggle-overlay').remove();
 				$('#zoomOnArticle').remove();
+				$('#zoomOnRead').remove();
 				$('#search_form').remove();
 			}
 
@@ -258,36 +259,68 @@
 
 			function zoomOnArticle(articleparam){
 
-					if( articleparam != null && zoom  && image){
-						if( articleparam.TitleCoord.length != 0){
-							var px = articleparam.TitleCoord[0];
-							var py = articleparam.TitleCoord[1];
-							var ppx = articleparam.TitleCoord[2];
-							var ppy = articleparam.TitleCoord[3];
-						}else{
-							var px = 10000;
-							var py = 10000;
-							var ppx = 0;
-							var ppy = 0;
-						}
-
-						for( var i=0; i<articleparam.Coord.length; i++){
-							px = Math.min(px, articleparam.Coord[i][0]);
-							py = Math.min(py, articleparam.Coord[i][1]);
-							ppx = Math.max(ppx, articleparam.Coord[i][2]);
-							ppy = Math.max(ppy, articleparam.Coord[i][3]);
-						}
-
-						var pxr = px - 100;
-						var pyr = py - 100;
-						var ppxr = ppx - pxr + 100;
-						var ppyr = ppy - pyr + 100;
-
-
-						var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
-						point = viewer.viewport.imageToViewportRectangle(point);
-						viewer.viewport.fitBounds(point, false);
+				if( articleparam != null && zoom  && image){
+					if( articleparam.TitleCoord.length != 0){
+						var px = articleparam.TitleCoord[0];
+						var py = articleparam.TitleCoord[1];
+						var ppx = articleparam.TitleCoord[2];
+						var ppy = articleparam.TitleCoord[3];
+					}else{
+						var px = 10000;
+						var py = 10000;
+						var ppx = 0;
+						var ppy = 0;
 					}
+
+					for( var i=0; i<articleparam.Coord.length; i++){
+						px = Math.min(px, articleparam.Coord[i][0]);
+						py = Math.min(py, articleparam.Coord[i][1]);
+						ppx = Math.max(ppx, articleparam.Coord[i][2]);
+						ppy = Math.max(ppy, articleparam.Coord[i][3]);
+					}
+
+					var pxr = px - 100;
+					var pyr = py - 100;
+					var ppxr = ppx - pxr + 100;
+					var ppyr = ppy - pyr + 100;
+
+
+					var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
+					point = viewer.viewport.imageToViewportRectangle(point);
+					viewer.viewport.fitBounds(point, false);
+				}
+			}
+
+			function zoomOnRead(articleparam){
+
+				if( articleparam != null && image){
+					var px = articleparam.Coord[0][0];
+					var py = articleparam.Coord[0][1];
+					var ppx = articleparam.Coord[0][2];
+					var ppy = articleparam.Coord[0][3];
+
+					for(var i = 1; i<article.Coord.length; i++){
+						if( (articleparam.Coord[i][0] <= px && articleparam.Coord[i][1] <= py) ||
+							(articleparam.Coord[i][0] <= px && Math.abs(articleparam.Coord[i][1] - py) < 150) ||
+							( Math.abs(articleparam.Coord[i][0] - px) < 150 && articleparam.Coord[i][1] <= py) )
+						{
+							var px = articleparam.Coord[i][0];
+							var py = articleparam.Coord[i][1];
+							var ppx = articleparam.Coord[i][2];
+							var ppy = articleparam.Coord[i][3];
+						}
+					}
+
+					var pxr = px - 300;
+					var pyr = py - 50;
+					var ppxr = ppx - pxr + 300;
+					var ppyr = 600;
+
+
+					var point = new OpenSeadragon.Rect(pxr, pyr, ppxr, ppyr);
+					point = viewer.viewport.imageToViewportRectangle(point);
+					viewer.viewport.fitBounds(point, false);
+				}
 			}
 
 			function CoordToNewArticleId(px, py){
@@ -456,6 +489,20 @@
 				}
 			}
 
+			function previousPage(){
+				var idPage = page.PreviousPage;
+				var keywds = $('#search_input').val();
+
+				window.location.href = "visionneuse?id="+idPage+"&search="+keywds;
+			}
+
+			function nextPage(){
+				var idPage = page.NextPage;
+				var keywds = $('#search_input').val();
+
+				window.location.href = "visionneuse?id="+idPage+"&search="+keywds;
+			}
+
 
 		</script>
 		<!-- End of functions definition -->
@@ -509,6 +556,13 @@
 			
 			zoomOnArticle(article);
 			return false;
+
+		});
+
+		$("#zoomOnRead").click(function() {
+			
+			zoomOnRead(article);
+			//return false;
 
 		});
 

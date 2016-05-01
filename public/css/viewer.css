@@ -37,7 +37,7 @@
 }
 
 #pageGuide #closeArticlesList {
-    height: 530px;
+    max-height: 530px;
     overflow-y: auto;
 }
 
@@ -70,8 +70,12 @@
 	text-decoration: underline;
 }
 
+#otherPage {
+    cursor:  pointer;
+}
+
 #infoCurrentArticle {
-    height: 120px;
+    max-height: 120px;
     overflow-y: auto;
 }
 
