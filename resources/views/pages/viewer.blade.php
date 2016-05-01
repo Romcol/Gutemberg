@@ -152,7 +152,7 @@
 					}
 
 					for( var j=0; j<article.Close.length; j++){
-                        $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'location.href="visionneuse?id='+article.Close[j].IdPage+'&article='+article.Close[j]._id+'"\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+                        $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
                     }
 				}
 
@@ -437,7 +437,7 @@
                 $('.closeArticle').remove();
 
                 for( var j=0; j<param.Close.length; j++){
-                    $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'location.href="visionneuse?id='+article.Close[j].IdPage+'&article='+article.Close[j]._id+'"\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+                    $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
                 }
             }
 
@@ -501,6 +501,12 @@
 				var keywds = $('#search_input').val();
 
 				window.location.href = "visionneuse?id="+idPage+"&search="+keywds;
+			}
+
+			function closeArticle(parPage, parArticle){
+				var keywds = $('#search_input').val();
+
+				window.location.href = "visionneuse?id="+parPage+"&article="+parArticle+"&search="+keywds;
 			}
 
 
