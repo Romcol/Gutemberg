@@ -23,7 +23,17 @@
 		<hr>
 		<div id="pageArticlesList">
 		@foreach($pages[0]['Articles'] as $idx => $art)
-		<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> {{$art['Title']}}</p>
+		<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?> </p>
+		@if( count($art['PictureKeys']) != 0)
+		<p class="pictureKeys">
+		<strong>Légendes :</strong>
+		<ul>
+		@foreach($art['PictureKeys'] as $pkeys)
+  		<li>{{$pkeys}}</li>
+		@endforeach
+		</ul> 
+		</p>
+		@endif
 		@endforeach
 		</div>
 		<div id="currentArticle" style="display:none;">
