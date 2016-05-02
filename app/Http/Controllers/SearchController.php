@@ -44,13 +44,15 @@ class SearchController extends Controller
                                         'match' => [
                                             'Title' => [
                                                 'query' => $text,
-                                                'operator' => 'and'
+                                                'operator' => 'and',
+                                                'fuzziness' => 'AUTO'
                                             ]
                                         ],
                                         'match' => [
                                             'Words.Word' => [
                                                 'query' => $text,
-                                                'operator' => 'and'
+                                                'operator' => 'and',
+                                                'fuzziness' => 'AUTO'
                                             ]
                                         ]
                                     ]
@@ -81,7 +83,8 @@ class SearchController extends Controller
                                         'match' => [
                                             'Title' => [
                                                 'query' => $text,
-                                                'operator' => 'and'
+                                                'operator' => 'and',
+                                                'fuzziness' => 'AUTO'
                                             ]
                                         ]
                                     ]
@@ -236,7 +239,8 @@ class SearchController extends Controller
                                 ['match' => [
                                     'Title' => [
                                         'query' => $text,
-                                        'operator' => 'and'
+                                        'operator' => 'and',
+                                        'fuzziness' => 'AUTO'
                                     ]
                                 ]],
                                 [ 'match' => [
