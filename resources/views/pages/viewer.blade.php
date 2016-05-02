@@ -152,7 +152,9 @@
 					}
 
 					for( var j=0; j<article.Close.length; j++){
-                        $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+						var shortTitle = article.Close[j].Title;
+                		if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
+                        $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
                     }
 				}
 
@@ -437,7 +439,9 @@
                 $('.closeArticle').remove();
 
                 for( var j=0; j<param.Close.length; j++){
-                    $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+article.Close[j].Title+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+                	var shortTitle = article.Close[j].Title;
+                	if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
+                    $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
                 }
             }
 
