@@ -203,6 +203,8 @@
 		        previousButton: "previous",
 		        showNavigator:  true,
 		        sequenceMode: true,
+		        visibilityRatio: 1.0,
+		        constrainDuringPan: true,
 				tileSources:"images/"+filename,
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
