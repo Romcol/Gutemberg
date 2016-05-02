@@ -378,10 +378,12 @@
 			function removeKeywordOverlays(){
 
 				viewer.clearOverlays();
-				var allOverlays = overlays.concat(overlaysSlt);
+				if (toggle) {
+					var allOverlays = overlays.concat(overlaysSlt);
 
-				for(var i = 0; i<allOverlays.length; i++){
-					viewer.addOverlay(allOverlays[i]);
+					for(var i = 0; i<allOverlays.length; i++){
+						viewer.addOverlay(allOverlays[i]);
+					}
 				}
 
 				overlaysKwd = [];
@@ -400,7 +402,7 @@
 
 					overlaysKwd.push(elt);
 
-					if(toggle) viewer.addOverlay(elt);
+					viewer.addOverlay(elt);
 				}
 			}
 
@@ -546,15 +548,19 @@
 		$("#toggle-overlay").click(function() {
 			if (toggle) {
 				viewer.clearOverlays();
-				//$("#currentArticle").hide();
+
+				for(var i = 0; i<overlaysKwd.length; i++){
+					viewer.addOverlay(overlaysKwd[i]);
+				}
+
 				$('#toggle-overlay').text('Activer les calques');
 			} else {
-				var allOverlays = overlays.concat(overlaysSlt, overlaysKwd);
+				var allOverlays = overlays.concat(overlaysSlt);
 
 				for(var i = 0; i<allOverlays.length; i++){
 					viewer.addOverlay(allOverlays[i]);
 				}
-				//if(article != null) $("#currentArticle").show();
+
 				$('#toggle-overlay').text('Désactiver les calques');
 
 			}
