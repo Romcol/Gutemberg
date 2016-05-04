@@ -53,25 +53,35 @@
 	</div>
 	<div id="viewer" class="col-lg-8">
 	    <div id="toolbarDiv" class="toolbar">
-		    <form class="form-inline" style='float:right;margin:10px 20px 10px 0'>
-		        <a id="otherPage" onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
-		            | <a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="not-active"'; ?>><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
-		            | <a id="zoom-in" href="#zoom-in"><img src="<?= asset('resources/viewer/zoom_in.svg') ?>" alt="Zoom plus" class="viewer-icon"/></a> 
-		            | <a id="zoom-out" href="#zoom-out"><img src="<?= asset('resources/viewer/zoom_out.svg') ?>" alt="Zoom moins" class="viewer-icon"/></a>
-		            | <a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
+		    <form class="form-inline" style='float:left;margin:10px 0 10px 20px'>
+		   			<a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
 		            | <a id="full-page" href="#full-page"><img src="<?= asset('resources/viewer/fullscreen.svg') ?>" alt="Plein ecran" class="viewer-icon"/></a>
-		            | <button id="toggle-overlay" class="btn btn-default btn-sm">Désactiver les calques</button> 
-		            | <button id="zoomOnArticle" class="btn btn-default btn-sm">Zoomer sur l'article</button>
+		            |<a id="zoom-in" href="#zoom-in"><img src="<?= asset('resources/viewer/zoom_in.svg') ?>" alt="Zoom plus" class="viewer-icon"/></a> 
+		            | <a id="zoom-out" href="#zoom-out"><img src="<?= asset('resources/viewer/zoom_out.svg') ?>" alt="Zoom moins" class="viewer-icon"/></a>
 		            | <button id="zoomOnRead" type="button" class="btn btn-default btn-sm">Mode lecture</button>
-		          	| <div class="form-group" style="display:inline-block;">
+		            | <button id="zoomOnArticle" class="btn btn-default btn-sm">Zoomer sur l'article</button>
+		            | <button id="toggle-overlay" class="btn btn-default btn-sm">Désactiver les calques</button> 
+		    </form>
+		    <form class="form-inline" style='float:right;margin:10px 20px 10px 0'>
+		          	<div class="form-group" style="display:inline-block;">
 					    <input id="search_input" onchange="newSearch()">
 					    <button type="button" id="search_button" class="btn btn-default btn-sm">Recherche</button>   <span id="occurrence"></span> occurrence(s)
 					  </div>
-					|<a id="otherPage" onclick="previousKeyword()" ><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
-		            | <a id="otherPage" onclick="nextKeyword()" ><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
+					<a id="otherPage" onclick="previousKeyword()" ><img src="<?= asset('resources/viewer/back.png') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
+		            <a id="otherPage" onclick="nextKeyword()" ><img src="<?= asset('resources/viewer/next.png') ?>" alt="Flèche droite" class="viewer-icon"/></a>
 		    </form>
 	    </div>
 	    <div id="openseadragon1" class="openseadragon" style="height: 600px; margin-bottom: 80px" ></div>
+	    <div id="toolbarDiv" class="toolbar">
+		    <ul class="pager">
+				<li class="previous">
+					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/arrow_left.png') ?>" height="40px" width="75x" alt="Flèche gauche" /></a>
+				</li>
+				<li class="next">
+					<a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/arrow_right.png') ?>" height="40px" width="75px" alt="Flèche droite"/></a>
+				</li>
+			</ul>
+	    </div>
     </div>
     <div id="pageGuide" class="col-lg-2">
 		<div class="text-left">
@@ -443,6 +453,7 @@
 				   			console.log(search);
 							addKeywordOverlays(search);
 							$('#occurrence').text(search.length);
+							iterator = 0;
 
 						}
 
@@ -531,39 +542,43 @@
 			}
 
 			function previousKeyword(){
-				var it = 0;
-				if( iterator <= 1){
-					it = overlaysKwd.length - 2 + iterator;
-				}else{
-					it = iterator - 2;
+				if( overlaysKwd.length != 0 ){
+					var it = 0;
+					if( iterator <= 1){
+						it = overlaysKwd.length - 2 + iterator;
+					}else{
+						it = iterator - 2;
+					}
+					var coordX = overlaysKwd[it].px;
+					console.log(coordX);
+					var coordY = overlaysKwd[it].py;
+					console.log(coordY);
+
+					//zoom on position
+					var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
+					rect = viewer.viewport.imageToViewportRectangle(rect);
+					viewer.viewport.fitBounds(rect, false);
+
+					iterator-= 1 ;
 				}
-				var coordX = overlaysKwd[it].px;
-				console.log(coordX);
-				var coordY = overlaysKwd[it].py;
-				console.log(coordY);
-
-				//zoom on position
-				var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
-				rect = viewer.viewport.imageToViewportRectangle(rect);
-				viewer.viewport.fitBounds(rect, false);
-
-				iterator-= 1 ;
 
 			}
 
 			function nextKeyword(){
+				if( overlaysKwd.length != 0 ){
+					var coordX = overlaysKwd[iterator].px;
+					console.log(coordX);
+					var coordY = overlaysKwd[iterator].py;
+					console.log(coordY);
 
-				var coordX = overlaysKwd[iterator].px;
-				console.log(coordX);
-				var coordY = overlaysKwd[iterator].py;
-				console.log(coordY);
+					//zoom on position
+					var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
+					rect = viewer.viewport.imageToViewportRectangle(rect);
+					viewer.viewport.fitBounds(rect, false);
 
-				//zoom on position
-				var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
-				rect = viewer.viewport.imageToViewportRectangle(rect);
-				viewer.viewport.fitBounds(rect, false);
-
-				iterator+= 1 ;
+					iterator+= 1 ;
+					if( iterator >= overlaysKwd.length) iterator = 0;
+				}
 
 			}
 

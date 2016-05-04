@@ -19,7 +19,8 @@
 .viewer-icon
 {
     height:20px;
-    color:blue;
+    color:grey;
+    cursor: pointer;
 }
 
 #pageInfo strong {
@@ -70,9 +71,6 @@
 	text-decoration: underline;
 }
 
-#otherPage {
-    cursor:  pointer;
-}
 
 #infoCurrentArticle {
     max-height: 120px;
