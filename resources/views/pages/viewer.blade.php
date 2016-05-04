@@ -67,6 +67,8 @@
 					    <input id="search_input" onchange="newSearch()">
 					    <button type="button" id="search_button" class="btn btn-default btn-sm">Recherche</button>   <span id="occurrence"></span> occurrence(s)
 					  </div>
+					|<a id="otherPage" onclick="previousKeyword()" ><img src="<?= asset('resources/viewer/arrow_left.svg') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
+		            | <a id="otherPage" onclick="nextKeyword()" ><img src="<?= asset('resources/viewer/arrow_right.svg') ?>" alt="Flèche droite" class="viewer-icon"/></a>
 		    </form>
 	    </div>
 	    <div id="openseadragon1" class="openseadragon" style="height: 600px; margin-bottom: 80px" ></div>
@@ -170,6 +172,7 @@
 
 				var search = <?php echo $searchedKeywords; ?>;
 				var overlaysKwd = [];
+				var iterator = 0;
 
 				function newImage() {
 			        var img = document.createElement("img");
@@ -525,6 +528,43 @@
 				var keywds = $('#search_input').val();
 
 				window.location.href = "visionneuse?id="+parPage+"&article="+parArticle+"&search="+keywds;
+			}
+
+			function previousKeyword(){
+				var it = 0;
+				if( iterator <= 1){
+					it = overlaysKwd.length - 2 + iterator;
+				}else{
+					it = iterator - 2;
+				}
+				var coordX = overlaysKwd[it].px;
+				console.log(coordX);
+				var coordY = overlaysKwd[it].py;
+				console.log(coordY);
+
+				//zoom on position
+				var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
+				rect = viewer.viewport.imageToViewportRectangle(rect);
+				viewer.viewport.fitBounds(rect, false);
+
+				iterator-= 1 ;
+
+			}
+
+			function nextKeyword(){
+
+				var coordX = overlaysKwd[iterator].px;
+				console.log(coordX);
+				var coordY = overlaysKwd[iterator].py;
+				console.log(coordY);
+
+				//zoom on position
+				var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
+				rect = viewer.viewport.imageToViewportRectangle(rect);
+				viewer.viewport.fitBounds(rect, false);
+
+				iterator+= 1 ;
+
 			}
 
 
