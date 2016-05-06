@@ -144,6 +144,18 @@
 			if(image){
 				for(var i = 0; i< articles.length; i++) {
 					var number  = Math.floor(Math.random()*10);
+
+					if( articles[i].TitleCoord != null){
+						overlays.push({
+								id: 'i:'+i+' '+'Title',
+						        px: articles[i].TitleCoord[0], 
+						        py: articles[i].TitleCoord[1],
+						        width: articles[i].TitleCoord[2] - articles[i].TitleCoord[0], 
+						        height: articles[i].TitleCoord[3] - articles[i].TitleCoord[1],
+						        className: 'overlay'+number
+						});
+					}
+
 					for(var j = 0; j< articles[i].Coord.length; j++){
 						overlays.push({
 							id: 'i:'+i+' '+'j:'+j,
@@ -162,6 +174,18 @@
 				if( article != null ){
 					article = article[0];
 					updateCurrentArticle(article);
+
+					if( article.TitleCoord.length != null){
+						overlaysSlt.push({
+								id: 'overlaySelectedTitle',
+						        px: article.TitleCoord[0], 
+						        py: article.TitleCoord[1],
+						        width: article.TitleCoord[2] - article.TitleCoord[0], 
+						        height: article.TitleCoord[3] - article.TitleCoord[1],
+						        className: 'overlayArt'
+						});
+					}
+
 					for( var i = 0; i<article.Coord.length; i++){
 						overlaysSlt.push({
 							id: 'overlaySelected'+i,
@@ -374,6 +398,7 @@
 
 			function removeSelectedOverlays(){
 
+				viewer.removeOverlay('overlaySelectedTitle');
 				for( var j=0; j<overlaysSlt.length; j++){
 					viewer.removeOverlay('overlaySelected'+j);
 				}
@@ -383,6 +408,21 @@
 			}
 
 			function addSelectedOverlays(articleparam){
+
+				if( articleparam.TitleCoord.length != null){
+					var title = {
+							id: 'overlaySelectedTitle',
+					        px: articleparam.TitleCoord[0], 
+					        py: articleparam.TitleCoord[1],
+					        width: articleparam.TitleCoord[2] - articleparam.TitleCoord[0], 
+					        height: articleparam.TitleCoord[3] - articleparam.TitleCoord[1],
+					        className: 'overlayArt'
+					};
+
+					overlaysSlt.push(title);
+
+					if(toggle) viewer.addOverlay(title);
+				}
 
 				for( var i = 0; i<articleparam.Coord.length; i++){
 					var elt = {
