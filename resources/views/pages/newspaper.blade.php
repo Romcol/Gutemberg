@@ -58,7 +58,7 @@
   	    <!-- /.row -->
       	@if(!$pages->isEmpty())
       	@foreach ($pages as $index => $onePage)
-      	@if($index < 10)
+      	@if($index < 20)
       		<page>
             <div class="panel panel-default">
               <div class="panel-heading">
@@ -69,7 +69,7 @@
       	  <nav>
       	@endif
       	@endforeach
-      	@if((count($pages)==11 && $page==1) || ($page>1))
+      	@if((count($pages)==21 && $page==1) || ($page>1))
       	   <ul class="pager">
       	  @if($page>1)
       	     <li class="previous"><a href="<?= $builturl.($page-1) ?>">Précédent</a></li>

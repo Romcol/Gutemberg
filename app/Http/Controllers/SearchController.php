@@ -35,72 +35,24 @@ class SearchController extends Controller
 
             if( $type == 'articles'){
 
-                $params = [
-                    'query' => [
-                        'filtered' => [
-                            'query' => [
-                                'bool' => [
-                                    'should' => [
-                                        'match' => [
-                                            'Title' => [
-                                                'query' => $text,
-                                                'operator' => 'and',
-                                                'fuzziness' => 'AUTO'
-                                            ]
-                                        ],
-                                        'match' => [
-                                            'Words.Word' => [
-                                                'query' => $text,
-                                                'operator' => 'and',
-                                                'fuzziness' => 'AUTO'
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ],
-                            'filter' => []
-                        ]
-                    ],
-                    'highlight' => [
-                        'fields' => [
-                            'Title' => new \stdClass,
-                            'Words.Word' => new \stdClass
-                        ]
-                    ],
-                    'from' => $from,
-                    'size' => 11
-                ];
+                if( isset($_GET['regexp'])){
+                    $params = $this->paramArticleRegexp($text, $from);
+                    $regexp = $_GET['regexp'];
+                }else{
+                    $params = $this->paramArticle($text, $from);
+                    $regexp = false;
+                }
 
 
             }elseif( $type == 'titles'){
 
-                $params = [
-                    'query' => [
-                        'filtered' => [
-                            'query' => [
-                                'bool' => [
-                                    'must' => [
-                                        'match' => [
-                                            'Title' => [
-                                                'query' => $text,
-                                                'operator' => 'and',
-                                                'fuzziness' => 'AUTO'
-                                            ]
-                                        ]
-                                    ]
-                                ]
-                            ],
-                            'filter' => []
-                        ]
-                    ],
-                    'highlight' => [
-                        'fields' => [
-                            'Title' => new \stdClass
-                        ]
-                    ],
-                    'from' => $from,
-                    'size' => 11
-                ];
+                if( isset($_GET['regexp'])){
+                    $params = $this->paramTitleRegexp($text, $from);
+                    $regexp = $_GET['regexp'];
+                }else{
+                    $params = $this->paramTitle($text, $from);
+                    $regexp = false;
+                }
             }
 
             $regex = '/^[1-2][0-9]{3}(-([1-9]|0[1-9]|1[0-2])(-[0-9]{1,2})?)?$/';
@@ -214,7 +166,7 @@ class SearchController extends Controller
 
             $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
-            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax'));
+            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp'));
         }
     }
 
@@ -227,7 +179,7 @@ class SearchController extends Controller
         $text = $_GET['text'];
         $type = $_GET['type'];
         $page = isset($_GET['page'])?intval($_GET['page']):1;
-        $from = ($page>0)?(($page-1)*10):0;
+        $from = ($page>0)?(($page-1)*20):0;
 
 
         $params = [
@@ -253,7 +205,7 @@ class SearchController extends Controller
                 ]
             ],
             'from' => $from,
-            'size' => 11
+            'size' => 21
         ];
 
 
@@ -329,5 +281,144 @@ class SearchController extends Controller
         $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
         return compact('pages', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax');
+    }
+
+    public function paramArticle($text, $from){
+        $params = [
+            'query' => [
+                'filtered' => [
+                    'query' => [
+                        'bool' => [
+                            'should' => [
+                                'match' => [
+                                    'Title' => [
+                                        'query' => $text,
+                                        'operator' => 'and'
+                                    ]
+                                ],
+                                'match' => [
+                                    'Words.Word' => [
+                                        'query' => $text,
+                                        'operator' => 'and'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'filter' => []
+                ]
+            ],
+            'highlight' => [
+                'fields' => [
+                    'Title' => new \stdClass,
+                    'Words.Word' => new \stdClass
+                ]
+            ],
+            'from' => $from,
+            'size' => 11
+        ];
+
+        return $params;
+
+    }
+
+
+
+    public function paramTitle($text, $from){
+
+        $params = [
+            'query' => [
+                'filtered' => [
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                'match' => [
+                                    'Title' => [
+                                        'query' => $text,
+                                        'operator' => 'and'
+                                    ]
+                                ]
+                            ]
+                        ]
+                    ],
+                    'filter' => []
+                ]
+            ],
+            'highlight' => [
+                'fields' => [
+                    'Title' => new \stdClass
+                ]
+            ],
+            'from' => $from,
+            'size' => 11
+        ];
+
+        return $params;
+
+    }
+
+    public function paramArticleRegexp($text, $from){
+        $params = [
+            'query' => [
+                'filtered' => [
+                    'query' => [
+                        'bool' => [
+                            'should' => [
+                                'regexp' => [
+                                    'Title' => $text
+                                ],
+                                'regexp' => [
+                                    'Words.Word' => $text
+                                ]
+                            ]
+                        ]
+                    ],
+                    'filter' => []
+                ]
+            ],
+            'highlight' => [
+                'fields' => [
+                    'Title' => new \stdClass,
+                    'Words.Word' => new \stdClass
+                ]
+            ],
+            'from' => $from,
+            'size' => 11
+        ];
+
+        return $params;
+
+    }
+
+
+
+    public function paramTitleRegexp($text, $from){
+        
+        $params = [
+            'query' => [
+                'filtered' => [
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                'regexp' => [
+                                    'Title' => $text
+                                ]
+                            ]
+                        ]
+                    ],
+                    'filter' => []
+                ]
+            ],
+            'highlight' => [
+                'fields' => [
+                    'Title' => new \stdClass
+                ]
+            ],
+            'from' => $from,
+            'size' => 11
+        ];
+
+        return $params;
+
     }
 }

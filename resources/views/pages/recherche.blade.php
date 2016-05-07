@@ -13,6 +13,7 @@
           <form class="form-vertical" action="recherche">
             <div class="form-group">
               <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}" required>
+              <input type="checkbox" name="regexp" value="true" <?php if( $regexp ) echo 'checked';?> > <small>Accepter les expressions régulières</small> <br>
             </div>
             <div class="form-group">
               <select name="type" class="form-control">
