@@ -10,7 +10,7 @@
 	<div id="pageInfo" class="col-lg-2">
 		<div class="text-right">
 			<button id="hideInfo" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer infos">
-		  	<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
+		  		<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
 			</button>
 		</div>
 		<h4>Informations sur le journal</h4>
@@ -175,7 +175,7 @@
 					article = article[0];
 					updateCurrentArticle(article);
 
-					if( article.TitleCoord.length != null){
+					if( article.TitleCoord.length != 0){
 						overlaysSlt.push({
 								id: 'overlaySelectedTitle',
 						        px: article.TitleCoord[0], 
@@ -409,7 +409,7 @@
 
 			function addSelectedOverlays(articleparam){
 
-				if( articleparam.TitleCoord.length != null){
+				if( articleparam.TitleCoord.length != 0){
 					var title = {
 							id: 'overlaySelectedTitle',
 					        px: articleparam.TitleCoord[0], 
@@ -498,6 +498,7 @@
 						}
 
 					);
+
 
 				}
 			}
