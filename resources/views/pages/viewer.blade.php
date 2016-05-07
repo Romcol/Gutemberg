@@ -7,7 +7,7 @@
 
 @section('page_content')
 <div class="row">
-	<div id="pageInfo" class="col-lg-2">
+	<div id="pageInfo" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 		<div class="text-right">
 			<button id="hideInfo" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer infos">
 		  		<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
@@ -51,7 +51,7 @@
 		  	<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
 			</button>
 	</div>
-	<div id="viewer" class="col-lg-8">
+	<div id="viewer" class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 	    <div id="toolbarDiv" class="toolbar">
 		    <form class="form-inline" style='float:left;margin:10px 0 10px 20px'>
 		   			<a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
@@ -83,7 +83,7 @@
 			</ul>
 	    </div>
     </div>
-    <div id="pageGuide" class="col-lg-2">
+    <div id="pageGuide" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 		<div class="text-left">
 			<button id="hideGuide" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer guidage">
 		  	<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
@@ -543,21 +543,21 @@
 			}
 
 			function enlargeViewer(){
-				if( $('#viewer').attr('class') == 'col-lg-8'){
-					$('#viewer').removeClass('col-lg-8').addClass('col-lg-9');
-					$('#viewer').css('width', '80%');
+				if( $('#viewer').attr('class') == 'col-lg-8 col-md-8 col-sm-8 col-xs-12'){
+					$('#viewer').removeClass('col-lg-8 col-md-8 col-sm-8 col-xs-12').addClass('col-lg-9 col-md-9 col-sm-9 col-xs-12');
+					$('#viewer').css('width', '77%');
 				}else{
-					$('#viewer').removeClass('col-lg-9').addClass('col-lg-10');
-					$('#viewer').css('width', '94%');
+					$('#viewer').removeClass('col-lg-9 col-md-9 col-sm-9 col-xs-12').addClass('col-lg-10 col-md-10 col-sm-10 col-xs-12');
+					$('#viewer').css('width', '92%');
 				}
 			}
 
 			function reduceViewer(){
-				if( $('#viewer').attr('class') == 'col-lg-10'){
-					$('#viewer').removeClass('col-lg-10').addClass('col-lg-9');
-					$('#viewer').css('width', '80%');
+				if( $('#viewer').attr('class') == 'col-lg-10 col-md-10 col-sm-10 col-xs-12'){
+					$('#viewer').removeClass('col-lg-10 col-md-10 col-sm-10 col-xs-12').addClass('col-lg-9 col-md-9 col-sm-9 col-xs-12');
+					$('#viewer').css('width', '77%');
 				}else{
-					$('#viewer').removeClass('col-lg-9').addClass('col-lg-8');
+					$('#viewer').removeClass('col-lg-9 col-md-9 col-sm-9 col-xs-12').addClass('col-lg-8 col-md-8 col-sm-8 col-xs-12');
 					$('#viewer').css('width', '');
 				}
 			}
