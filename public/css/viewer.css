@@ -76,6 +76,10 @@
     overflow-y: auto;
 }
 
+#otherPage {
+    color: black;
+}
+
 
 .overlayArt {
 	border-style: solid;

@@ -75,10 +75,10 @@
 	    <div id="toolbarDiv" class="toolbar">
 		    <ul class="pager">
 				<li class="previous">
-					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/arrow_left.png') ?>" height="40px" width="75x" alt="Flèche gauche" /></a>
+					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/previous(1).png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
 				</li>
 				<li class="next">
-					<a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/arrow_right.png') ?>" height="40px" width="75px" alt="Flèche droite"/></a>
+					<a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next(1).png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
 				</li>
 			</ul>
 	    </div>
@@ -210,7 +210,7 @@
 
 				function newImage() {
 			        var img = document.createElement("img");
-			        img.src = "http://upload.wikimedia.org/wikipedia/commons/7/7a/Red_Arrow_Right.svg";
+			        img.src = "<?= asset('resources/viewer/Red_Arrow_Right.svg') ?>";
 			        img.width = 20;
 			        return img;
 			    }
