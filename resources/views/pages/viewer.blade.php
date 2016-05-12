@@ -8,37 +8,38 @@
 @section('page_content')
 <div class="row">
 	<div id="pageInfo" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-		<div class="text-right">
-			<button id="hideInfo" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer infos">
-		  		<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-			</button>
+		<div id="hideInfo">
+			<img src="<?= asset('resources/viewer/previous-white.png') ?>" height="20px" alt="Flèche gauche" /> Cacher 
 		</div>
-		<h4>Informations sur le journal</h4>
-		<hr>
-		<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
-		<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
-		<strong>Page :</strong> <?= $pages[0]['NumberPage'] ?> <br>
-		<hr>
-		<h4>Articles de la page</h4>
-		<hr>
-		<div id="pageArticlesList">
-		@foreach($pages[0]['Articles'] as $idx => $art)
-		<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?> </p>
-		<p id="{{$art['IdArticle']}}" class="occurrenceNumber"></p>
-		@if( count($art['PictureKeys']) != 0)
-		<p class="pictureKeys">
-		<strong>Légendes :</strong>
-		<ul>
-		@foreach($art['PictureKeys'] as $pkeys)
-  		<li>{{$pkeys}}</li>
-		@endforeach
-		</ul> 
-		</p>
-		@endif
-		@endforeach
-		</div>
-		<div id="currentArticle" style="display:none;">
+		<div class="section">
+			<h4>Informations sur le journal</h4>
 			<hr>
+			<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
+			<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
+			<strong>Page :</strong> <?= $pages[0]['NumberPage'] ?> <br>
+		</div>
+		<div class="section">
+			<h4>Articles de la page</h4>
+			<hr>
+			<div id="pageArticlesList">
+				@foreach($pages[0]['Articles'] as $idx => $art)
+				<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?> </p>
+				<p id="{{$art['IdArticle']}}" class="occurrenceNumber"></p>
+				@if( count($art['PictureKeys']) != 0)
+				<p class="pictureKeys">
+					<strong>Légendes :</strong>
+					<ul>
+						@foreach($art['PictureKeys'] as $pkeys)
+				  		<li>{{$pkeys}}</li>
+						@endforeach
+					</ul> 
+				</p>
+				@endif
+				@endforeach
+			</div>
+		</div>
+		<div id="currentArticle" style="display:none;" class="section">
+
 			<h4>Informations sur l'article</h4>
 			<hr>
 			<div id="infoCurrentArticle">
@@ -48,9 +49,7 @@
 		</div>
 	</div>
 	<div id="infoHidden">
-			<button id="showInfo" type="button" class="btn btn-default btn-sm" aria-label="Show" title="Afficher infos">
-		  	<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-			</button>
+		<img src="<?= asset('resources/viewer/next-white.png') ?>" height="20px" alt="Flèche gauche" />
 	</div>
 	<div id="viewer" class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
 	    <div id="toolbarDiv" class="toolbar">
@@ -72,7 +71,7 @@
 		            <a id="otherPage" onclick="nextKeyword()" ><img src="<?= asset('resources/viewer/next.png') ?>" alt="Flèche droite" class="viewer-icon"/></a>
 		    </form>
 	    </div>
-	    <div id="openseadragon1" class="openseadragon" style="height: 600px; margin-bottom: 80px" ></div>
+	    <div id="ourOpenseadragon" class="openseadragon"></div>
 	    <div id="toolbarDiv" class="toolbar">
 		    <ul class="pager">
 				<li class="previous">
@@ -85,21 +84,19 @@
 	    </div>
     </div>
     <div id="pageGuide" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
-		<div class="text-left">
-			<button id="hideGuide" type="button" class="btn btn-default btn-sm" aria-label="Hide" title="Masquer guidage">
-		  	<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span>
-			</button>
+		<div id="hideGuide">
+			Cacher <img src="<?= asset('resources/viewer/next-white.png') ?>" height="20px" alt="Flèche gauche" />
 		</div>
-		<h4>Articles proches</h4>
-		<hr>
-		<div id="closeArticlesList">
+		<div class="section">
+			<h4>Articles proches</h4>
+			<hr>
+			<div id="closeArticlesList">
 
+			</div>
 		</div>
 	</div>
 	<div id="guideHidden">
-			<button id="showGuide" type="button" class="btn btn-default btn-sm" aria-label="Show" title="Afficher guidage">
-		  	<span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>
-			</button>
+		<img src="<?= asset('resources/viewer/previous-white.png') ?>" height="20px" alt="Flèche gauche" />
 	</div>
 </div>
 @stop
@@ -235,7 +232,7 @@
 					$.each(occurrence, function (index, value) {
 					    if( value != 0 ){
 					    	$('#'+index).text(+value+' occurrence(s) de "'+$('#search_input').val()+'"');
-					    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> ');
+					    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" height="20px"/> ');
 					    } 
 					});
 
@@ -251,7 +248,7 @@
 
 
 			var viewer = OpenSeadragon({
-				id: "openseadragon1",
+				id: "ourOpenseadragon",
 				showRotationControl: true,
 			    showNavigator:  true,
 				prefixUrl: "/openseadragon/images/",
@@ -491,7 +488,7 @@
 				$.each(occurrence, function (index, value) {
 				    if( value != 0 ){
 				    	$('#'+index).text(+value+' occurrence(s) de "'+$('#search_input').val()+'"');
-				    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> ');
+				    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" height="20px"/> ');
 				    }
 				});
 			}
@@ -730,7 +727,7 @@
     		enlargeViewer();
 		});
 
-		$("#showInfo").click(function(){
+		$("#infoHidden").click(function(){
 			$("#infoHidden").hide();
     		$("#pageInfo").show();
     		reduceViewer();
@@ -742,7 +739,7 @@
     		enlargeViewer();
 		});
 
-		$("#showGuide").click(function(){
+		$("#guideHidden").click(function(){
 			$("#guideHidden").hide();
     		$("#pageGuide").show();
     		reduceViewer();

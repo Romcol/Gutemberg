@@ -1,19 +1,33 @@
 #pageInfo {
-	background-color: #E6E6FA;
-	padding:10px;
+	background-color: white;
+	padding:0px 0px 0px 0px;
 	float:left;
+    border-style: solid;
+    border-width: 2px 2px 2px 0px;
+    border-color: #87CEFA;
+    border-radius:0px 10px 10px 0px;
 
 }
 
 #pageGuide {
-    background-color: #E6E6FA;
-    padding:10px;
+    background-color: white;
+    padding:0px 0px 0px 0px;
     float:right;
+    border-style: solid;
+    border-width: 2px 0px 2px 2px;
+    border-color: #87CEFA;
+    border-radius:10px 0px 0px 10px;
 
 }
 
-#viewer{
+#ourOpenseadragon {
+    height: 700px; 
+    border-style: outset; 
+    border-color: #87CEFA;
+    border-width: 2px;
+    padding: 0px 0px 50px 0px;
 }
+
 
 .viewer-icon
 {
@@ -32,37 +46,31 @@
 }
 
 #pageInfo #pageArticlesList {
-	max-height: 150px;
+	max-height: 230px;
 	overflow-y: auto;
 }
 
 #pageGuide #closeArticlesList {
-    max-height: 530px;
+    max-height: 590px;
     overflow-y: auto;
 }
 
 #infoHidden {
 	float:left;
 	display:none;
-	background-color: #E6E6FA;
+	background-color: #87CEFA;
 	width:55px;
-	padding:10px 0 10px 0;
+	padding:10px 0px 10px 25px;
+    cursor:  pointer;
 }
 
 #guideHidden{
     float:right;
     display:none;
-    background-color: #E6E6FA;
+    background-color: #87CEFA;
     width:55px;
-    padding:10px 10px 10px 10px;
-}
-
-#infoHidden button{
-	margin-left: 10px;
-}
-
-#guideHidden button{
-    margin-right: 10px;
+    padding:10px 0px 10px 10px;
+    cursor:  pointer;
 }
 
 #articleList:hover{
@@ -70,14 +78,52 @@
 	text-decoration: underline;
 }
 
+#hideInfo {
+    float: right;
+    background-color: #87CEFA;
+    padding:2px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #87CEFA;
+    border-radius:0px 7px 0px 10px;
+    cursor:pointer; 
+    color: white;
+
+}
+
+#hideGuide {
+    float: left;
+    background-color: #87CEFA;
+    padding:2px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #87CEFA;
+    border-radius:7px 0px 10px 0px;
+    cursor:pointer; 
+    color: white;
+}
+
 
 #infoCurrentArticle {
-    max-height: 120px;
+    height: 90px;
     overflow-y: auto;
 }
 
 #otherPage {
     color: black;
+}
+
+.section {
+    background-color: #E0FFFF;
+    padding:10px;
+    -moz-border-radius:10px 0;
+    -webkit-border-radius:10px 0;
+    border-radius:20px;
+    margin:10px 10px 10px 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #87CEFA;
+
 }
 
 
