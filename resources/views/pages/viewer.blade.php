@@ -19,11 +19,12 @@
 		<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
 		<strong>Page :</strong> <?= $pages[0]['NumberPage'] ?> <br>
 		<hr>
-		<h4>Informations sur la page</h4>
+		<h4>Articles de la page</h4>
 		<hr>
 		<div id="pageArticlesList">
 		@foreach($pages[0]['Articles'] as $idx => $art)
 		<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?> </p>
+		<p id="{{$art['IdArticle']}}" class="occurrenceNumber"></p>
 		@if( count($art['PictureKeys']) != 0)
 		<p class="pictureKeys">
 		<strong>Légendes :</strong>
@@ -65,7 +66,7 @@
 		    <form class="form-inline" style='float:right;margin:10px 20px 10px 0'>
 		          	<div class="form-group" style="display:inline-block;">
 					    <input id="search_input" onchange="newSearch()">
-					    <button type="button" id="search_button" class="btn btn-default btn-sm">Recherche</button>   <span id="occurrence"></span> occurrence(s)
+					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span> occurrence(s)
 					  </div>
 					<a id="otherPage" onclick="previousKeyword()" ><img src="<?= asset('resources/viewer/back.png') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
 		            <a id="otherPage" onclick="nextKeyword()" ><img src="<?= asset('resources/viewer/next.png') ?>" alt="Flèche droite" class="viewer-icon"/></a>
@@ -114,17 +115,19 @@
 		<!-- Initialization script -->
 		<script type="text/javascript">
 
-		function updateCurrentArticle(article){
-			if(article != null)
-			{
-				$("#currentTitle").text(article.Title);
-				$("#currentViews").text(article.Views);
-				$("#currentArticle").show();
+			function updateCurrentArticle(article){
+				if(article != null)
+				{
+					$("#currentTitle").text(article.Title);
+					$("#currentViews").text(article.Views);
+					$("#currentArticle").show();
+				}
+				else{
+					$("#currentArticle").hide();
+				}
 			}
-			else{
-				$("#currentArticle").hide();
-			}
-		}
+
+			
 
 			var zoom = true;
 			var toggle = true;
@@ -204,7 +207,9 @@
                     }
 				}
 
-				var search = <?php echo $searchedKeywords; ?>;
+				var searchArray = <?php echo $searchedKeywords; ?>;
+				var search = searchArray[0];
+				var occurrence = searchArray[1];
 				var overlaysKwd = [];
 				var iterator = 0;
 
@@ -225,6 +230,15 @@
 						};
 						overlaysKwd.push(elt);
 					}
+
+					//Display occurrence number in articles list
+					$.each(occurrence, function (index, value) {
+					    if( value != 0 ){
+					    	$('#'+index).text(+value+' occurrence(s) de "'+$('#search_input').val()+'"');
+					    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> ');
+					    } 
+					});
+
 				}
 				$('#occurrence').text(search.length);
 
@@ -471,10 +485,22 @@
 				}
 			}
 
+			//Display occurrence number in articles list
+			function displayOccurrenceArticle(occurrenceParam){
+
+				$.each(occurrence, function (index, value) {
+				    if( value != 0 ){
+				    	$('#'+index).text(+value+' occurrence(s) de "'+$('#search_input').val()+'"');
+				    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> ');
+				    }
+				});
+			}
+
 			function newSearch(){
 				var keywd = $('#search_input').val();
 
 				removeKeywordOverlays();
+				$('.occurrenceNumber').text('');
 
 				if( keywd != ''){
 
@@ -489,11 +515,12 @@
 
 					    function(data){
 
-				   			search = data;
-				   			console.log(search);
+				   			search = data[0];
+				   			occurrence = data[1];
 							addKeywordOverlays(search);
 							$('#occurrence').text(search.length);
 							iterator = 0;
+							displayOccurrenceArticle(occurrence);
 
 						}
 

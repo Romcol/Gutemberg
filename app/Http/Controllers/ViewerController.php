@@ -156,22 +156,32 @@ class ViewerController extends Controller
         ];
 
         $result = Article::search($paramsSearch);
+        //Coordinates array for occurrence arrows
         $wordTab = [];
+
+        //Occurrence number per article
+        $occurrenceArticle = array();
+
         $keywordTab = explode(' ', $keywords);
         foreach($keywordTab as $word){
             foreach ($result as $article) {
+                $occurrenceArticle[$article['_id']] = 0;
                 foreach($article['Words'] as $line){
                     if( strpos(strtolower($line['Word']), strtolower($word)) !== false ){
                         array_push($wordTab, $line['Coord']);
+                        $occurrenceArticle[$article['_id']]++;
                     }
                 }
 
                 if( strpos(strtolower($article['Title']), strtolower($word)) !== false ){
                     array_push($wordTab, $article['TitleCoord']);
+                    $occurrenceArticle[$article['_id']]++;
                 }
             }
         }
 
-        return $wordTab;
+        $functionResult = array($wordTab, $occurrenceArticle);
+
+        return $functionResult;
     }
 }
