@@ -12,7 +12,7 @@
 			<img src="<?= asset('resources/viewer/previous-white.png') ?>" height="20px" alt="Flèche gauche" /> Cacher 
 		</div>
 		<div class="section">
-			<h4>Informations sur le journal</h4>
+			<h4>Informations sur la page</h4>
 			<hr>
 			<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
 			<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
@@ -65,7 +65,7 @@
 		    <form class="form-inline" style='float:right;margin:10px 20px 10px 0'>
 		          	<div class="form-group" style="display:inline-block;">
 					    <input id="search_input" onchange="newSearch()">
-					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span> occurrence(s)
+					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span>
 					  </div>
 					<a id="otherPage" onclick="previousKeyword()" ><img src="<?= asset('resources/viewer/back.png') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
 		            <a id="otherPage" onclick="nextKeyword()" ><img src="<?= asset('resources/viewer/next.png') ?>" alt="Flèche droite" class="viewer-icon"/></a>
@@ -123,8 +123,6 @@
 					$("#currentArticle").hide();
 				}
 			}
-
-			
 
 			var zoom = true;
 			var toggle = true;
@@ -217,7 +215,7 @@
 			        return img;
 			    }
 
-				if( search.length != 0){
+				if( search != undefined && search.length != 0){
 					for( var i=0; i< search.length ; i++){
 						var elt = {
 							id: newImage(),
@@ -235,9 +233,13 @@
 					    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" height="20px"/> ');
 					    } 
 					});
-
+					if( search.length > 1 ){
+						$('#occurrence').text(search.length+' occurrence(s)');
+					}else{
+						$('#occurrence').text(search.length+' occurrence');
+					}
 				}
-				$('#occurrence').text(search.length);
+
 
 			}else{
 				$('#toggle-overlay').remove();
@@ -515,7 +517,11 @@
 				   			search = data[0];
 				   			occurrence = data[1];
 							addKeywordOverlays(search);
-							$('#occurrence').text(search.length);
+							if( search.length > 1 ){
+								$('#occurrence').text(search.length+' occurrence(s)');
+							}else{
+								$('#occurrence').text(search.length+' occurrence');
+							}
 							iterator = 0;
 							displayOccurrenceArticle(occurrence);
 
