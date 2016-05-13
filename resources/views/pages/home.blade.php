@@ -31,9 +31,14 @@
 
         <hr>
 
-        <!-- PHP code for the next articles list -->
+        <!-- PHP code for the next articles list and initiate the searchUri value-->
         <?php
         use App\Article;
+
+        session_start();
+        $_SESSION['searchUri'] = null;
+
+
 
         $params = [
           'sort' => [

@@ -14,6 +14,8 @@ class ViewerController extends Controller
 
     public function index()
     {
+        session_start();
+
         $id = $_GET['id'];
         $params = [
             'query' => [
@@ -24,6 +26,9 @@ class ViewerController extends Controller
         ];
     	$pages = Page::search($params);
         //dd($pages);
+
+        
+        $searchUri = $_SESSION['searchUri'];
 
         $article = $this->searchArticle();
 
@@ -44,7 +49,7 @@ class ViewerController extends Controller
 
        // dd($pages);
 
-    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords'));
+    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri'));
     }
 
     public function searchArticle(){

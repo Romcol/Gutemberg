@@ -21,10 +21,16 @@ class SearchController extends Controller
 
     public function search()
     {
+        session_start();
+
         $text = $_GET['text'];
         $type = $_GET['type'];
         $page = isset($_GET['page'])?intval($_GET['page']):1;
         $from = ($page>0)?(($page-1)*10):0;
+
+        $searchUri = $_SERVER['REQUEST_URI'];
+        
+        $_SESSION['searchUri'] = $searchUri;
 
         //For newspaper search, specific file !
         if( $type == 'newspaper'){
