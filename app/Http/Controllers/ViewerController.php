@@ -27,8 +27,11 @@ class ViewerController extends Controller
     	$pages = Page::search($params);
         //dd($pages);
 
-        
-        $searchUri = $_SESSION['searchUri'];
+        if( isset($_SESSION['searchUri'])){
+            $searchUri = $_SESSION['searchUri'];
+        }else{
+            $searchUri = null;
+        }
 
         $article = $this->searchArticle();
 
