@@ -32,6 +32,13 @@
             <div class="form-group">
               à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
             </div>
+            <div>
+              <h5>Tags :</h5>
+              <div class="ui-widget">
+                <input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" id="tag_button" class="btn btn-default btn-sm"> Ajouter</button>
+              </div>
+              <p id="tagForm"></p>
+            </div>
             <hr>
             <h4>Trier :</h4>
             <div class="form-group">
@@ -69,6 +76,11 @@
               <div class="panel-body">
                 <B class="title">@if($article->highlight('Title')) {!! $article->highlight('Title') !!} @else {{$article['Title']}} @endif</B>
                 <p style="margin-top:20px">{!! $article['Words'] !!}</p>
+                <p>
+                @foreach ($article['Tags'] as $tag)
+                <span id="tag"> {{$tag}}</span>
+                @endforeach
+                </p>
               </div>
             </div>
       		</article>
@@ -92,4 +104,42 @@
         </div>
       </div>
 
+@stop
+
+@section('scripts')
+  <script type="text/javascript">
+
+    var savedTags = <?php echo $savedTags; ?> ;
+    var tagNumber = 0;
+
+    function newTag(tag = 'undefined'){
+
+      if( tag = 'undefined') tag = $('#tags').val();
+
+      if( tag != '' && savedTags.includes(tag)){
+
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span id="tag">'+tag+'</span>');
+
+      }
+
+      $('#tags').val('');
+    }
+
+  </script>
+
+  <script type="text/javascript">
+
+    $(window).load(function() {
+
+      var availableTags = savedTags;
+      $("#tags").autocomplete({
+          source: availableTags,
+          minLength: 0,
+          select: function( event, ui ) { 
+            newTag(ui.item.value);
+          }
+      });
+
+    });
+  </script>
 @stop

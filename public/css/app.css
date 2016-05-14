@@ -32,6 +32,11 @@ footer {
     border-color: #87CEFA;
 }
 
+#tag {
+    background-color: #87CEFA;
+    padding: 2px;
+}
+
 article em{
 	background-color:#E9D460;
 }

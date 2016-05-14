@@ -170,7 +170,8 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
           'Coord' => $coord,
           'Reviews' => array(),
           'Words' => $words,
-          'Views' => 0
+          'Views' => 0,
+          'Tags' => array()
         );
 
       //Légendes des images non ajoutées
@@ -283,7 +284,8 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
           'Coord' => $coord,
           'Reviews' => array(),
           'Words' => $words,
-          'Views' => 0
+          'Views' => 0,
+          'Tags' => array()
         );
 
       //Légendes des images non ajoutées

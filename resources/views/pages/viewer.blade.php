@@ -48,6 +48,11 @@
 			<div id="infoCurrentArticle">
 				<strong>Titre :</strong> <span id="currentTitle"></span>
 				<strong>Vues :</strong> <span id="currentViews"></span>
+				<p><strong>Tags :</strong> <span id="currentTags"></span>
+					<div class="ui-widget">
+					  <input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" id="tag_button" class="btn btn-default btn-sm"> Ajouter</button>
+					</div>
+				</p>
 			</div>
 		</div>
 	</div>
@@ -75,7 +80,7 @@
 		    </form>
 	    </div>
 	    <div id="ourOpenseadragon" class="openseadragon"></div>
-	    <div id="toolbarDiv" class="toolbar">
+	    <div>
 		    <ul class="pager">
 				<li class="previous">
 					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/previous(1).png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
@@ -120,12 +125,22 @@
 				{
 					$("#currentTitle").text(article.Title);
 					$("#currentViews").text(article.Views);
+					$("#currentTags").text('');
+					if( article.Tags != undefined){
+						for(var i = 0; i < article.Tags.length; i++){
+							$("#currentTags").append(' <span id="tag">'+article.Tags[i]+'</span>');
+						}
+					}
 					$("#currentArticle").show();
 				}
 				else{
 					$("#currentArticle").hide();
 				}
 			}
+
+			var savedTags = <?php echo $savedTags; ?> ;
+
+
 
 			var zoom = true;
 			var toggle = true;
@@ -237,7 +252,7 @@
 					    } 
 					});
 					if( search.length > 1 ){
-						$('#occurrence').text(search.length+' occurrence(s)');
+						$('#occurrence').text(search.length+' occurrences');
 					}else{
 						$('#occurrence').text(search.length+' occurrence');
 					}
@@ -521,7 +536,7 @@
 				   			occurrence = data[1];
 							addKeywordOverlays(search);
 							if( search.length > 1 ){
-								$('#occurrence').text(search.length+' occurrence(s)');
+								$('#occurrence').text(search.length+' occurrences');
 							}else{
 								$('#occurrence').text(search.length+' occurrence');
 							}
@@ -656,6 +671,35 @@
 
 			}
 
+			function newTag(tag = 'undefined'){
+				if( tag = 'undefined') tag = $('#tags').val();
+
+				if( tag != '' && !article.Tags.includes(tag)){
+
+					$("#currentTags").append(' <span id="tag">'+tag+'</span>');
+
+					if( !savedTags.includes(tag)) savedTags.push(tag);
+
+					$.get(
+
+					    'newTag', // Le fichier cible côté serveur.
+
+					    {
+					    	article: article._id,
+					    	tag: tag
+					    },
+
+					    function(data){
+
+						}
+
+					);
+
+				}
+
+				$('#tags').val('');
+			}
+
 
 		</script>
 		<!-- End of functions definition -->
@@ -668,6 +712,15 @@
 		$(window).load(function() {
 
 			 zoomOnArticle(article);
+
+			var availableTags = savedTags;
+			$("#tags").autocomplete({
+			    source: availableTags,
+			    minLength: 0,
+			    select: function( event, ui ) { 
+			    	newTag(ui.item.value);
+			    }
+			});
 
 		});
 

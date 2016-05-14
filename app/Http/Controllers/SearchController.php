@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Article;
 use App\Page;
+use App\Autocomplete;
 
 class SearchController extends Controller
 {
@@ -28,6 +29,9 @@ class SearchController extends Controller
         $page = isset($_GET['page'])?intval($_GET['page']):1;
         $from = ($page>0)?(($page-1)*10):0;
 
+        $tags = ( isset($_GET['tags']) )? $_GET['tags'] : array();
+
+
         $searchUri = $_SERVER['REQUEST_URI'];
         
         $_SESSION['searchUri'] = $searchUri;
@@ -42,10 +46,10 @@ class SearchController extends Controller
             if( $type == 'articles'){
 
                 if( isset($_GET['regexp'])){
-                    $params = $this->paramArticleRegexp($text, $from);
+                    $params = $this->paramArticleRegexp($text, $from, $tags);
                     $regexp = $_GET['regexp'];
                 }else{
-                    $params = $this->paramArticle($text, $from);
+                    $params = $this->paramArticle($text, $from, $tags);
                     $regexp = false;
                 }
 
@@ -53,10 +57,10 @@ class SearchController extends Controller
             }elseif( $type == 'titles'){
 
                 if( isset($_GET['regexp'])){
-                    $params = $this->paramTitleRegexp($text, $from);
+                    $params = $this->paramTitleRegexp($text, $from, $tags);
                     $regexp = $_GET['regexp'];
                 }else{
-                    $params = $this->paramTitle($text, $from);
+                    $params = $this->paramTitle($text, $from, $tags);
                     $regexp = false;
                 }
             }
@@ -172,7 +176,17 @@ class SearchController extends Controller
 
             $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
-            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp'));
+            $paramsAutocompl = [
+                'query' => [
+                    'match' => [
+                        'Name' => 'tags'
+                    ]
+                ]
+            ];
+            $savedTags = Autocomplete::search($paramsAutocompl);
+            $savedTags = json_encode($savedTags[0]['Data']);
+
+            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp', 'savedTags'));
         }
     }
 
@@ -197,8 +211,7 @@ class SearchController extends Controller
                                 ['match' => [
                                     'Title' => [
                                         'query' => $text,
-                                        'operator' => 'and',
-                                        'fuzziness' => 'AUTO'
+                                        'operator' => 'and'
                                     ]
                                 ]],
                                 [ 'match' => [
@@ -289,7 +302,7 @@ class SearchController extends Controller
         return compact('pages', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax');
     }
 
-    public function paramArticle($text, $from){
+    public function paramArticle($text, $from, $tags){
         $params = [
             'query' => [
                 'filtered' => [
@@ -311,7 +324,11 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => []
+                    'filter' => [
+                        "terms" => [
+                            "Tags" => $tags
+                        ]
+                    ]
                 ]
             ],
             'highlight' => [
@@ -330,7 +347,7 @@ class SearchController extends Controller
 
 
 
-    public function paramTitle($text, $from){
+    public function paramTitle($text, $from, $tags){
 
         $params = [
             'query' => [
@@ -347,7 +364,11 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => []
+                    'filter' => [
+                        "terms" => [
+                            "Tags" => $tags
+                        ]
+                    ]
                 ]
             ],
             'highlight' => [
@@ -363,7 +384,7 @@ class SearchController extends Controller
 
     }
 
-    public function paramArticleRegexp($text, $from){
+    public function paramArticleRegexp($text, $from, $tags){
         $params = [
             'query' => [
                 'filtered' => [
@@ -379,7 +400,11 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => []
+                    'filter' => [
+                        "terms" => [
+                            "Tags" => $tags
+                        ]
+                    ]
                 ]
             ],
             'highlight' => [
@@ -398,7 +423,7 @@ class SearchController extends Controller
 
 
 
-    public function paramTitleRegexp($text, $from){
+    public function paramTitleRegexp($text, $from, $tags){
         
         $params = [
             'query' => [
@@ -412,7 +437,11 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => []
+                    'filter' => [
+                        "terms" => [
+                            "Tags" => $tags
+                        ]
+                    ]
                 ]
             ],
             'highlight' => [
