@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -48,11 +51,22 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|confirmed|min:6',
-        ]);
+        $messages = array(
+            'required'=> 'Le champ doit être rempli.',
+            'max'    => 'Le nom et l\'adresse ne doivent pas dépasser :max caractères.',
+            'confirmed' => 'Confirmer le mot de passe.',
+            'min'      => 'Le mot de passe doit contenir au moins :min caractères',
+        );
 
+        $validator =  Validator::make($data, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'password' => 'required|confirmed|min:6',
+            ],
+            $messages 
+        );
+
+        $validator->after(function($validator){
             $validData = $validator->getData();
             $param = [
                 'query' => [
@@ -65,6 +79,7 @@ class AuthController extends Controller
                 ]
             ];
 
+           $result = User::search($param);
             if( $result->total() != 0){
                 $validator->errors()->add('name', 'Nom déjà existant dans la base');
             }
@@ -82,6 +97,7 @@ class AuthController extends Controller
             $result = User::search($param2);
             if( $result->total() != 0){
                 $validator->errors()->add('email', 'Mail déjà existant dans la base');
+            }
 
         });
 
@@ -105,5 +121,16 @@ class AuthController extends Controller
         $user->favoriteArticles = array();
         $user->save();
         return $user;
+    }
+
+    /**
+     * Get the failed login message.
+     *
+     * @return string
+     */
+    protected function getFailedLoginMessage()
+    {
+        return Lang::has('auth.failed')
+                ? 'Informations de connexion incorrectes.' : '';
     }
 }
