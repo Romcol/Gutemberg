@@ -28,7 +28,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -48,11 +48,44 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
         ]);
+
+            $validData = $validator->getData();
+            $param = [
+                'query' => [
+                    'match' => [
+                        'name' => [
+                            'query' => $validData['name'],
+                            'operator' => 'and'
+                        ]
+                    ]
+                ]
+            ];
+
+            if( $result->total() != 0){
+                $validator->errors()->add('name', 'Nom déjà existant dans la base');
+            }
+
+            $param2 = [
+                'query' => [
+                    'match' => [
+                        'email' => [
+                            'query' => $validData['email']
+                        ]
+                    ]
+                ]
+            ];
+
+            $result = User::search($param2);
+            if( $result->total() != 0){
+                $validator->errors()->add('email', 'Mail déjà existant dans la base');
+
+        });
+
+        return $validator;
     }
 
     /**
@@ -63,10 +96,14 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        $user = new User;
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt($data['password']);
+        $user->createdReviews = array();
+        $user->contribReviews = array();
+        $user->favoriteArticles = array();
+        $user->save();
+        return $user;
     }
 }
