@@ -22,9 +22,9 @@ footer {
 }
 
 #searchRow {
-	height: 640px;
+	
     background-color: #E0FFFF;
-    padding:10px;
+    padding:10px 10px 30px 10px;
 
     margin:10px 10px 10px 10px;
     border-style: solid;
@@ -35,6 +35,13 @@ footer {
 #tag {
     background-color: #87CEFA;
     padding: 2px;
+}
+
+.viewer-icon
+{
+    height:20px;
+    color:grey;
+    cursor: pointer;
 }
 
 article em{

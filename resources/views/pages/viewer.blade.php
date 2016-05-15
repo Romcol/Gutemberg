@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css">
 <link rel="stylesheet" href="<?= asset('css/viewer.css') ?>" type="text/css"> 
 @stop
 
@@ -50,7 +49,7 @@
 				<strong>Vues :</strong> <span id="currentViews"></span>
 				<p><strong>Tags :</strong> <span id="currentTags"></span>
 					<div class="ui-widget">
-					  <input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" id="tag_button" class="btn btn-default btn-sm"> Ajouter</button>
+					  <input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
 					</div>
 				</p>
 			</div>

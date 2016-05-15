@@ -29,7 +29,7 @@ class SearchController extends Controller
         $page = isset($_GET['page'])?intval($_GET['page']):1;
         $from = ($page>0)?(($page-1)*10):0;
 
-        $tags = ( isset($_GET['tags']) )? $_GET['tags'] : array();
+
 
 
         $searchUri = $_SERVER['REQUEST_URI'];
@@ -46,10 +46,10 @@ class SearchController extends Controller
             if( $type == 'articles'){
 
                 if( isset($_GET['regexp'])){
-                    $params = $this->paramArticleRegexp($text, $from, $tags);
+                    $params = $this->paramArticleRegexp($text, $from);
                     $regexp = $_GET['regexp'];
                 }else{
-                    $params = $this->paramArticle($text, $from, $tags);
+                    $params = $this->paramArticle($text, $from);
                     $regexp = false;
                 }
 
@@ -57,10 +57,10 @@ class SearchController extends Controller
             }elseif( $type == 'titles'){
 
                 if( isset($_GET['regexp'])){
-                    $params = $this->paramTitleRegexp($text, $from, $tags);
+                    $params = $this->paramTitleRegexp($text, $from);
                     $regexp = $_GET['regexp'];
                 }else{
-                    $params = $this->paramTitle($text, $from, $tags);
+                    $params = $this->paramTitle($text, $from);
                     $regexp = false;
                 }
             }
@@ -113,6 +113,13 @@ class SearchController extends Controller
                 $dateMax = '';
                 
             }
+
+            $tags = array();
+            if( isset($_GET['tags']) && count($_GET['tags']) != 0){
+                $tags = $_GET['tags'];
+                $params['filter']['bool']['must']['terms']['Tags'] = $tags;
+            }
+            $tags = json_encode($tags);
 
             //Sorting
             $sort = isset($_GET['sort'])?$_GET['sort']:0;
@@ -186,7 +193,8 @@ class SearchController extends Controller
             $savedTags = Autocomplete::search($paramsAutocompl);
             $savedTags = json_encode($savedTags[0]['Data']);
 
-            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp', 'savedTags'));
+
+            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp', 'savedTags', 'tags'));
         }
     }
 
@@ -302,7 +310,7 @@ class SearchController extends Controller
         return compact('pages', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax');
     }
 
-    public function paramArticle($text, $from, $tags){
+    public function paramArticle($text, $from){
         $params = [
             'query' => [
                 'filtered' => [
@@ -324,11 +332,7 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => [
-                        "terms" => [
-                            "Tags" => $tags
-                        ]
-                    ]
+                    'filter' => []
                 ]
             ],
             'highlight' => [
@@ -347,7 +351,7 @@ class SearchController extends Controller
 
 
 
-    public function paramTitle($text, $from, $tags){
+    public function paramTitle($text, $from){
 
         $params = [
             'query' => [
@@ -364,11 +368,7 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => [
-                        "terms" => [
-                            "Tags" => $tags
-                        ]
-                    ]
+                    'filter' => []
                 ]
             ],
             'highlight' => [
@@ -384,7 +384,7 @@ class SearchController extends Controller
 
     }
 
-    public function paramArticleRegexp($text, $from, $tags){
+    public function paramArticleRegexp($text, $from){
         $params = [
             'query' => [
                 'filtered' => [
@@ -400,11 +400,7 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => [
-                        "terms" => [
-                            "Tags" => $tags
-                        ]
-                    ]
+                    'filter' => []
                 ]
             ],
             'highlight' => [
@@ -423,7 +419,7 @@ class SearchController extends Controller
 
 
 
-    public function paramTitleRegexp($text, $from, $tags){
+    public function paramTitleRegexp($text, $from){
         
         $params = [
             'query' => [
@@ -437,11 +433,7 @@ class SearchController extends Controller
                             ]
                         ]
                     ],
-                    'filter' => [
-                        "terms" => [
-                            "Tags" => $tags
-                        ]
-                    ]
+                    'filter' => []
                 ]
             ],
             'highlight' => [

@@ -33,11 +33,12 @@
               à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
             </div>
             <div>
-              <h5>Tags :</h5>
               <div class="ui-widget">
-                <input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" id="tag_button" class="btn btn-default btn-sm"> Ajouter</button>
+                <h5 style="float: left">Tags : </h5><input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px;"> <button type="button" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
               </div>
-              <p id="tagForm"></p>
+              <p id="tagForm">
+              </p>
+
             </div>
             <hr>
             <h4>Trier :</h4>
@@ -110,15 +111,23 @@
   <script type="text/javascript">
 
     var savedTags = <?php echo $savedTags; ?> ;
+    var tags = <?php echo $tags; ?> ;
     var tagNumber = 0;
+
+    for(var i=0; i<tags.length ; i++){
+      $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span id="tag">'+tags[i]+'</span>');
+      tagNumber++;
+    }
 
     function newTag(tag = 'undefined'){
 
       if( tag = 'undefined') tag = $('#tags').val();
 
-      if( tag != '' && savedTags.includes(tag)){
+      if( tag != '' && savedTags.includes(tag) && !tags.includes(tag)){
 
         $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span id="tag">'+tag+'</span>');
+        tags[tagNumber] = tag;
+        tagNumber++;
 
       }
 
