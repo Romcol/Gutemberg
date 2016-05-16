@@ -32,9 +32,9 @@
             <div class="form-group">
               à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
             </div>
-            <div>
+            <div class="form-group">
               <div class="ui-widget">
-                <h5 style="float: left">Tags : </h5><input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px;"> <button type="button" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
+                <h5 style="float: left">Tags : </h5><input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px;"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
               </div>
               <p id="tagForm">
               </p>
@@ -79,7 +79,7 @@
                 <p style="margin-top:20px">{!! $article['Words'] !!}</p>
                 <p>
                 @foreach ($article['Tags'] as $tag)
-                <span id="tag"> {{$tag}}</span>
+                <span class="tag"> {{$tag}}</span>
                 @endforeach
                 </p>
               </div>
@@ -110,14 +110,21 @@
 @section('scripts')
   <script type="text/javascript">
 
+
+    function resetTag(){
+      $("#tagForm").text('');
+      tagNumber = 0;
+      for(var i=0; i<tags.length ; i++){
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tags[i]+'</span>');
+        tagNumber++;
+      }
+    }
+
     var savedTags = <?php echo $savedTags; ?> ;
     var tags = <?php echo $tags; ?> ;
     var tagNumber = 0;
 
-    for(var i=0; i<tags.length ; i++){
-      $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span id="tag">'+tags[i]+'</span>');
-      tagNumber++;
-    }
+    resetTag();
 
     function newTag(tag = 'undefined'){
 
@@ -125,7 +132,7 @@
 
       if( tag != '' && savedTags.includes(tag) && !tags.includes(tag)){
 
-        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span id="tag">'+tag+'</span>');
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tag+'</span>');
         tags[tagNumber] = tag;
         tagNumber++;
 
@@ -133,6 +140,27 @@
 
       $('#tags').val('');
     }
+
+    function closeTag(elemnt){
+        var removedTag = $(elemnt).closest('span').text();
+
+        var index = tags.indexOf(removedTag);
+        if (index > -1) {
+            tags.splice(index, 1);
+        }
+
+        resetTag();
+
+
+      }
+
+      function tagMouseEnter(elemnt){
+        $(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+      }
+
+      function tagMouseLeave(elemnt){
+        $(elemnt).find("img").remove();
+      }
 
   </script>
 

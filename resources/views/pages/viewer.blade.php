@@ -49,7 +49,7 @@
 				<strong>Vues :</strong> <span id="currentViews"></span>
 				<p><strong>Tags :</strong> <span id="currentTags"></span>
 					<div class="ui-widget">
-					  <input id="tags" onchange="newTag()" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
+					  <input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
 					</div>
 				</p>
 			</div>
@@ -127,7 +127,7 @@
 					$("#currentTags").text('');
 					if( article.Tags != undefined){
 						for(var i = 0; i < article.Tags.length; i++){
-							$("#currentTags").append(' <span id="tag">'+article.Tags[i]+'</span>');
+							$("#currentTags").append(' <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+article.Tags[i]+'</span>');
 						}
 					}
 					$("#currentArticle").show();
@@ -675,7 +675,7 @@
 
 				if( tag != '' && !article.Tags.includes(tag)){
 
-					$("#currentTags").append(' <span id="tag">'+tag+'</span>');
+					$("#currentTags").append(' <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tag+'</span>');
 
 					if( !savedTags.includes(tag)) savedTags.push(tag);
 
@@ -698,6 +698,52 @@
 
 				$('#tags').val('');
 			}
+
+			function removeTag(remTag){
+
+				if( remTag != '' && article.Tags.includes(remTag)){
+
+					$.get(
+
+					    'removeTag', // Le fichier cible côté serveur.
+
+					    {
+					    	article: article._id,
+					    	tag: remTag
+					    },
+
+					    function(data){
+
+						}
+
+					);
+
+					var index = article.Tags.indexOf(remTag);
+					if (index > -1) {
+					    article.Tags.splice(index, 1);
+					}
+
+				}
+
+			}
+
+			function closeTag(elemnt){
+				var removedTag = $(elemnt).closest('span').text();
+				console.log(removedTag);
+				removeTag(removedTag);
+
+				$(elemnt).closest('span').remove();
+				$(elemnt).remove();
+			}
+
+			function tagMouseEnter(elemnt){
+				$(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+			}
+
+			function tagMouseLeave(elemnt){
+				$(elemnt).find("img").remove();
+			}
+	
 
 
 		</script>
@@ -805,7 +851,7 @@
     		$("#pageGuide").show();
     		reduceViewer();
 		});
-	
+
 
 		</script>
 

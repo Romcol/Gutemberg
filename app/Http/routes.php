@@ -44,6 +44,8 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('visionneuse', 'ViewerController@index');
 	Route::get( 'changeArticle', 'ViewerController@searchArticle');
 	Route::get( 'newSearch', 'ViewerController@searchKeyword');
+	Route::get('newTag', 'ViewerController@addTag');
+	Route::get('removeTag', 'ViewerController@removeTag');
 
 	Route::get('register', function () {
 	    return view('auth.register');

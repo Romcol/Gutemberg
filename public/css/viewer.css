@@ -28,14 +28,6 @@
     padding: 0px 0px 50px 0px;
 }
 
-
-.viewer-icon
-{
-    height:20px;
-    color:grey;
-    cursor: pointer;
-}
-
 #pageInfo strong {
 	font-weight: bold;
 
@@ -46,7 +38,7 @@
 }
 
 #pageInfo #pageArticlesList {
-	max-height: 230px;
+	max-height: 200px;
 	overflow-y: auto;
 }
 
@@ -107,7 +99,7 @@
 
 
 #infoCurrentArticle {
-    height: 90px;
+    max-height: 120px;
     overflow-y: auto;
 }
 

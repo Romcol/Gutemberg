@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Page;
 use App\Article;
 use App\Autocomplete;
+use App\Utility;
 
 class ViewerController extends Controller
 {
@@ -228,5 +229,49 @@ class ViewerController extends Controller
             $tagData[0]->save();
         }
 
+    }
+
+    public function removeTag(){
+
+        if( isset($_GET['article']) ){
+            $id = $_GET['article'];
+            $tag = $_GET['tag'];
+
+            $tagArticle = Article::find($id);
+            $tabTag = $tagArticle->Tags;
+
+            $tabTag = $this->removeElement($tag, $tabTag);
+
+            $tagArticle->Tags = $tabTag;
+            $tagArticle->save();
+
+            return $tabTag;
+        }
+
+    }
+
+    public function removeElement($element, $array){
+        $found = false;
+        $size = count($array);
+        for ($j = 0; $j < $size; $j++) {
+            if( $found){
+                if($j != $size-1){
+                    $array[$j]=$array[$j+1];
+                }else{
+                    unset($array[$j]);
+                }
+            }else{
+                if( $element == $array[$j]){
+                    $found = true;
+                    if($j != $size-1){
+                        $array[$j]=$array[$j+1];
+                    }else{
+                        unset($array[$j]);
+                    }
+                }
+            }
+        }
+
+        return $array;
     }
 }
