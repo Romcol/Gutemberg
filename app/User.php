@@ -2,10 +2,14 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Moloquent;
+use Fadion\Bouncy\BouncyTrait;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Auth\Authenticatable as AuthenticableTrait;
 
-class User extends Authenticatable
+class User extends Moloquent implements Authenticatable
 {
+    use AuthenticableTrait;
     /**
      * The attributes that are mass assignable.
      *
@@ -23,4 +27,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    use BouncyTrait;
+    public $timestamps  = false;
+    protected $collection = 'Users';
+    protected $indexName = 'users';
+    protected $typeName = 'account';
 }

@@ -11,17 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('pages.home');
-});
 
-Route::get('articles', 'SearchController@index');
-
-Route::get('recherche', 'SearchController@search');
-
-Route::get('visionneuse', 'ViewerController@index');
-Route::get( 'changeArticle', 'ViewerController@searchArticle');
-Route::get( 'newSearch', 'ViewerController@searchKeyword');
 
 Route::get( 'pressreview', 'PressReviewController@index');
 
@@ -38,4 +28,29 @@ Route::get( 'pressreview', 'PressReviewController@index');
 
 Route::group(['middleware' => ['web']], function () {
     //
+});
+
+Route::group(['middleware' => 'web'], function () {
+    Route::auth();
+
+    Route::get('/home', 'HomeController@index');
+
+    Route::get('/', function () {
+	    return view('pages.home');
+	});
+
+	Route::get('articles', 'SearchController@index');
+
+	Route::get('recherche', 'SearchController@search');
+
+	Route::get('visionneuse', 'ViewerController@index');
+	Route::get( 'changeArticle', 'ViewerController@searchArticle');
+	Route::get( 'newSearch', 'ViewerController@searchKeyword');
+
+	Route::get('register', function () {
+	    return view('auth.register');
+	});
+	Route::get('login', function () {
+	    return view('auth.login');
+	});
 });

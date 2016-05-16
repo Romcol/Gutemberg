@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use Validator;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -28,7 +31,7 @@ class AuthController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new authentication controller instance.
@@ -48,11 +51,57 @@ class AuthController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
+        $messages = array(
+            'required'=> 'Le champ doit être rempli.',
+            'max'    => 'Le nom et l\'adresse ne doivent pas dépasser :max caractères.',
+            'confirmed' => 'Confirmer le mot de passe.',
+            'min'      => 'Le mot de passe doit contenir au moins :min caractères',
+        );
+
+        $validator =  Validator::make($data, [
             'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
+            'email' => 'required|email|max:255',
             'password' => 'required|confirmed|min:6',
-        ]);
+            ],
+            $messages 
+        );
+
+        $validator->after(function($validator){
+            $validData = $validator->getData();
+            $param = [
+                'query' => [
+                    'match' => [
+                        'name' => [
+                            'query' => $validData['name'],
+                            'operator' => 'and'
+                        ]
+                    ]
+                ]
+            ];
+
+           $result = User::search($param);
+            if( $result->total() != 0){
+                $validator->errors()->add('name', 'Nom déjà existant dans la base');
+            }
+
+            $param2 = [
+                'query' => [
+                    'match' => [
+                        'email' => [
+                            'query' => $validData['email']
+                        ]
+                    ]
+                ]
+            ];
+
+            $result = User::search($param2);
+            if( $result->total() != 0){
+                $validator->errors()->add('email', 'Mail déjà existant dans la base');
+            }
+
+        });
+
+        return $validator;
     }
 
     /**
@@ -63,10 +112,25 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+        $user = new User;
+        $user->name = $data['name'];
+        $user->email = $data['email'];
+        $user->password = bcrypt($data['password']);
+        $user->createdReviews = array();
+        $user->contribReviews = array();
+        $user->favoriteArticles = array();
+        $user->save();
+        return $user;
+    }
+
+    /**
+     * Get the failed login message.
+     *
+     * @return string
+     */
+    protected function getFailedLoginMessage()
+    {
+        return Lang::has('auth.failed')
+                ? 'Informations de connexion incorrectes.' : '';
     }
 }
