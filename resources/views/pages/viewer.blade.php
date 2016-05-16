@@ -51,6 +51,7 @@
 					<div class="ui-widget" <?php if(Auth::guest()) echo 'style="display: none"';?> >
 					  <input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
 					</div>
+					<div <?php if(!Auth::guest()) echo 'style="display: none"';?> > <center style="color: grey; ">Connectez-vous pour pouvoir ajouter ou supprimer des tags</center> </div>
 				</p>
 			</div>
 		</div>
@@ -138,8 +139,8 @@
 			}
 
 			var savedTags = <?php echo $savedTags; ?> ;
-			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?>
 
+			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?>
 
 			var zoom = true;
 			var toggle = true;
