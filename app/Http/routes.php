@@ -23,6 +23,8 @@ Route::get('visionneuse', 'ViewerController@index');
 Route::get( 'changeArticle', 'ViewerController@searchArticle');
 Route::get( 'newSearch', 'ViewerController@searchKeyword');
 
+Route::get( 'pressreview', 'PressReviewController@index');
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
