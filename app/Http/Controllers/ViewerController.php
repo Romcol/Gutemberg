@@ -244,8 +244,6 @@ class ViewerController extends Controller
 
             $tagArticle->Tags = $tabTag;
             $tagArticle->save();
-
-            return $tabTag;
         }
 
     }

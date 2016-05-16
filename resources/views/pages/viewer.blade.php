@@ -48,7 +48,7 @@
 				<strong>Titre :</strong> <span id="currentTitle"></span>
 				<strong>Vues :</strong> <span id="currentViews"></span>
 				<p><strong>Tags :</strong> <span id="currentTags"></span>
-					<div class="ui-widget">
+					<div class="ui-widget" <?php if(Auth::guest()) echo 'style="display: none"';?> >
 					  <input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
 					</div>
 				</p>
@@ -138,7 +138,7 @@
 			}
 
 			var savedTags = <?php echo $savedTags; ?> ;
-
+			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?>
 
 
 			var zoom = true;
@@ -655,9 +655,7 @@
 			function nextKeyword(){
 				if( overlaysKwd.length != 0 ){
 					var coordX = overlaysKwd[iterator].px;
-					console.log(coordX);
 					var coordY = overlaysKwd[iterator].py;
-					console.log(coordY);
 
 					//zoom on position
 					var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
@@ -729,7 +727,6 @@
 
 			function closeTag(elemnt){
 				var removedTag = $(elemnt).closest('span').text();
-				console.log(removedTag);
 				removeTag(removedTag);
 
 				$(elemnt).closest('span').remove();
@@ -737,7 +734,9 @@
 			}
 
 			function tagMouseEnter(elemnt){
-				$(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+				if(auth){
+					$(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+				}
 			}
 
 			function tagMouseLeave(elemnt){
