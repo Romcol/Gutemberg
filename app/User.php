@@ -34,3 +34,5 @@ class User extends Moloquent implements Authenticatable
     protected $indexName = 'users';
     protected $typeName = 'account';
 }
+
+?>

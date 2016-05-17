@@ -14,3 +14,5 @@ class Article extends Moloquent
   protected $indexName = 'articles';
   protected $typeName = 'json';
 }
+
+?>
