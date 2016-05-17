@@ -70,11 +70,8 @@ class AuthController extends Controller
             $validData = $validator->getData();
             $param = [
                 'query' => [
-                    'match' => [
-                        'name' => [
-                            'query' => $validData['name'],
-                            'operator' => 'and'
-                        ]
+                    'term' => [
+                        'name' => $validData['name']
                     ]
                 ]
             ];
@@ -86,10 +83,8 @@ class AuthController extends Controller
 
             $param2 = [
                 'query' => [
-                    'match' => [
-                        'email' => [
-                            'query' => $validData['email']
-                        ]
+                    'term' => [
+                        'email' => $validData['email']
                     ]
                 ]
             ];
