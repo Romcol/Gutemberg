@@ -72,9 +72,9 @@
               </div>
             </div>
       		</article>
-      	  <nav>
       	@endif
       	@endforeach
+        <nav>
       	@if((count($articles)==11 && $page==1) || ($page>1))
       	   <ul class="pager">
       	  @if($page>1)

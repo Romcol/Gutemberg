@@ -46,7 +46,7 @@ class PressReviewController extends Controller
 		$user = User::find($user_id);
 		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
 		$user->push('createdReviews',$pressreviewobject);
-		
+
     	return view('pages.pressreviewinsert', compact('name','description'));
     }
 
