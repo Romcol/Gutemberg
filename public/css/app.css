@@ -70,7 +70,25 @@ article em{
     font-weight: bold;
 }
 
+.btn, .form-control{
+    border-radius: 0px;
+    outline: none;
+    border: none;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+}
 
+.btn-default:hover
+{
+    background-color:#dbf3d0;
+}
+
+input{
+  
+
+}
+/*Navbar*/
 
 .navbar-custom {
   border-color: transparent;
