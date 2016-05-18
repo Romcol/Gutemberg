@@ -15,5 +15,5 @@
   <input type="hidden" name="_token" value="{{{ csrf_token() }}}" />
 </form>
 <br>
-<p>Une revue de presse vide sera créee.</p>
+<p>Une revue de presse vide sera créée.</p>
 @stop

@@ -39,7 +39,7 @@ class PressReviewController extends Controller
 		$pressreview->description = $description;
 		$pressreview->owner_id = $user_id;
 		$pressreview->owner_name = $user_name;
-		$pressreview->articles = "[]";
+		$pressreview->articles = [];
 		$pressreview->save();
 
 		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
