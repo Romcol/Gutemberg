@@ -36,32 +36,38 @@ class SearchController extends Controller
         
         $_SESSION['searchUri'] = $searchUri;
 
-        //For newspaper search, specific file !
+        //For newspaper search
         if( $type == 'newspaper'){
 
             return view('pages.newspaper', $this->newsPaperSearch());
 
         }else{
 
-            if( $type == 'articles'){
+            if($text == ''){
+                $params = $this->paramNoText($from);
+                $regexp = (isset($_GET['regexp']))? $_GET['regexp'] : false;
+            }else{
 
-                if( isset($_GET['regexp'])){
-                    $params = $this->paramArticleRegexp($text, $from);
-                    $regexp = $_GET['regexp'];
-                }else{
-                    $params = $this->paramArticle($text, $from);
-                    $regexp = false;
-                }
+                if( $type == 'articles'){
+
+                    if( isset($_GET['regexp'])){
+                        $params = $this->paramArticleRegexp($text, $from);
+                        $regexp = $_GET['regexp'];
+                    }else{
+                        $params = $this->paramArticle($text, $from);
+                        $regexp = false;
+                    }
 
 
-            }elseif( $type == 'titles'){
+                }elseif( $type == 'titles'){
 
-                if( isset($_GET['regexp'])){
-                    $params = $this->paramTitleRegexp($text, $from);
-                    $regexp = $_GET['regexp'];
-                }else{
-                    $params = $this->paramTitle($text, $from);
-                    $regexp = false;
+                    if( isset($_GET['regexp'])){
+                        $params = $this->paramTitleRegexp($text, $from);
+                        $regexp = $_GET['regexp'];
+                    }else{
+                        $params = $this->paramTitle($text, $from);
+                        $regexp = false;
+                    }
                 }
             }
 
@@ -447,5 +453,25 @@ class SearchController extends Controller
 
         return $params;
 
+    }
+
+    public function paramNoText($from){
+
+        $params = [
+            'query' => [
+                'filtered' => [
+                    'filter' => []
+                ]
+            ],
+            'highlight' => [
+                'fields' => [
+                    'Title' => new \stdClass
+                ]
+            ],
+            'from' => $from,
+            'size' => 11
+        ];
+
+        return $params;
     }
 }
