@@ -53,48 +53,21 @@ class AuthController extends Controller
     {
         $messages = array(
             'required'=> 'Le champ doit être rempli.',
-            'max'    => 'Le nom et l\'adresse ne doivent pas dépasser :max caractères.',
+            'email.max'    => 'L\'adresse ne doit pas dépasser :max caractères.',
+            'name.max'  => 'Le nom ne doit pas dépasser :max caractères.',
+            'email.unique'    => 'Mail déjà existant dans la base.',
+            'name.unique'  => 'Nom déjà existant dans la base.',
             'confirmed' => 'Confirmer le mot de passe.',
             'min'      => 'Le mot de passe doit contenir au moins :min caractères',
         );
 
         $validator =  Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255',
+            'name' => 'required|max:255|unique:Users',
+            'email' => 'required|email|max:255|unique:Users',
             'password' => 'required|confirmed|min:6',
             ],
             $messages 
         );
-
-        $validator->after(function($validator){
-            $validData = $validator->getData();
-            $param = [
-                'query' => [
-                    'term' => [
-                        'name' => $validData['name']
-                    ]
-                ]
-            ];
-
-           $result = User::search($param);
-            if( $result->total() != 0){
-                $validator->errors()->add('name', 'Nom déjà existant dans la base');
-            }
-
-            $param2 = [
-                'query' => [
-                    'term' => [
-                        'email' => $validData['email']
-                    ]
-                ]
-            ];
-
-            $result = User::search($param2);
-            if( $result->total() != 0){
-                $validator->errors()->add('email', 'Mail déjà existant dans la base');
-            }
-
-        });
 
         return $validator;
     }
