@@ -21,7 +21,7 @@
 	@else
 	<p>Revue de presse vide.<p>
 	@endif
-	<a href="supprimerrevue-{{$pressreview['_id']}}" class="btn btn-primary" role="button">Supprimer la revue de presse</a>
+	<a href="<?= url('/revue/'.$pressreview['_id'].'/delete') ?>" class="btn btn-primary" role="button">Supprimer la revue de presse</a>
 @else
     <p>Aucun résultat pour cette revue de presse.</p>
 @endif

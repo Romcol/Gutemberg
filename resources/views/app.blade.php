@@ -61,7 +61,7 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="profil">Votre profil</a>
+                            <a href="<?= url('/profil') ?>">Votre profil</a>
                         </li>
                     @endif
                     <li>

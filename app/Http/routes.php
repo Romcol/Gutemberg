@@ -47,15 +47,15 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get( 'changeArticle', 'ViewerController@searchArticle');
 	Route::get( 'newSearch', 'ViewerController@searchKeyword');
 
-	Route::get('revue-{id}', 'PressReviewController@index');
+	Route::get('revue/create', 'PressReviewController@make');
 
-	Route::get('creationrevue', 'PressReviewController@make');
+	Route::post('revue/create', 'PressReviewController@insert');
 
-	Route::post('creationrevue', 'PressReviewController@insert');
+	Route::get('revue/{id}', 'PressReviewController@index');
 
-	Route::get('supprimerrevue-{id}', 'PressReviewController@delete');
+	Route::get('revue/{id}/delete', 'PressReviewController@delete');
 
-	Route::get( 'profil', 'UserController@index');
+	Route::get('profil', 'UserController@index');
 
 	Route::get('register', function () {
 	    return view('auth.register');

@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\PressReview;
 use App\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class PressReviewController extends Controller
 {
@@ -58,11 +59,10 @@ class PressReviewController extends Controller
     		{
     			$user->pull('createdReviews',$reviews[$i]);
 	    		$pressreview->delete();
-	    		return 'Revue de presse supprimée';
+	    		return Redirect::to('profil')->with(['message' => 'Revue de presse supprimée.', 'status' => 'success']);
     		}
     	}
-
-    	return "L'action n'a pas pu être effectuée.";
+    return Redirect::to('profil')->with(['message' => "La revue de presse n'a pas pu être supprimée.", 'status' => 'fail']);
     }
 
 }

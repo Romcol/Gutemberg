@@ -2,7 +2,7 @@
 
 @section('page_content_notfluid')
 <h3>Création de revue de presse</h3>
-<form action="creationrevue" method="post">
+<form action="<?= url('/revue/create') ?>" method="post">
   <div class="form-group">
     <label for="name">Nom de la revue</label>
     <input type="text" class="form-control" name="name" placeholder="Nom...">
