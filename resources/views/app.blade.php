@@ -60,6 +60,9 @@
                                 <li><a href="{{ url('/logout') }}"><i class="fa fa-btn fa-sign-out"></i>Se déconnecter</a></li>
                             </ul>
                         </li>
+                        <li>
+                            <a href="profil">Votre profil</a>
+                        </li>
                     @endif
                     <li>
                         <a href="#">Aide</a>

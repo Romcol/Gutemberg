@@ -47,11 +47,13 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get( 'changeArticle', 'ViewerController@searchArticle');
 	Route::get( 'newSearch', 'ViewerController@searchKeyword');
 
-	Route::get('revues', 'PressReviewController@index');
+	Route::get('revue', 'PressReviewController@index');
 
 	Route::get('creationrevue', 'PressReviewController@make');
 
 	Route::post('creationrevue', 'PressReviewController@insert');
+
+	Route::get( 'profil', 'UserController@index');
 
 	Route::get('register', function () {
 	    return view('auth.register');

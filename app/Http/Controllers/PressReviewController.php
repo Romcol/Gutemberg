@@ -32,6 +32,7 @@ class PressReviewController extends Controller
     {
     	$name = $request->input('name');
     	$description = $request->input('description');
+    	//$user = Auth::user();
     	$user_id = Auth::user()->_id;
     	$user_name = Auth::user()->name;
 
