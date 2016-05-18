@@ -158,6 +158,7 @@ return [
 
         Jenssegers\Mongodb\MongodbServiceProvider::class,
         Fadion\Bouncy\BouncyServiceProvider::class,
+        Jenssegers\Mongodb\Auth\PasswordResetServiceProvider::class,
     ],
 
     /*

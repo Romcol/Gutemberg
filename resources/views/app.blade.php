@@ -50,10 +50,10 @@
                 <ul class="nav navbar-nav">
                     @if (Auth::guest())
                     <li>
-                        <a href="register">S'inscrire</a>
+                        <a href="{{ url('/register') }}">S'inscrire</a>
                     </li>
                     <li>
-                        <a href="login">Se connecter</a>
+                        <a href="{{ url('/login') }}">Se connecter</a>
                     </li>
                     @else
                         <li class="dropdown">
