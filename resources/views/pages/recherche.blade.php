@@ -1,9 +1,5 @@
 @extends('app')
 
-@section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css"> 
-@stop
-
 @section('page_content')
 
       <div class="row">
@@ -43,7 +39,7 @@
               </select>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary">Recherche</button>
+            <button type="submit" class="btn btn-default">Recherche</button>
           </form>
         </div>
             

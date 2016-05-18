@@ -1,16 +1,22 @@
 @extends('app')
 
+@section('page_out')
+        <div class="hero-image-container">
+        <div>
+        <img src="<?= asset('/hero.jpg') ?>" alt="hero"/>
+        <h1></h1>
+        </div>
+        </div>
+@stop
+
 @section('page_content')
         <!-- Jumbotron Header -->
-        <header class="jumbotron hero-spacer">
+       <!-- <header class="jumbotron hero-spacer">
             <center>
 	            <h1>Bienvenue sur Gutemberg !</h1>
 	            <h3 style="margin-top:20px">Plateforme web de consultation de journaux anciens</h3>
-	            <!--<p><a class="btn btn-primary btn-large">Call to action!</a>
-	            </p>-->
         	</center>
-        </header>
-
+        </header>-->
         <div class="row text-center">
 
          <form class="form-inline" action="recherche">
@@ -25,7 +31,7 @@
 					<option value="titles">Titres des articles</option>
   				</select>
 		  </div>
-		  <button type="submit" class="btn btn-lg btn-primary">Recherche</button>
+		  <button type="submit" class="btn btn-lg btn-default">Recherche</button>
 		</form>
 		</div>
 

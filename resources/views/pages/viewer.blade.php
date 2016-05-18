@@ -7,7 +7,7 @@
 
 @section('page_content')
 
-<a id="backSearch" href="{{$searchUri}}" <?php if( $searchUri == null ) echo 'style="display: none"';?> class="btn btn-info btn-sm"><img src="<?= asset('resources/viewer/back(1).png') ?>" class="viewer-icon" alt="Flèche droite"/> <strong>Retour à la recherche</strong></a>
+<a id="backSearch" href="{{$searchUri}}" <?php if( $searchUri == null ) echo 'style="display: none"';?> class="btn btn-default btn-sm"><img src="<?= asset('resources/viewer/back(1).png') ?>" class="viewer-icon" alt="Flèche droite"/> <strong>Retour à la recherche</strong></a>
 
 <div class="row">
 	<div id="pageInfo" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">

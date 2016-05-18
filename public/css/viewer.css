@@ -1,29 +1,24 @@
 #pageInfo {
-	background-color: white;
 	padding:0px 0px 0px 0px;
 	float:left;
     border-style: solid;
     border-width: 2px 2px 2px 0px;
-    border-color: #87CEFA;
-    border-radius:0px 5px 5px 0px;
+    border-color: black;
 
 }
 
 #pageGuide {
-    background-color: white;
     padding:0px 0px 0px 0px;
     float:right;
     border-style: solid;
     border-width: 2px 0px 2px 2px;
-    border-color: #87CEFA;
-    border-radius:5px 0px 0px 5px;
+    border-color: black;
 
 }
 
 #ourOpenseadragon {
     height: 700px; 
-    border-style: outset; 
-    border-color: #87CEFA;
+    border-color: black;
     border-width: 2px;
     padding: 0px 0px 50px 0px;
 }
@@ -58,7 +53,7 @@
 #infoHidden {
 	float:left;
 	display:none;
-	background-color: #87CEFA;
+	background-color: black;
 	width:55px;
 	padding:3px 0px 3px 25px;
     border-radius:0px 2px 2px 0px;
@@ -68,7 +63,7 @@
 #guideHidden{
     float:right;
     display:none;
-    background-color: #87CEFA;
+    background-color: black;
     width:55px;
     padding:3px 0px 3px 10px;
     border-radius:2px 0px 0px 2px;
@@ -82,12 +77,11 @@
 
 #hideInfo {
     float: right;
-    background-color: #87CEFA;
+    background-color: black;
     padding:2px;
     border-style: solid;
     border-width: 2px;
-    border-color: #87CEFA;
-    border-radius:0px 2px 0px 5px;
+    border-color: black;
     cursor:pointer; 
     color: white;
 
@@ -95,12 +89,11 @@
 
 #hideGuide {
     float: left;
-    background-color: #87CEFA;
+    background-color: black;
     padding:2px;
     border-style: solid;
     border-width: 2px;
-    border-color: #87CEFA;
-    border-radius:2px 0px 5px 0px;
+    border-color: black;
     cursor:pointer; 
     color: white;
 }
@@ -117,17 +110,17 @@
 
 #backSearch {
     margin: -10px 0px 10px 0px;
-    background-color: #87CEFA;
+    /*background-color: black;*/
 }
 
 .section {
-    background-color: #E0FFFF;
+    /*background-color: #E0FFFF;*/
     padding:10px;
 
     margin:10px 10px 10px 10px;
     border-style: solid;
     border-width: 2px;
-    border-color: #87CEFA;
+    /*border-color: black;*/
 }
 
 
