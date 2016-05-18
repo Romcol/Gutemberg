@@ -82,6 +82,7 @@
     </div>
 
     <div class="container">
+    @yield('page_content_notfluid')
         <hr>
 
         <!-- Footer -->

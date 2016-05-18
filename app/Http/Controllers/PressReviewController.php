@@ -13,12 +13,9 @@ use Illuminate\Support\Facades\Auth;
 class PressReviewController extends Controller
 {
 
-	public function index()
+	public function index($id)
     {
-    	$id = $_GET['id'];
-
     	$pressreview = PressReview::find($id);
-    	//dd($pressreviews);
 
     	return view('pages.pressreview', compact('pressreview'));
     }
@@ -32,9 +29,9 @@ class PressReviewController extends Controller
     {
     	$name = $request->input('name');
     	$description = $request->input('description');
-    	//$user = Auth::user();
-    	$user_id = Auth::user()->_id;
-    	$user_name = Auth::user()->name;
+    	$user = Auth::user();
+    	$user_id = $user->_id;
+    	$user_name = $user->name;
 
     	$pressreview = new PressReview;
 		$pressreview->name = $name;
@@ -44,11 +41,28 @@ class PressReviewController extends Controller
 		$pressreview->articles = "[]";
 		$pressreview->save();
 
-		$user = User::find($user_id);
 		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
 		$user->push('createdReviews',$pressreviewobject);
 
-    	return view('pages.pressreviewinsert', compact('name','description'));
+    	return view('pages.pressreviewinsert', compact('pressreview'));
+    }
+
+    public function delete($id)
+    {
+    	$user = Auth::user();
+    	$pressreview = PressReview::find($id);
+    	$reviews = $user->createdReviews;
+    	foreach($reviews as $i => $pr)
+    	{
+    		if($pr['_id'] == $id)
+    		{
+    			$user->pull('createdReviews',$reviews[$i]);
+	    		$pressreview->delete();
+	    		return 'Revue de presse supprimée';
+    		}
+    	}
+
+    	return "L'action n'a pas pu être effectuée.";
     }
 
 }

@@ -1,14 +1,10 @@
 @extends('app')
 
-@section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css"> 
-@stop
-
-@section('page_content')
+@section('page_content_notfluid')
 @if($pressreview)
 	<p>Nom : {{$pressreview['name']}}
 	<br>Description : {{$pressreview['description']}}</p>
-	@if(!empty($pressreview['articles']))
+	@if($pressreview['articles'] != '[]')
 		@foreach ($pressreview['articles'] as $article)
 		      	<article>
 	            <div class="panel panel-default">
@@ -25,6 +21,7 @@
 	@else
 	<p>Revue de presse vide.<p>
 	@endif
+	<a href="supprimerrevue-{{$pressreview['_id']}}" class="btn btn-primary" role="button">Supprimer la revue de presse</a>
 @else
     <p>Aucun résultat pour cette revue de presse.</p>
 @endif

@@ -1,13 +1,9 @@
 @extends('app')
 
-@section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css"> 
-@stop
-
-@section('page_content')
+@section('page_content_notfluid')
 <p>Revue de presse vide créee.</p>
 <p>Infos :<br>
-Nom : {{$name}}<br>
-Description : {{$description}}<br>
+<a href="revue-{{$pressreview['_id']}}">{{$pressreview['name']}}</a><br>
+Description : {{$pressreview['description']}}<br>
 </p>
 @stop

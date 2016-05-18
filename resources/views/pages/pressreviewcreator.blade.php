@@ -1,11 +1,6 @@
 @extends('app')
 
-@section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css"> 
-@stop
-
-@section('page_content')
-<div class="col-md-8 col-md-offset-1 col-lg-8 col-lg-offset-1">
+@section('page_content_notfluid')
 <h3>Création de revue de presse</h3>
 <form action="creationrevue" method="post">
   <div class="form-group">
@@ -21,5 +16,4 @@
 </form>
 <br>
 <p>Une revue de presse vide sera créee.</p>
-</div>
 @stop
