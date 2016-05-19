@@ -48,12 +48,17 @@
 				<strong>Titre :</strong> <span id="currentTitle"></span>
 				<strong>Vues :</strong> <span id="currentViews"></span>
 				<p><strong>Tags :</strong> <span id="currentTags"></span>
-					<div class="ui-widget" <?php if(Auth::guest()) echo 'style="display: none"';?> >
+					@if( !Auth::guest() )
+					<div class="ui-widget">
 					  <input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
 					</div>
-					<div <?php if(!Auth::guest()) echo 'style="display: none"';?> > <center style="color: grey; ">Connectez-vous pour pouvoir ajouter ou supprimer des tags</center> </div>
+					@else
+					<div> <center style="color: grey; ">Connectez-vous pour pouvoir ajouter ou supprimer des tags</center> </div>
+					@endif
 				</p>
+				@if( !Auth::guest() )
 				<button type="button" id="showAddReview" onclick="displayAddReview()" class="btn btn-default btn-sm">Ajouter cet article à une revue de presse</button>
+				@endif
 			</div>
 		</div>
 	</div>
@@ -120,28 +125,39 @@
 			      	<select id="listCreated" class="form-control">
 			      		<option selected disabled >Vous n'avez pas de revues de presse créées</option>
 				  	</select>
+				  	<button type="button" id="addCreated" onclick="selectCreated()" class="btn btn-default btn-sm disabled" ><h5>Ajouter</h5></button>
 			    </li>
 			    <li>
 			      	<h5>Mes revues de presse contribuées</h5>
 			      	<select id="listContributed" class="form-control">
 			      		<option selected disabled >Vous n'avez pas de revues de presse contribuées</option>
 					</select>
+					<button type="button" id="addContributed" onclick="selectContributed()" class="btn btn-default btn-sm disabled" ><h5>Ajouter</h5></button>
 			    </li>
 			    <li>
 			      	<h5>Rechercher une revue de presse</h5>
 			      	<div class="form-group" style="display:inline-block;">
-					    <input id="searchReview" onclick="selectPressReview()">
-					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span>
+					    <input id="searchReview" onchange="selectSearchReview(1)">
+					    <button type="button" id="searchReviewbutton" class="btn btn-default btn-sm">Rechercher</button>
 					 </div>
 			    </li>
 		    </ul>
 		 </form>
 		 <center><h4>OU</h4></center>
 		 <div>
-		  	<center><button type="button" id="newReview" class="btn btn-default btn-sm"><h5>Créer une nouvelle revue de presse</h5></button></center>
+		  	<center><h5>Créer une nouvelle revue de presse</h5></button></center>
+			<div class="form-group">
+			    <label for="name">Nom de la revue</label>
+			    <input type="text" id="newReviewName" class="form-control" name="name" placeholder="Nom...">
+			  </div>
+			  <div class="form-group">
+			    <label for="description">Description</label>
+			    <textarea id="newReviewDescr" class="form-control" rows="3" name="description" placeholder="Description..."></textarea>
+			 </div>
+		  	<button type="button" id="newReview" onClick="selectNew()" class="btn btn-default btn-sm"><h5>Créer</h5></button>
 		 </div>
 	</div>
-	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" id="ReviewList"></div>
+	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="ReviewList"></div>
 </div>
 @stop
 
@@ -707,9 +723,8 @@
 						it = iterator - 2;
 					}
 					var coordX = overlaysKwd[it].px;
-					console.log(coordX);
 					var coordY = overlaysKwd[it].py;
-					console.log(coordY);
+
 
 					//zoom on position
 					var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
@@ -813,6 +828,14 @@
 				$(elemnt).find("img").remove();
 			}
 
+			function existInReviews(idReview){
+				for(var i=0; i<article.Reviews.length; i++){
+					if( idReview == article.Reviews[i]._id) return true;
+				}	
+
+				return false;
+			}
+
 
 			function displayAddReview(){
 
@@ -822,7 +845,11 @@
 					$('#addCreated').removeClass('disabled');
 					$('#listCreated').text('');
 					for(var i=0; i<createdReviews.length; i++){
-						$('#listCreated').append('<option>'+createdReviews[i].name+'</option>');
+						if( !existInReviews(createdReviews[i]._id) ){
+							$('#listCreated').append('<option value='+i+'>'+createdReviews[i].name+'</option>');
+						}else{
+							$('#listCreated').append('<option value='+i+'>'+createdReviews[i].name+' (déjà présent)</option>');
+						}
 					}
 				}
 
@@ -830,22 +857,207 @@
 					$('#addContributed').removeClass('disabled');
 					$('#listContributed').text('');
 					for(var i=0; i<contributedReviews.length; i++){
-						$('#listContributed').append('<option>'+contributedReviews[i].name+'</option>');
+						if( !existInReviews(createdReviews[i]._id) ){
+							$('#listContributed').append('<option value='+i+'>'+contributedReviews[i].name+'</option>');
+						}else{
+							$('#listContributed').append('<option value='+i+'>'+contributedReviews[i].name+' (déjà présent)</option>');
+						}
 					}
 				}
 
 			}
 
+			function writeResults(results, entry, page){
+				$("#ReviewList").append('<h3>Résultats de la recherche pour "'+entry+'"</h3>')
+				for(var i =0; i<Math.min(5, results.length); i++){
+					var string = '';
+					string+='<review>';
+			        string+='    <div class="panel panel-default">';
+			        string+='      <div class="panel-heading">';
+			        string+='       <a href="revue/'+results[i]._id+'"> <h3 class="panel-title">'+results[i].name+'</h3></a><button type="button" onClick="selectOther('+i+', \''+results[i]._id+'\',\''+results[i].name+'\')" class="btn btn-default btn-sm">Ajouter à cette revue</button>';
+			        string+='      </div>';
+			        string+='      <div class="panel-body">';
+			        string+='        <p id="'+i+'">'+results[i].description+'</p>'
+			        string+='      </div>';
+			        string+='    </div>';
+			      	string+='	</review>';
+					$("#ReviewList").append(string);
+				}
+					pageButton = '<nav><ul class="pager">';
+					if( page>1){
+			      	    pageButton+='<li class="previous"><a onClick="selectSearchReview('+(page-1)+')">Précédent</a></li>';
+			      	}
+			      	if(results.length == 6){
+			      	     pageButton+='<li class="next"><a onClick="selectSearchReview('+(page+1)+')">Suivant</a></li>';
+					}
+					pageButton+='</ul></nav>';
+					$("#ReviewList").append(pageButton);
+			}
+
 
 			function selectCreated(){
+
+				var number = $('#listCreated').find(':selected').attr('value');
+
+				var description = "";
+				for(var i=0; i<Math.min(10, article.Words.length); i++){
+					description+=article.Words[i].Word;
+				}  
+				description+="...";
+
+				$.get(
+
+				    'addArticle', // Le fichier cible côté serveur.
+
+				    {
+				    	idArticle: article._id,
+				    	idPage: article.IdPage,
+				    	date: article.Date,
+				    	newspaper: article.TitleNewsPaper,
+				    	title: article.Title,
+				    	description: description,
+				    	idReview: createdReviews[number]._id,
+				    	nameReview: createdReviews[number].name
+				    },
+
+				    function(data){
+
+					}
+
+				);
+
+				$("#reviewPart").hide();
 
 			}
 
 			function selectContributed(){
 
+				var number = $('#listContributed').find(':selected').attr('value');
+
+				var description = "";
+				for(var i=0; i<Math.min(10, article.Words.length); i++){
+					description+=article.Words[i].Word;
+				}  
+				description+="...";
+
+				$.get(
+
+				    'addArticle', // Le fichier cible côté serveur.
+
+				    {
+				    	idArticle: article._id,
+				    	idPage: article.IdPage,
+				    	date: article.Date,
+				    	newspaper: article.TitleNewsPaper,
+				    	title: article.Title,
+				    	description: description,
+				    	idReview: contributedReviews[number]._id,
+				    	nameReview: contributedReviews[number].name
+				    },
+
+				    function(data){
+
+					}
+
+				);
+
+				$("#reviewPart").hide();
 			}
 
-			function selectSearchReview(){
+			function selectSearchReview(page){
+
+				var text = $('#searchReview').val();
+
+				$("#ReviewList").text('');
+
+				$.get(
+
+				    'searchReview', // Le fichier cible côté serveur.
+
+				    {
+				    	text: text,
+				    	size: 5,
+				    	page: page
+				    },
+
+				    function(data){
+				    	var searchReviewResult = data;
+				    	writeResults(data, text, page);
+					}
+
+				);
+
+			}
+
+			function selectOther(elemnt, idRev, nameRev){
+
+
+				var description = "";
+				for(var i=0; i<Math.min(10, article.Words.length); i++){
+					description+=article.Words[i].Word;
+				}  
+				description+="...";
+
+				$.get(
+
+				    'addArticleToOther', // Le fichier cible côté serveur.
+
+				    {
+				    	idArticle: article._id,
+				    	idPage: article.IdPage,
+				    	date: article.Date,
+				    	newspaper: article.TitleNewsPaper,
+				    	title: article.Title,
+				    	description: description,
+				    	idReview: idRev,
+				    	nameReview: nameRev,
+				    	descriptionRev: $('#'+elemnt).text()
+				    },
+
+				    function(data){
+
+					}
+
+				);
+
+				$("#searchReview").val('');
+				$("#reviewPart").hide();
+			}
+
+			function selectNew(){
+
+				var name = $('#newReviewName').val();
+				var descr = $('#newReviewDescr').val();
+
+				var description = "";
+				for(var i=0; i<Math.min(10, article.Words.length); i++){
+					description+=article.Words[i].Word;
+				}  
+				description+="...";
+
+				$.get(
+
+				    'newReview', // Le fichier cible côté serveur.
+
+				    {
+				    	idArticle: article._id,
+				    	idPage: article.IdPage,
+				    	date: article.Date,
+				    	newspaper: article.TitleNewsPaper,
+				    	title: article.Title,
+				    	description: description,
+				    	nameReview: name,
+				    	descriptionRev: descr
+				    },
+
+				    function(data){
+
+					}
+
+				);
+				$('#newReviewName').val('');
+				$('#newReviewDescr').val('');
+				$("#reviewPart").hide();
 			}
 
 
