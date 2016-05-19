@@ -24,14 +24,11 @@ footer {
 
 /*Pour la recherche*/
 
-#searchRow {
-    background-color: #E0FFFF;
+.searchRow {
+    background-color: #d4dff3;
     padding:10px 10px 30px 10px;
-
     margin:10px 10px 10px 10px;
-    border-style: solid;
-    border-width: 4px;
-    border-color: #d4dff3;
+    border: 4px solid #d4dff3;
 }
 
 .tag {
@@ -56,7 +53,7 @@ footer {
 }
 
 article em{
-	background-color:#E9D460;
+	background-color: #ffec9b;
 }
 
 /*Nouveau design*/
@@ -91,7 +88,9 @@ article em{
     font-weight: bold;
 }
 
-.btn, .form-control{
+/*Buttons*/
+
+.btn, .btn-default, .form-control{
     border-radius: 0px;
     outline: none;
     border: none;
@@ -100,14 +99,104 @@ article em{
     box-shadow: none !important;
 }
 
-.btn-default:hover
+.btn-default:focus,
+.btn-default.focus,
+.btn-default:hover,
+.btn-default.hover,
+.btn-default:active,
+.btn-default.active,
+.btn-default:active:hover,
+.btn-default.active:hover,
+.btn-default:active.focus,
+.btn-default.active.focus
 {
     background-color:#dbf3d0;
+    border: none;
 }
 
-input{
-  
+.btn:focus,
+.btn.focus,
+.btn:hover,
+.btn.hover,
+.btn:active,
+.btn.active,
+.btn:active:hover,
+.btn.active:hover,
+.btn:active.focus,
+.btn.active.focus
+{
+    outline: none;
+}
 
+/*Panels*/
+
+.panel-default, .panel-default>.panel-heading
+{
+    border:none;
+    border-radius:0px;
+}
+
+.panel-default>.panel-heading{
+    background-color:white;
+    color:black;
+    font-weight:bold;
+}
+
+.panel-body{
+    background-color:#d4dff3;
+}
+
+.btn-link, .btn-link:focus, .btn-link:hover{
+    color:black;
+    text-decoration:underline;
+}
+.panel-default a, .panel-default a:focus, .panel-default a:hover{
+    color:black;
+    text-decoration:underline;
+}
+/*.panel-default .form-control{
+    background-color:#d4dff3;
+}
+
+.panel-default .btn-default:focus,
+.panel-default .btn-default.focus,
+.panel-default .btn-default:hover,
+.panel-default .btn-default.hover,
+.panel-default .btn-default:active,
+.panel-default .btn-default.active,
+.panel-default .btn-default:active:hover,
+.panel-default .btn-default.active:hover,
+.panel-default .btn-default:active.focus,
+.panel-default .btn-default.active.focus
+{
+    background-color:#d4dff3;
+    border: none;
+}*/
+
+/*Liens*/
+
+/*.container a, .container a:focus, .container a:hover
+{
+    color:black;
+    text-decoration: underline;
+}*/
+
+/*Pager*/
+
+.pager li>a, .pager li>span
+{
+    border:none;
+    border-radius:0px;
+}
+
+.pager a:focus, .pager a:hover, .pager a
+{
+    color:black;
+}
+
+.pager li>a:focus, .pager li>a:hover
+{
+    background-color: #bbe3e3;
 }
 /*Navbar*/
 

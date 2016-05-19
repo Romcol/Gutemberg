@@ -1,11 +1,12 @@
 @extends('app')
 
 @section('page_content_notfluid')
-    <h3>Page de profil</H3>
+    <h3>Votre profil</h3>
+    <hr>
     <p>Nom : {{$user['name']}}</p>
     <p>Email : {{$user['email']}}</p>
-    <p><a href="#">Modifier le profil (TODO)</a></p>
-    <p><a href="{{ url('/revue/create') }}">Créer une nouvelle revue de presse</a></p>
+    <p><a class="btn btn-default" href="#">Modifier le profil (TODO)</a></p>
+    <p><a class="btn btn-default" href="{{ url('/revue/create') }}">Créer une nouvelle revue de presse</a></p>
     @if($user['createdReviews'] != '[]')
     <h4>Dernières revues de presse crées :</h4>
 	    @foreach ($user['createdReviews'] as $i => $pressreview)

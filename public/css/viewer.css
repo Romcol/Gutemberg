@@ -102,19 +102,12 @@
 
 #backSearch {
     margin: -10px 0px 10px 0px;
-    /*background-color: black;*/
 }
 
 .section {
-    /*background-color: #E0FFFF;*/
     padding:10px;
-
     margin:10px 10px 10px 10px;
-    border-style: solid;
-    border-width: 2px;
-    /*border-color: black;*/
 }
-
 
 .overlayArt {
 	border-style: solid;

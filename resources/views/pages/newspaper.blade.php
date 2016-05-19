@@ -1,13 +1,9 @@
 @extends('app')
 
-@section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css"> 
-@stop
-
 @section('page_content')
 
       <div class="row">
-         <div class="col-md-2 col-lg-2" id="searchRow" >
+         <div class="col-md-2 col-lg-2 searchRow" >
           <h3>Critères de recherche</h3>
           <hr>
           <form class="form-vertical" action="recherche">
@@ -41,7 +37,7 @@
               </select>
             </div>
             <hr>
-            <button type="submit" class="btn btn-primary">Recherche</button>
+            <button type="submit" class="btn btn-default">Recherche</button>
           </form>
         </div>
             

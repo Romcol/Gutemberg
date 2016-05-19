@@ -3,7 +3,7 @@
 @section('page_content')
 
       <div class="row">
-         <div class="col-md-2 col-lg-2" id="searchRow" >
+         <div class="col-md-2 col-lg-2 searchRow" >
           <h3>Critères de recherche</h3>
           <hr>
           <form class="form-vertical" action="recherche">
@@ -55,7 +55,7 @@
                   
     	    <!-- Title -->
     	    <div class="row">
-  		      <div class="col-lg-12">
+  		      <div>
   		        <h3>Résultats de la recherche pour <?php if( $text == '') echo 'tous les articles'; else echo '"'.$text.'"'; ?> </h3>
   		        <p>{{$articles->total()}} occurrences trouvées ({{$articles->took()}} ms)</p>
               <hr>

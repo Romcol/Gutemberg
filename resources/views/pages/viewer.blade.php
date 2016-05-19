@@ -179,10 +179,18 @@
 			var savedTags = <?php echo $savedTags; ?> ;
 
 			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?> ;
-			if(auth){
-				var createdReviews = <?php echo json_encode(Auth::user()->createdReviews); ?> ;
-				var contributedReviews = <?php echo json_encode(Auth::user()->contribReviews); ?> ;
+
+			<?php
+			if(Auth::user())
+			{
+			?>
+				if(auth){
+					var createdReviews = <?php echo json_encode(Auth::user()->createdReviews); ?> ;
+					var contributedReviews = <?php echo json_encode(Auth::user()->contribReviews); ?> ;
+				}
+			<?php
 			}
+			?>
 
 			var zoom = true;
 			var toggle = true;
