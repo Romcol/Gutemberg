@@ -8,7 +8,6 @@
 @section('page_content')
 
 <a id="backSearch" href="{{$searchUri}}" <?php if( $searchUri == null ) echo 'style="display: none"';?> class="btn btn-info btn-sm"><img src="<?= asset('resources/viewer/back(1).png') ?>" class="viewer-icon" alt="Flèche droite"/> <strong>Retour à la recherche</strong></a>
-
 <div class="row">
 	<div id="pageInfo" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
 		<div id="hideInfo">
@@ -101,6 +100,34 @@
 	<div id="guideHidden">
 		<img src="<?= asset('resources/viewer/previous-white.png') ?>" height="20px" alt="Flèche gauche" />
 	</div>
+</div>
+<div class="row" id="reviewPart">
+	<hr>
+	<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" id="choice">
+		<center><h4>À quelle revue de presse voulez-vous ajouter cet article ?</h4></center>
+          <form class="form-vertical">
+	         <div  id="created" onclick="selectCreated()" class="radio">
+			  <label><input type="radio"><h5>Mes revues de presse créées : </h5></label>
+			  <select id="listCreated" class="form-control">
+			  </select>
+			  <button type="button" id="addCreated" class="btn btn-default btn-sm"><h5>Ajouter</h5></button>
+			</div>
+			<div id="contributed" onclick="selectContributed()" class="radio">
+			  <label><input type="radio"><h5>Mes revues de presse contribuées</h5></label>
+			  <select id="listContributed" class="form-control">
+			  </select>
+			  <button type="button" id="addContributed" class="btn btn-default btn-sm"><h5>Ajouter</h5></button>
+			</div>
+			<div id="searchReview" onclick="selectPressReview()" class="radio">
+			  <label><input type="radio"><h5>Rechercher une revue de presse</h5></label>
+			</div>
+		  </form>
+		  <center><h4>OU</h4></center>
+		  <div>
+		  	<center><button type="button" id="newReview" class="btn btn-default btn-sm"><h5>Créer une nouvelle revue de presse</h5></button></center>
+		  </div>
+	</div>
+	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" id="ReviewList"></div>
 </div>
 @stop
 
@@ -653,6 +680,20 @@
 					iterator+= 1 ;
 					if( iterator >= overlaysKwd.length) iterator = 0;
 				}
+
+			}
+
+			function selectCreated(){
+
+
+			}
+
+			function selectContributed(){
+
+			}
+
+			function selectSearchReview(){
+
 
 			}
 

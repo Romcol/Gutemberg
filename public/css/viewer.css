@@ -193,3 +193,27 @@
    cursor: default;
    color: #C0C0C0;
 }
+
+#choice {
+    margin: 10px;
+    border-style: solid;
+    border-color: #E6E6FA;
+    padding-bottom: 5px;
+}
+
+#created {
+
+}
+
+#contributed {
+
+}
+
+#searchReview {
+
+}
+
+#newReview{
+    padding-top: 0px;
+    padding-bottom: 0px
+}
