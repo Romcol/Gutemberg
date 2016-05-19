@@ -14,8 +14,12 @@
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 
+    <!-- jQuery css -->
+    <link rel="stylesheet" href="<?php echo asset('css/jquery-ui.css')?>" type="text/css">
+
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="<?php echo asset('css/app.css')?>" type="text/css"> 
+    <link rel="stylesheet" href="<?php echo asset('css/app.css')?>" type="text/css">
+
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -47,10 +51,10 @@
                 <ul class="nav navbar-nav">
                     @if (Auth::guest())
                     <li>
-                        <a href="register">S'inscrire</a>
+                        <a href="{{ url('/register') }}">S'inscrire</a>
                     </li>
                     <li>
-                        <a href="login">Se connecter</a>
+                        <a href="{{ url('/login') }}">Se connecter</a>
                     </li>
                     @else
                         <li class="dropdown">
@@ -100,6 +104,7 @@
 
     <!-- jQuery -->
     <script src="<?= asset('/js/jquery.js') ?>"></script>
+    <script src="<?= asset('/js/jquery-ui.js') ?>"></script>
 
     <!-- Bootstrap Core JavaScript -->
     <script src="<?= asset('/js/bootstrap.min.js') ?>"></script>

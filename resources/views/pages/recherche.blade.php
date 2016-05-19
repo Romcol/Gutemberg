@@ -8,7 +8,7 @@
           <hr>
           <form class="form-vertical" action="recherche">
             <div class="form-group">
-              <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}" required>
+              <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}">
               <input type="checkbox" name="regexp" value="true" <?php if( $regexp ) echo 'checked';?> > <small>Accepter les expressions régulières</small> <br>
             </div>
             <div class="form-group">
@@ -27,6 +27,14 @@
             </div>
             <div class="form-group">
               à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
+            </div>
+            <div class="form-group">
+              <div class="ui-widget">
+                <h5 style="float: left">Tags : </h5><input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px;"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
+              </div>
+              <p id="tagForm">
+              </p>
+
             </div>
             <hr>
             <h4>Trier :</h4>
@@ -48,7 +56,7 @@
     	    <!-- Title -->
     	    <div class="row">
   		      <div class="col-lg-12">
-  		        <h3>Résultats de la recherche pour "{{$text}}"</h3>
+  		        <h3>Résultats de la recherche pour <?php if( $text == '') echo 'tous les articles'; else echo '"'.$text.'"'; ?> </h3>
   		        <p>{{$articles->total()}} occurrences trouvées ({{$articles->took()}} ms)</p>
               <hr>
     		    </div>
@@ -65,6 +73,11 @@
               <div class="panel-body">
                 <B class="title">@if($article->highlight('Title')) {!! $article->highlight('Title') !!} @else {{$article['Title']}} @endif</B>
                 <p style="margin-top:20px">{!! $article['Words'] !!}</p>
+                <p>
+                @foreach ($article['Tags'] as $tag)
+                <span class="tag"> {{$tag}}</span>
+                @endforeach
+                </p>
               </div>
             </div>
       		</article>
@@ -88,4 +101,78 @@
         </div>
       </div>
 
+@stop
+
+@section('scripts')
+  <script type="text/javascript">
+
+
+    function resetTag(){
+      $("#tagForm").text('');
+      tagNumber = 0;
+      for(var i=0; i<tags.length ; i++){
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tags[i]+'</span>');
+        tagNumber++;
+      }
+    }
+
+    var savedTags = <?php echo $savedTags; ?> ;
+    var tags = <?php echo $tags; ?> ;
+    var tagNumber = 0;
+
+    resetTag();
+
+    function newTag(tag = 'undefined'){
+
+      if( tag = 'undefined') tag = $('#tags').val();
+
+      if( tag != '' && savedTags.includes(tag) && !tags.includes(tag)){
+
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tag+'</span>');
+        tags[tagNumber] = tag;
+        tagNumber++;
+
+      }
+
+      $('#tags').val('');
+    }
+
+    function closeTag(elemnt){
+        var removedTag = $(elemnt).closest('span').text();
+
+        var index = tags.indexOf(removedTag);
+        if (index > -1) {
+            tags.splice(index, 1);
+        }
+
+        resetTag();
+
+
+      }
+
+      function tagMouseEnter(elemnt){
+        $(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+      }
+
+      function tagMouseLeave(elemnt){
+        $(elemnt).find("img").remove();
+      }
+
+  </script>
+
+  <script type="text/javascript">
+
+    $(window).load(function() {
+
+      var availableTags = savedTags;
+      $("#tags").autocomplete({
+          source: availableTags,
+          minLength: 0,
+          select: function( event, ui ) { 
+            newTag(ui.item.value);
+          }
+      });
+
+    });
+  </script>
 @stop

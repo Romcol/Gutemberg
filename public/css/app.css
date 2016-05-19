@@ -25,13 +25,34 @@ footer {
 /*Pour la recherche*/
 
 #searchRow {
-	height: 640px;
-    padding:10px;
+    background-color: #E0FFFF;
+    padding:10px 10px 30px 10px;
 
     margin:10px 10px 10px 10px;
     border-style: solid;
     border-width: 4px;
     border-color: #d4dff3;
+}
+
+.tag {
+    background-color: #87CEFA;
+    padding: 2px;
+}
+
+.closeTag {
+    background-color: #87CEFA;
+    padding: 1px;
+    height: 10px;
+    margin: 0px 0px 9px 0px;
+    cursor: pointer;
+
+}
+
+.viewer-icon
+{
+    height:20px;
+    color:grey;
+    cursor: pointer;
 }
 
 article em{

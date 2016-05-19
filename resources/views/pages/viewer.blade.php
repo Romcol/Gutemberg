@@ -1,7 +1,6 @@
 @extends('app')
 
 @section('css_includes')
-<link rel="stylesheet" href="<?= asset('css/app.css') ?>" type="text/css">
 <link rel="stylesheet" href="<?= asset('css/viewer.css') ?>" type="text/css"> 
 @stop
 
@@ -48,6 +47,12 @@
 			<div id="infoCurrentArticle">
 				<strong>Titre :</strong> <span id="currentTitle"></span>
 				<strong>Vues :</strong> <span id="currentViews"></span>
+				<p><strong>Tags :</strong> <span id="currentTags"></span>
+					<div class="ui-widget" <?php if(Auth::guest()) echo 'style="display: none"';?> >
+					  <input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
+					</div>
+					<div <?php if(!Auth::guest()) echo 'style="display: none"';?> > <center style="color: grey; ">Connectez-vous pour pouvoir ajouter ou supprimer des tags</center> </div>
+				</p>
 			</div>
 		</div>
 	</div>
@@ -75,7 +80,7 @@
 		    </form>
 	    </div>
 	    <div id="ourOpenseadragon" class="openseadragon"></div>
-	    <div id="toolbarDiv" class="toolbar">
+	    <div>
 		    <ul class="pager">
 				<li class="previous">
 					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/previous(1).png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
@@ -148,12 +153,22 @@
 				{
 					$("#currentTitle").text(article.Title);
 					$("#currentViews").text(article.Views);
+					$("#currentTags").text('');
+					if( article.Tags != undefined){
+						for(var i = 0; i < article.Tags.length; i++){
+							$("#currentTags").append(' <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+article.Tags[i]+'</span>');
+						}
+					}
 					$("#currentArticle").show();
 				}
 				else{
 					$("#currentArticle").hide();
 				}
 			}
+
+			var savedTags = <?php echo $savedTags; ?> ;
+
+			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?>
 
 			var zoom = true;
 			var toggle = true;
@@ -265,7 +280,7 @@
 					    } 
 					});
 					if( search.length > 1 ){
-						$('#occurrence').text(search.length+' occurrence(s)');
+						$('#occurrence').text(search.length+' occurrences');
 					}else{
 						$('#occurrence').text(search.length+' occurrence');
 					}
@@ -549,7 +564,7 @@
 				   			occurrence = data[1];
 							addKeywordOverlays(search);
 							if( search.length > 1 ){
-								$('#occurrence').text(search.length+' occurrence(s)');
+								$('#occurrence').text(search.length+' occurrences');
 							}else{
 								$('#occurrence').text(search.length+' occurrence');
 							}
@@ -669,9 +684,7 @@
 			function nextKeyword(){
 				if( overlaysKwd.length != 0 ){
 					var coordX = overlaysKwd[iterator].px;
-					console.log(coordX);
 					var coordY = overlaysKwd[iterator].py;
-					console.log(coordY);
 
 					//zoom on position
 					var rect = new OpenSeadragon.Rect(coordX - 600, coordY - 300, 1800, 600);
@@ -684,8 +697,83 @@
 
 			}
 
-			function selectCreated(){
 
+			function newTag(tag = 'undefined'){
+				if( tag = 'undefined') tag = $('#tags').val();
+
+				if( tag != '' && !article.Tags.includes(tag)){
+
+					$("#currentTags").append(' <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tag+'</span>');
+
+					if( !savedTags.includes(tag)) savedTags.push(tag);
+
+					$.get(
+
+					    'newTag', // Le fichier cible côté serveur.
+
+					    {
+					    	article: article._id,
+					    	tag: tag
+					    },
+
+					    function(data){
+
+						}
+
+					);
+
+				}
+
+				$('#tags').val('');
+			}
+
+			function removeTag(remTag){
+
+				if( remTag != '' && article.Tags.includes(remTag)){
+
+					$.get(
+
+					    'removeTag', // Le fichier cible côté serveur.
+
+					    {
+					    	article: article._id,
+					    	tag: remTag
+					    },
+
+					    function(data){
+
+						}
+
+					);
+
+					var index = article.Tags.indexOf(remTag);
+					if (index > -1) {
+					    article.Tags.splice(index, 1);
+					}
+
+				}
+
+			}
+
+			function closeTag(elemnt){
+				var removedTag = $(elemnt).closest('span').text();
+				removeTag(removedTag);
+
+				$(elemnt).closest('span').remove();
+				$(elemnt).remove();
+			}
+
+			function tagMouseEnter(elemnt){
+				if(auth){
+					$(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+				}
+			}
+
+			function tagMouseLeave(elemnt){
+				$(elemnt).find("img").remove();
+			}
+
+			function selectCreated(){
 
 			}
 
@@ -694,8 +782,6 @@
 			}
 
 			function selectSearchReview(){
-
-
 			}
 
 
@@ -710,6 +796,15 @@
 		$(window).load(function() {
 
 			 zoomOnArticle(article);
+
+			var availableTags = savedTags;
+			$("#tags").autocomplete({
+			    source: availableTags,
+			    minLength: 0,
+			    select: function( event, ui ) { 
+			    	newTag(ui.item.value);
+			    }
+			});
 
 		});
 
@@ -795,7 +890,7 @@
     		$("#pageGuide").show();
     		reduceViewer();
 		});
-	
+
 
 		</script>
 

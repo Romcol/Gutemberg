@@ -21,7 +21,7 @@
 
          <form class="form-inline" action="recherche">
 		  <div class="form-group">
-		    <input type="text" name="text" class="form-control input-lg" id="search_input" placeholder="Rechercher" required>
+		    <input type="text" name="text" class="form-control input-lg" id="search_input" placeholder="Rechercher">
 		  </div>
 		  <div class="form-group">
 

@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Article;
 use App\Page;
+use App\Autocomplete;
 
 class SearchController extends Controller
 {
@@ -28,36 +29,45 @@ class SearchController extends Controller
         $page = isset($_GET['page'])?intval($_GET['page']):1;
         $from = ($page>0)?(($page-1)*10):0;
 
+
+
+
         $searchUri = $_SERVER['REQUEST_URI'];
         
         $_SESSION['searchUri'] = $searchUri;
 
-        //For newspaper search, specific file !
+        //For newspaper search
         if( $type == 'newspaper'){
 
             return view('pages.newspaper', $this->newsPaperSearch());
 
         }else{
 
-            if( $type == 'articles'){
+            if($text == ''){
+                $params = $this->paramNoText($from);
+                $regexp = (isset($_GET['regexp']))? $_GET['regexp'] : false;
+            }else{
 
-                if( isset($_GET['regexp'])){
-                    $params = $this->paramArticleRegexp($text, $from);
-                    $regexp = $_GET['regexp'];
-                }else{
-                    $params = $this->paramArticle($text, $from);
-                    $regexp = false;
-                }
+                if( $type == 'articles'){
+
+                    if( isset($_GET['regexp'])){
+                        $params = $this->paramArticleRegexp($text, $from);
+                        $regexp = $_GET['regexp'];
+                    }else{
+                        $params = $this->paramArticle($text, $from);
+                        $regexp = false;
+                    }
 
 
-            }elseif( $type == 'titles'){
+                }elseif( $type == 'titles'){
 
-                if( isset($_GET['regexp'])){
-                    $params = $this->paramTitleRegexp($text, $from);
-                    $regexp = $_GET['regexp'];
-                }else{
-                    $params = $this->paramTitle($text, $from);
-                    $regexp = false;
+                    if( isset($_GET['regexp'])){
+                        $params = $this->paramTitleRegexp($text, $from);
+                        $regexp = $_GET['regexp'];
+                    }else{
+                        $params = $this->paramTitle($text, $from);
+                        $regexp = false;
+                    }
                 }
             }
 
@@ -109,6 +119,13 @@ class SearchController extends Controller
                 $dateMax = '';
                 
             }
+
+            $tags = array();
+            if( isset($_GET['tags']) && count($_GET['tags']) != 0){
+                $tags = $_GET['tags'];
+                $params['filter']['bool']['must']['terms']['Tags'] = $tags;
+            }
+            $tags = json_encode($tags);
 
             //Sorting
             $sort = isset($_GET['sort'])?$_GET['sort']:0;
@@ -172,7 +189,18 @@ class SearchController extends Controller
 
             $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
-            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp'));
+            $paramsAutocompl = [
+                'query' => [
+                    'match' => [
+                        'Name' => 'tags'
+                    ]
+                ]
+            ];
+            $savedTags = Autocomplete::search($paramsAutocompl);
+            $savedTags = json_encode($savedTags[0]['Data']);
+
+
+            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp', 'savedTags', 'tags'));
         }
     }
 
@@ -197,8 +225,7 @@ class SearchController extends Controller
                                 ['match' => [
                                     'Title' => [
                                         'query' => $text,
-                                        'operator' => 'and',
-                                        'fuzziness' => 'AUTO'
+                                        'operator' => 'and'
                                     ]
                                 ]],
                                 [ 'match' => [
@@ -426,5 +453,25 @@ class SearchController extends Controller
 
         return $params;
 
+    }
+
+    public function paramNoText($from){
+
+        $params = [
+            'query' => [
+                'filtered' => [
+                    'filter' => []
+                ]
+            ],
+            'highlight' => [
+                'fields' => [
+                    'Title' => new \stdClass
+                ]
+            ],
+            'from' => $from,
+            'size' => 11
+        ];
+
+        return $params;
     }
 }

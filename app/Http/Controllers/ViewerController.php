@@ -8,14 +8,15 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Page;
 use App\Article;
+use App\Autocomplete;
+use App\Utility;
 
 class ViewerController extends Controller
 {
 
     public function index()
     {
-        session_start();
-
+        
         $id = $_GET['id'];
         $params = [
             'query' => [
@@ -27,6 +28,7 @@ class ViewerController extends Controller
     	$pages = Page::search($params);
         //dd($pages);
 
+        session_start();
         if( isset($_SESSION['searchUri'])){
             $searchUri = $_SESSION['searchUri'];
         }else{
@@ -51,8 +53,19 @@ class ViewerController extends Controller
         $searchedKeywords = json_encode($searchedKeywords);
 
        // dd($pages);
+        $paramsAutocompl = [
+            'query' => [
+                'match' => [
+                    'Name' => 'tags'
+                ]
+            ]
+        ];
+        
+        $savedTags = Autocomplete::search($paramsAutocompl);
+        $savedTags = json_encode($savedTags[0]['Data']);
 
-    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri'));
+
+    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags'));
     }
 
     public function searchArticle(){
@@ -191,5 +204,72 @@ class ViewerController extends Controller
         $functionResult = array($wordTab, $occurrenceArticle);
 
         return $functionResult;
+    }
+
+    public function addTag(){
+
+        if( isset($_GET['article']) ){
+            $id = $_GET['article'];
+            $tag = $_GET['tag'];
+
+            $tagArticle = Article::find($id);
+            $tabTag = $tagArticle->Tags;
+            if(!in_array($tag, $tabTag)){
+                array_push($tabTag, $tag);
+            }
+            $tagArticle->Tags = $tabTag;
+            $tagArticle->save();
+
+            $tagData = Autocomplete::where('Name', '=', 'tags')->get();
+            $tabTagData = $tagData[0]->Data;
+            if(!in_array($tag, $tabTagData)){
+                array_push($tabTagData, $tag);
+            }
+            $tagData[0]->Data = $tabTagData;
+            $tagData[0]->save();
+        }
+
+    }
+
+    public function removeTag(){
+
+        if( isset($_GET['article']) ){
+            $id = $_GET['article'];
+            $tag = $_GET['tag'];
+
+            $tagArticle = Article::find($id);
+            $tabTag = $tagArticle->Tags;
+
+            $tabTag = $this->removeElement($tag, $tabTag);
+
+            $tagArticle->Tags = $tabTag;
+            $tagArticle->save();
+        }
+
+    }
+
+    public function removeElement($element, $array){
+        $found = false;
+        $size = count($array);
+        for ($j = 0; $j < $size; $j++) {
+            if( $found){
+                if($j != $size-1){
+                    $array[$j]=$array[$j+1];
+                }else{
+                    unset($array[$j]);
+                }
+            }else{
+                if( $element == $array[$j]){
+                    $found = true;
+                    if($j != $size-1){
+                        $array[$j]=$array[$j+1];
+                    }else{
+                        unset($array[$j]);
+                    }
+                }
+            }
+        }
+
+        return $array;
     }
 }

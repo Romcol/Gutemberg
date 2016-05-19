@@ -4,12 +4,14 @@ namespace App;
 
 use Moloquent;
 use Fadion\Bouncy\BouncyTrait;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Auth\Authenticatable as AuthenticableTrait;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
-class User extends Moloquent implements Authenticatable
+class User extends Moloquent implements AuthenticatableContract, CanResetPasswordContract
 {
-    use AuthenticableTrait;
+    use Authenticatable, CanResetPassword;
     /**
      * The attributes that are mass assignable.
      *
