@@ -9,7 +9,7 @@
           <form class="form-vertical" action="recherche">
             <div class="form-group">
               <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}">
-              <input type="checkbox" name="regexp" value="true" <?php if( $regexp ) echo 'checked';?> > <small>Accepter les expressions régulières</small> <br>
+              <div class="checkbox"><label><input type="checkbox" name="regexp" value="true" <?php if( $regexp ) echo 'checked';?> > <small>Accepter les expressions régulières</small></label></div>
             </div>
             <div class="form-group">
               <select name="type" class="form-control">
@@ -28,13 +28,13 @@
             <div class="form-group">
               à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
             </div>
+            <h5>Tags : </h5>
             <div class="form-group">
-              <div class="ui-widget">
-                <h5 style="float: left">Tags : </h5><input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px;"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
-              </div>
-              <p id="tagForm">
-              </p>
-
+                <div class="input-group">
+                <input class="form-control" id="tags" placeholder="Ajouter un tag"> <span class="input-group-btn"><button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+                </div>
+            </div>
+            <div id="tagForm">
             </div>
             <hr>
             <h4>Trier :</h4>
@@ -106,12 +106,11 @@
 @section('scripts')
   <script type="text/javascript">
 
-
     function resetTag(){
       $("#tagForm").text('');
       tagNumber = 0;
       for(var i=0; i<tags.length ; i++){
-        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tags[i]+'</span>');
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tags[i]+'</span></span>');
         tagNumber++;
       }
     }
@@ -128,7 +127,7 @@
 
       if( tag != '' && savedTags.includes(tag) && !tags.includes(tag)){
 
-        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tag+'</span>');
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tag+'</span></span>');
         tags[tagNumber] = tag;
         tagNumber++;
 
@@ -138,8 +137,8 @@
     }
 
     function closeTag(elemnt){
-        var removedTag = $(elemnt).closest('span').text();
-
+        var removedTag = $(elemnt).parent().children("span").text();
+        
         var index = tags.indexOf(removedTag);
         if (index > -1) {
             tags.splice(index, 1);
@@ -147,22 +146,17 @@
 
         resetTag();
 
-
       }
 
       function tagMouseEnter(elemnt){
-        $(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+        $(elemnt).append(' <a onclick="closeTag(this)">X</a>');
       }
 
       function tagMouseLeave(elemnt){
-        $(elemnt).find("img").remove();
+        $(elemnt).find("a").remove();
       }
 
-  </script>
-
-  <script type="text/javascript">
-
-    $(window).load(function() {
+      $(window).load(function() {
 
       var availableTags = savedTags;
       $("#tags").autocomplete({
@@ -173,6 +167,6 @@
           }
       });
 
-    });
+      });
   </script>
 @stop

@@ -84,10 +84,10 @@
 	    <div>
 		    <ul class="pager">
 				<li class="previous">
-					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><img src="<?= asset('resources/viewer/previous(1).png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
+					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-default  btn-xs disabled"' ; else echo 'class="btn btn-default  btn-xs"'; ?>><img src="<?= asset('resources/viewer/previous(1).png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
 				</li>
 				<li class="next">
-					<a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="btn btn-secondary  btn-xs disabled"' ; else echo 'class="btn btn-secondary  btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next(1).png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
+					<a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="btn btn-default  btn-xs disabled"' ; else echo 'class="btn btn-default  btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next(1).png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
 				</li>
 			</ul>
 	    </div>
@@ -663,21 +663,39 @@
 			function previousPage(){
 				var idPage = page.PreviousPage;
 				var keywds = $('#search_input').val();
+				var link = "visionneuse?id="+idPage;
 
-				window.location.href = "visionneuse?id="+idPage+"&search="+keywds;
+				if(keywds != '')
+				{
+					link += "&search="+keywds;
+				}
+
+				window.location.href = link;
 			}
 
 			function nextPage(){
 				var idPage = page.NextPage;
 				var keywds = $('#search_input').val();
+				var link = "visionneuse?id="+idPage;
 
-				window.location.href = "visionneuse?id="+idPage+"&search="+keywds;
+				if(keywds != '')
+				{
+					link += "&search="+keywds;
+				}
+
+				window.location.href = link;
 			}
 
 			function closeArticle(parPage, parArticle){
 				var keywds = $('#search_input').val();
+				var link = "visionneuse?id="+parPage+"&article="+parArticle;
 
-				window.location.href = "visionneuse?id="+parPage+"&article="+parArticle+"&search="+keywds;
+				if(keywds != '')
+				{
+					link += "&search="+keywds;
+				}
+
+				window.location.href = link;
 			}
 
 			function previousKeyword(){
