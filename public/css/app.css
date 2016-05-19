@@ -174,7 +174,7 @@ article em{
 
 /*Liens*/
 
-.container a, .container a:focus, .container a:hover, .container-fluid a, .container-fluid a:focus, .container-fluid a:hover
+.container-fluid a, .container-fluid a:focus, .container-fluid a:hover
 {
     color:black;
     text-decoration: underline;
