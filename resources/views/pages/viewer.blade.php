@@ -53,6 +53,7 @@
 					</div>
 					<div <?php if(!Auth::guest()) echo 'style="display: none"';?> > <center style="color: grey; ">Connectez-vous pour pouvoir ajouter ou supprimer des tags</center> </div>
 				</p>
+				<button type="button" id="showAddReview" onclick="displayAddReview()" class="btn btn-default btn-sm">Ajouter cet article à une revue de presse</button>
 			</div>
 		</div>
 	</div>
@@ -107,31 +108,38 @@
 		<img src="<?= asset('resources/viewer/previous-white.png') ?>" height="20px" alt="Flèche gauche" />
 	</div>
 </div>
+
 <div class="row" id="reviewPart">
 	<hr>
 	<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" id="choice">
 		<center><h4>À quelle revue de presse voulez-vous ajouter cet article ?</h4></center>
-          <form class="form-vertical">
-	         <div  id="created" onclick="selectCreated()" class="radio">
-			  <label><input type="radio"><h5>Mes revues de presse créées : </h5></label>
-			  <select id="listCreated" class="form-control">
-			  </select>
-			  <button type="button" id="addCreated" class="btn btn-default btn-sm"><h5>Ajouter</h5></button>
-			</div>
-			<div id="contributed" onclick="selectContributed()" class="radio">
-			  <label><input type="radio"><h5>Mes revues de presse contribuées</h5></label>
-			  <select id="listContributed" class="form-control">
-			  </select>
-			  <button type="button" id="addContributed" class="btn btn-default btn-sm"><h5>Ajouter</h5></button>
-			</div>
-			<div id="searchReview" onclick="selectPressReview()" class="radio">
-			  <label><input type="radio"><h5>Rechercher une revue de presse</h5></label>
-			</div>
-		  </form>
-		  <center><h4>OU</h4></center>
-		  <div>
+	    <form role="form">
+	    	<ul>
+			    <li>
+			    	<h5>Mes revues de presse créées : </h5>
+			      	<select id="listCreated" class="form-control">
+			      		<option selected disabled >Vous n'avez pas de revues de presse créées</option>
+				  	</select>
+			    </li>
+			    <li>
+			      	<h5>Mes revues de presse contribuées</h5>
+			      	<select id="listContributed" class="form-control">
+			      		<option selected disabled >Vous n'avez pas de revues de presse contribuées</option>
+					</select>
+			    </li>
+			    <li>
+			      	<h5>Rechercher une revue de presse</h5>
+			      	<div class="form-group" style="display:inline-block;">
+					    <input id="searchReview" onclick="selectPressReview()">
+					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span>
+					 </div>
+			    </li>
+		    </ul>
+		 </form>
+		 <center><h4>OU</h4></center>
+		 <div>
 		  	<center><button type="button" id="newReview" class="btn btn-default btn-sm"><h5>Créer une nouvelle revue de presse</h5></button></center>
-		  </div>
+		 </div>
 	</div>
 	<div class="col-lg-9 col-md-9 col-sm-9 col-xs-12" id="ReviewList"></div>
 </div>
@@ -166,9 +174,15 @@
 				}
 			}
 
+			$('#reviewPart').hide();
+
 			var savedTags = <?php echo $savedTags; ?> ;
 
-			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?>
+			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?> ;
+			if(auth){
+				var createdReviews = <?php echo json_encode(Auth::user()->createdReviews); ?> ;
+				var contributedReviews = <?php echo json_encode(Auth::user()->contribReviews); ?> ;
+			}
 
 			var zoom = true;
 			var toggle = true;
@@ -773,6 +787,30 @@
 				$(elemnt).find("img").remove();
 			}
 
+
+			function displayAddReview(){
+
+				$("#reviewPart").show();
+
+				if( createdReviews.length != 0){
+					$('#addCreated').removeClass('disabled');
+					$('#listCreated').text('');
+					for(var i=0; i<createdReviews.length; i++){
+						$('#listCreated').append('<option>'+createdReviews[i].name+'</option>');
+					}
+				}
+
+				if( contributedReviews.length != 0){
+					$('#addContributed').removeClass('disabled');
+					$('#listContributed').text('');
+					for(var i=0; i<contributedReviews.length; i++){
+						$('#listContributed').append('<option>'+contributedReviews[i].name+'</option>');
+					}
+				}
+
+			}
+
+
 			function selectCreated(){
 
 			}
@@ -783,6 +821,7 @@
 
 			function selectSearchReview(){
 			}
+
 
 
 		</script>
