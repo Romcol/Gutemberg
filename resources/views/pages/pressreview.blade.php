@@ -9,7 +9,7 @@
 		      	<article>
 	            <div class="panel panel-default">
 	              <div class="panel-heading">
-	               <a href="visionneuse?id={{$article['IdPage']}}&article={{$article['_id']}}"> <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['date']}}</h3></a>
+	               <a href="visionneuse?id={{$article['IdPage']}}&article={{$article['id']}}"> <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['date']}}</h3></a>
 	              </div>
 	              <div class="panel-body">
 	                <B class="title">{{$article['Title']}}</B>

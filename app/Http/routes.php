@@ -57,6 +57,14 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('revue/{id}/delete', 'PressReviewController@delete');
 
+	Route::get('addArticle', 'PressReviewController@addArticle');
+
+	Route::get('addArticleToOther', 'PressReviewController@addArticleToOther');
+
+	Route::get('newReview', 'PressReviewController@newReviewWithArticle');	
+
+	Route::get('searchReview', 'SearchController@reviewSearch');
+
 	Route::get('profil', 'UserController@index');
 
 	Route::get('register', function () {

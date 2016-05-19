@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Article;
 use App\Page;
 use App\Autocomplete;
+use App\PressReview;
 
 class SearchController extends Controller
 {
@@ -473,5 +474,86 @@ class SearchController extends Controller
         ];
 
         return $params;
+    }
+
+    public function reviewSearch()
+    {
+        $text = $_GET['text'];
+        $page = isset($_GET['page'])?intval($_GET['page']):1;
+        $size = $_GET['size'];
+        $from = ($page>0)?(($page-1)*$size):0;
+        $regexp = isset($_GET['regexp']);
+
+        if( $regexp ){
+
+            $params = [
+                'query' => [
+                    'filtered' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    'regexp' => [
+                                        'name' => $text
+                                    ],
+                                    'regexp' => [
+                                        'description' => $text
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'filter' => []
+                    ]
+                ],
+                'highlight' => [
+                    'fields' => [
+                        'Title' => new \stdClass,
+                        'Words.Word' => new \stdClass
+                    ]
+                ],
+                'from' => $from,
+                'size' => $size+1
+            ];
+
+        }else{
+
+           $params = [
+                'query' => [
+                    'filtered' => [
+                        'query' => [
+                            'bool' => [
+                                'should' => [
+                                    'match' => [
+                                        'name' => [
+                                            'query' => $text,
+                                            'operator' => 'and'
+                                        ]
+                                    ],
+                                    'match' => [
+                                        'description' => [
+                                            'query' => $text,
+                                            'operator' => 'and'
+                                        ]
+                                    ]
+                                ]
+                            ]
+                        ],
+                        'filter' => []
+                    ]
+                ],
+                'highlight' => [
+                    'fields' => [
+                        'Title' => new \stdClass,
+                        'Words.Word' => new \stdClass
+                    ]
+                ],
+                'from' => $from,
+                'size' => $size+1
+            ];
+        }
+
+
+        $result = PressReview::search($params);
+
+        return $result;
     }
 }
