@@ -22,13 +22,18 @@ footer {
     margin: 50px 0;
 }
 
-/*Pour la recherche*/
+/*Recherche*/
 
 .searchRow {
     background-color: #d4dff3;
     padding:10px 10px 30px 10px;
     margin:10px 10px 10px 10px;
     border: 4px solid #d4dff3;
+}
+
+.searchRow a, .searchRow a:active, .searchRow a:focus{
+    color:black;
+    text-decoration: underline;
 }
 
 #tagForm .btn {
@@ -176,14 +181,6 @@ article em{
     border: none;
 }*/
 
-/*Liens*/
-
-.container-fluid a, .container-fluid a:focus, .container-fluid a:hover
-{
-    color:black;
-    text-decoration: underline;
-}
-
 /*Pager*/
 
 .pager li>a, .pager li>span
@@ -263,4 +260,20 @@ fieldset[disabled] .navbar-custom .btn-link:hover,
 .navbar-custom .btn-link[disabled]:focus,
 fieldset[disabled] .navbar-custom .btn-link:focus  {
   color: black;
+}
+
+/*Drag & Drop*/
+
+[draggable] {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+.pressreviewarticles article .panel{
+    pointer-events: none;
 }

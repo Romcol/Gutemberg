@@ -51,7 +51,7 @@ class PressReviewController extends Controller
 
     public function delete($id)
     {
-    	$user = Auth::user();
+    	//$user = Auth::user();
     	$pressreview = PressReview::find($id);
     	$reviews = $user->createdReviews;
     	foreach($reviews as $i => $pr)
@@ -64,6 +64,32 @@ class PressReviewController extends Controller
     		}
     	}
         return Redirect::to('profil')->with(['message' => "La revue de presse n'a pas pu être supprimée.", 'status' => 'fail']);
+    }
+
+    public function update($id)
+    {
+        //$user = Auth::user();
+        $pressreview = PressReview::find($id);
+        $data = $_GET['data'];
+        $newarticles = [];
+        $ids = explode(",", $data);
+        foreach($ids as $articleid)
+        {
+            foreach($pressreview->articles as $article)
+            {
+                if($article['id'] == $articleid){
+                    array_push($newarticles, $article);
+                }
+            }
+        }
+        $pressreview->articles = $newarticles;
+        if($pressreview->save())
+        {
+            return Redirect::to('profil')->with(['message' => 'Revue de presse a été mise à jour.', 'status' => 'success']);
+        }
+        else{
+            return Redirect::to('profil')->with(['message' => "La revue de presse n'a pas pu être mise à jour.", 'status' => 'fail']);
+        }
     }
 
     public function addArticle(){

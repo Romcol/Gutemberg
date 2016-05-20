@@ -57,6 +57,8 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('revue/{id}/delete', 'PressReviewController@delete');
 
+	Route::get('revue/{id}/update', 'PressReviewController@update');
+
 	Route::get('addArticle', 'PressReviewController@addArticle');
 
 	Route::get('addArticleToOther', 'PressReviewController@addArticleToOther');
