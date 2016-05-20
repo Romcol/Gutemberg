@@ -19,6 +19,7 @@
 			<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
 			<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
 			<strong>Page :</strong> <?= $pages[0]['NumberPage'] ?> <br>
+
 		</div>
 		<div class="section">
 			<h4>Articles de la page</h4>
@@ -59,6 +60,9 @@
 				@if( !Auth::guest() )
 				<button type="button" id="showAddReview" onclick="displayAddReview()" class="btn btn-default btn-sm">Ajouter cet article à une revue de presse</button>
 				@endif
+				<div class="form-group" style="display:inline-block;">
+					<strong>URL : </strong><input id="currentUrl">
+				</div>
 			</div>
 		</div>
 	</div>
@@ -156,6 +160,8 @@
 							$("#currentTags").append(' <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+article.Tags[i]+'</span>');
 						}
 					}
+					var url = "<?php echo $_SERVER['HTTP_HOST']; ?>";
+					$("#currentUrl").attr('value', url+'/Gutemberg-Dev/public/visionneuse?id='+article.IdPage+'&article='+article._id);
 					$("#currentArticle").show();
 				}
 				else{
