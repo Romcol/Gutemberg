@@ -54,12 +54,16 @@ function in_array_r($needle, $haystack, $strict = false) {
             <div class="panel panel-default">
               <div class="panel-heading">
                 @if ( Auth::guest() )
-                  <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a>
+                  <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a>
                 @else
-                  @if ( in_array_r($onePage['_id'], Auth::user()->contribReviews))
-                  <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a><div style="color: grey; ">Ajoutée dans mes revues contribuées</div>
+                  @if ( in_array_r($onePage['_id'], Auth::user()->createdReviews) )
+                    <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a>
                   @else
-                 <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a><button type="button" onClick="addToContrib(this, '{{$onePage['_id']}}', '{{$onePage['name']}}')" class="btn btn-default btn-sm">Ajouter cette revue à mes revues contribuées</button>
+                    @if ( in_array_r($onePage['_id'], Auth::user()->contribReviews) )
+                    <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a><div style="color: grey; ">Ajoutée dans mes revues contribuées</div>
+                    @else
+                   <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a><button type="button" onClick="addToContrib(this, '{{$onePage['_id']}}', '{{$onePage['name']}}')" class="btn btn-default btn-sm">Ajouter cette revue à mes revues contribuées</button>
+                    @endif
                   @endif
                 @endif
               </div>

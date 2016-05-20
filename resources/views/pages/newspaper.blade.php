@@ -73,7 +73,7 @@
       	  @if($page>1)
       	     <li class="previous"><a href="<?= $builturl.($page-1) ?>">Précédent</a></li>
       	  @endif
-      	  @if(count($pages)==11)
+      	  @if(count($pages)==21)
       	     <li class="next"><a href="<?= $builturl.($page+1) ?>">Suivant</a></li>
       	  @endif
       	   </ul>
