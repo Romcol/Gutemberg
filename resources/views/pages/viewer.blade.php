@@ -698,6 +698,7 @@
 			}
 
 			function previousKeyword(){
+
 				if( overlaysKwd.length != 0 ){
 					var it = 0;
 					if( iterator <= 1){
@@ -715,6 +716,7 @@
 					viewer.viewport.fitBounds(rect, false);
 
 					iterator-= 1 ;
+					if( iterator < 0) iterator = overlaysKwd.length-1;
 				}
 
 			}
