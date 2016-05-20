@@ -335,18 +335,18 @@ class SearchController extends Controller
                     'query' => [
                         'bool' => [
                             'should' => [
-                                'match' => [
+                                ['match' => [
                                     'Title' => [
                                         'query' => $text,
                                         'operator' => 'and'
                                     ]
-                                ],
-                                'match' => [
+                                ]],
+                                ['match' => [
                                     'Words.Word' => [
                                         'query' => $text,
                                         'operator' => 'and'
                                     ]
-                                ]
+                                ]]
                             ]
                         ]
                     ],
@@ -409,12 +409,12 @@ class SearchController extends Controller
                     'query' => [
                         'bool' => [
                             'should' => [
-                                'regexp' => [
+                                ['regexp' => [
                                     'Title' => $text
-                                ],
-                                'regexp' => [
+                                ]],
+                                ['regexp' => [
                                     'Words.Word' => $text
-                                ]
+                                ]]
                             ]
                         ]
                     ],
@@ -501,12 +501,12 @@ class SearchController extends Controller
                 'query' => [
                     'bool' => [
                         'should' => [
-                            'regexp' => [
+                            ['regexp' => [
                                 'name' => $text
-                            ],
-                            'regexp' => [
+                            ]],
+                            ['regexp' => [
                                 'description' => $text
-                            ]
+                            ]]
                         ]
                     ]
                 ],
@@ -526,18 +526,18 @@ class SearchController extends Controller
                 'query' => [
                     'bool' => [
                         'should' => [
-                            'match' => [
+                            ['match' => [
                                 'name' => [
                                     'query' => $text,
                                     'operator' => 'and'
                                 ]
-                            ],
-                            'match' => [
+                            ]],
+                            ['match' => [
                                 'description' => [
                                     'query' => $text,
                                     'operator' => 'and'
                                 ]
-                            ]
+                            ]]
                         ]
                     ]
                 ],
