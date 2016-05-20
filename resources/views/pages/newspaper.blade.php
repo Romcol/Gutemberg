@@ -5,20 +5,11 @@
       <div class="row">
          <div class="col-md-2 col-lg-2 searchRow" >
           <h3>Critères de recherche</h3>
-          <hr>
           <form class="form-vertical" action="recherche">
             <div class="form-group">
-              <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}" required>
+              <input type="hidden" name="text" value="">
+              <input type="hidden" name="type" value="newspaper">
             </div>
-            <div class="form-group">
-              <select name="type" class="form-control">
-                <option value="articles" <?= ($type=='articles')?'selected':'' ?>>Contenus des articles</option>
-                <option value="newspaper" <?= ($type=='newspaper')?'selected':'' ?>>Journaux</option>
-                <option value="titles" <?= ($type=='titles')?'selected':'' ?>>Titres des articles</option>
-              </select>
-            </div>
-
-            <hr>
             <h4>Filtres :</h4>
             <h5>Date :</h5>
             <div class="form-group">
@@ -26,6 +17,18 @@
             </div>
             <div class="form-group">
               à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
+            </div>
+            <hr>
+            <h5>Journaux : </h5>
+            <div class="form-group">
+                <div class="input-group">
+                  <select id="news">
+                    <option value="null" disabled selected>Journaux</option>
+                  </select>
+                  <span class="input-group-btn"><button type="button" onclick="newNews()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+                </div>
+            </div>
+            <div id="newsForm">
             </div>
             <hr>
             <h4>Trier :</h4>
@@ -46,7 +49,7 @@
     	    <!-- Title -->
     	    <div class="row">
   		      <div class="col-lg-12">
-  		        <h3>Résultats de la recherche pour "{{$text}}"</h3>
+  		        <h3>Résultats de la recherche parmi les journaux</h3>
   		        <p>{{$pages->total()}} occurrences trouvées ({{$pages->took()}} ms)</p>
               <hr>
     		    </div>
@@ -82,4 +85,67 @@
         </div>
       </div>
 
+@stop
+
+@section('scripts')
+  <script type="text/javascript">
+
+    function resetNews(){
+      $("#newsForm").text('');
+      newsNumber = 0;
+      for(var i=0; i<news.length ; i++){
+        $("#newsForm").append('<input type="hidden" name="news['+newsNumber+']" value="'+news[i]+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this, true)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+news[i]+'</span></span>');
+        newsNumber++;
+      }
+    }
+
+    var savedNews = <?php echo $savedNewsPaper; ?> ;
+    var news = <?php echo $news; ?> ;
+    var newsNumber = 0;
+
+    for(var i = 0; i<savedNews.length; i++){
+      $('#news').append('<option value="'+savedNews[i]+'">'+savedNews[i]+'</option>');
+    }
+
+
+    function newNews(entry = 'undefined'){
+
+      if( entry = 'undefined') entry = $('#news').val();
+
+      if( !news.includes(entry) ){
+
+        $("#newsForm").append('<input type="hidden" name="news['+newsNumber+']" value="'+entry+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this, true)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+entry+'</span></span>');
+        news[newsNumber] = entry;
+        newsNumber++;
+
+      }
+
+      $('#news').val("null");
+    }
+
+    function closeNews(elemnt){
+        var removedNew = $(elemnt).parent().children("span").text();
+        
+        var index = news.indexOf(removedNew);
+        if (index > -1) {
+            news.splice(index, 1);
+        }
+
+        resetNews();
+
+      }
+
+      function tagMouseEnter(elemnt, news){
+        if( news) {
+          $(elemnt).append(' <a onclick="closeNews(this)">X</a>');
+        }else{
+          $(elemnt).append(' <a onclick="closeTag(this)">X</a>');
+        }
+      }
+
+      function tagMouseLeave(elemnt){
+        $(elemnt).find("a").remove();
+      }
+
+  </script>
 @stop

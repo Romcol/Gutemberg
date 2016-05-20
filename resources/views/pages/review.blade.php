@@ -14,7 +14,6 @@
             <div class="form-group">
               <select name="type" class="form-control">
                 <option value="articles" <?= ($type=='articles')?'selected':'' ?>>Contenus des articles</option>
-                <option value="newspaper" <?= ($type=='newspaper')?'selected':'' ?>>Journaux</option>
                 <option value="titles" <?= ($type=='titles')?'selected':'' ?>>Titres des articles</option>
                 <option value="review" <?= ($type=='review')?'selected':'' ?>>Revues de presse</option>
               </select>
@@ -38,7 +37,7 @@
       	@if(!$result->isEmpty())
       	@foreach ($result as $index => $onePage)
       	@if($index < 20)
-      		<page>
+      		<div class="review">
             <div class="panel panel-default">
               <div class="panel-heading">
                <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a>
@@ -48,7 +47,7 @@
                 <p>{{count($onePage['articles'])}} article(s)</p>
               </div>
             </div>
-      		</page>
+      		</div>
       	  <nav>
       	@endif
       	@endforeach
