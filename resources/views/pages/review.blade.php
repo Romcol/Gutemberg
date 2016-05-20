@@ -2,6 +2,19 @@
 
 @section('page_content')
 
+<?php
+function in_array_r($needle, $haystack, $strict = false) {
+    foreach ($haystack as $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+?>
+
       <div class="row">
          <div class="col-md-2 col-lg-2 searchRow" >
           <h3>Critères de recherche</h3>
@@ -40,10 +53,18 @@
       		<div class="review">
             <div class="panel panel-default">
               <div class="panel-heading">
-               <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a>
+                @if ( Auth::guest() )
+                  <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a>
+                @else
+                  @if ( in_array_r($onePage['_id'], Auth::user()->contribReviews))
+                  <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a><div style="color: grey; ">Ajoutée dans mes revues contribuées</div>
+                  @else
+                 <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}}</h3></a><button type="button" onClick="addToContrib(this, '{{$onePage['_id']}}', '{{$onePage['name']}}')" class="btn btn-default btn-sm">Ajouter cette revue à mes revues contribuées</button>
+                  @endif
+                @endif
               </div>
               <div class="panel-body">
-                <p>{{$onePage['description']}}</p>
+                <p id="{{$onePage['_id']}}">{{$onePage['description']}}</p>
                 <p>{{count($onePage['articles'])}} article(s)</p>
               </div>
             </div>
@@ -69,3 +90,30 @@
       </div>
 
 @stop
+
+@section('scripts')
+  <script type="text/javascript">
+
+    function addToContrib(elemnt, id, name){
+
+      var description = $('#'+id).text();
+
+      $.get(
+
+          'addToContrib', // Le fichier cible côté serveur.
+
+          {
+            idReview: id,
+            nameReview: name,
+            descriptionRev: description
+          },
+
+          function(data){
+            $(elemnt).after('<div style="color: grey; ">Ajoutée dans mes revues contribuées</div>');
+            $(elemnt).remove();
+          }
+
+      );
+    }
+
+  </script>

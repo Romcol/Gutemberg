@@ -147,6 +147,23 @@ class PressReviewController extends Controller
         $this->addArticle();
     }
 
+    public function addToContrib(){
+
+        $idRev = $_GET['idReview'];
+        $nameRev = $_GET['nameReview'];
+        $descriptionRev = $_GET['descriptionRev'];
+
+        $user = Auth::user();
+
+        $contrib = $user->contribReviews;
+
+        $pressreviewobject = ['name' => $nameRev, 'description' => $descriptionRev, '_id' => $idRev];
+        $user->push('contribReviews',$pressreviewobject);
+
+    }
+
+
+
 }
 
 ?>
