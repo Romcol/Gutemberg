@@ -63,6 +63,8 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('addArticleToOther', 'PressReviewController@addArticleToOther');
 
+	Route::get('addToContrib', 'PressReviewController@addToContrib');
+
 	Route::get('newReview', 'PressReviewController@newReviewWithArticle');	
 
 	Route::get('searchReview', 'SearchController@reviewSearch');

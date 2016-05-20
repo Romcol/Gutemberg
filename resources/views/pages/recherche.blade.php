@@ -14,7 +14,6 @@
             <div class="form-group">
               <select name="type" class="form-control">
                 <option value="articles" <?= ($type=='articles')?'selected':'' ?>>Contenus des articles</option>
-                <option value="newspaper" <?= ($type=='newspaper')?'selected':'' ?>>Journaux</option>
                 <option value="titles" <?= ($type=='titles')?'selected':'' ?>>Titres des articles</option>
                 <option value="review" <?= ($type=='review')?'selected':'' ?>>Revues de presse</option>
               </select>
@@ -29,6 +28,19 @@
             <div class="form-group">
               à <input name="dateMax" class="form-control" id="dateMax_input" placeholder="{{$defaultMax}}" value={{$dateMax}}>
             </div>
+            <hr>
+            <h5>Journaux : </h5>
+            <div class="form-group">
+                <div class="input-group">
+                  <select id="news">
+                    <option value="null" disabled selected>Journaux</option>
+                  </select>
+                  <span class="input-group-btn"><button type="button" onclick="newNews()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+                </div>
+            </div>
+            <div id="newsForm">
+            </div>
+            <hr>
             <h5>Tags : </h5>
             <div class="form-group">
                 <div class="input-group">
@@ -58,7 +70,7 @@
     	    <div class="row">
   		      <div>
   		        <h3>Résultats de la recherche pour <?php if( $text == '') echo 'tous les articles'; else echo '"'.$text.'"'; ?> </h3>
-  		        <p>{{$articles->total()}} occurrences trouvées ({{$articles->took()}} ms)</p>
+  		        <p>{{$articles->total()}} occurrences trouvées ({{$articles->took()}} ms)</p> 
               <hr>
     		    </div>
     		  </div>
@@ -111,8 +123,17 @@
       $("#tagForm").text('');
       tagNumber = 0;
       for(var i=0; i<tags.length ; i++){
-        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tags[i]+'</span></span>');
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tags[i]+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this, false)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tags[i]+'</span></span>');
         tagNumber++;
+      }
+    }
+
+    function resetNews(){
+      $("#newsForm").text('');
+      newsNumber = 0;
+      for(var i=0; i<news.length ; i++){
+        $("#newsForm").append('<input type="hidden" name="news['+newsNumber+']" value="'+news[i]+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this, true)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+news[i]+'</span></span>');
+        newsNumber++;
       }
     }
 
@@ -120,7 +141,16 @@
     var tags = <?php echo $tags; ?> ;
     var tagNumber = 0;
 
+    var savedNews = <?php echo $savedNewsPaper; ?> ;
+    var news = <?php echo $news; ?> ;
+    var newsNumber = 0;
+
+    for(var i = 0; i<savedNews.length; i++){
+      $('#news').append('<option value="'+savedNews[i]+'">'+savedNews[i]+'</option>');
+    }
+
     resetTag();
+    resetNews();
 
     function newTag(tag = 'undefined'){
 
@@ -128,7 +158,7 @@
 
       if( tag != '' && savedTags.includes(tag) && !tags.includes(tag)){
 
-        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tag+'</span></span>');
+        $("#tagForm").append('<input type="hidden" name="tags['+tagNumber+']" value="'+tag+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this, false)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tag+'</span></span>');
         tags[tagNumber] = tag;
         tagNumber++;
 
@@ -149,8 +179,39 @@
 
       }
 
-      function tagMouseEnter(elemnt){
-        $(elemnt).append(' <a onclick="closeTag(this)">X</a>');
+    function newNews(entry = 'undefined'){
+
+      if( entry = 'undefined') entry = $('#news').val();
+
+      if( !news.includes(entry) ){
+
+        $("#newsForm").append('<input type="hidden" name="news['+newsNumber+']" value="'+entry+'"> <span class="btn btn-default" onmouseenter="tagMouseEnter(this, true)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+entry+'</span></span>');
+        news[newsNumber] = entry;
+        newsNumber++;
+
+      }
+
+      $('#news').val("null");
+    }
+
+    function closeNews(elemnt){
+        var removedNew = $(elemnt).parent().children("span").text();
+        
+        var index = news.indexOf(removedNew);
+        if (index > -1) {
+            news.splice(index, 1);
+        }
+
+        resetNews();
+
+      }
+
+      function tagMouseEnter(elemnt, news){
+        if( news) {
+          $(elemnt).append(' <a onclick="closeNews(this)">X</a>');
+        }else{
+          $(elemnt).append(' <a onclick="closeTag(this)">X</a>');
+        }
       }
 
       function tagMouseLeave(elemnt){
@@ -159,14 +220,14 @@
 
       $(window).load(function() {
 
-      var availableTags = savedTags;
-      $("#tags").autocomplete({
-          source: availableTags,
-          minLength: 0,
-          select: function( event, ui ) { 
-            newTag(ui.item.value);
-          }
-      });
+        var availableTags = savedTags;
+        $("#tags").autocomplete({
+            source: availableTags,
+            minLength: 0,
+            select: function( event, ui ) { 
+              newTag(ui.item.value);
+            }
+        });
 
       });
   </script>

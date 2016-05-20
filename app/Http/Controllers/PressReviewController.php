@@ -126,29 +126,6 @@ class PressReviewController extends Controller
 
     }
 
-    public function addArticleToOther(){
-
-        $idRev = $_GET['idReview'];
-        $nameRev = $_GET['nameReview'];
-        $descriptionRev = $_GET['descriptionRev'];
-
-        $user = Auth::user();
-        $bool = true;
-
-        $contrib = $user->contribReviews;
-        foreach($contrib as $review){
-            if( $review['_id'] == $idRev) $bool = false;
-        }
-
-        if($bool){
-            $pressreviewobject = ['name' => $nameRev, 'description' => $descriptionRev, '_id' => $idRev];
-            $user->push('contribReviews',$pressreviewobject);
-        }
-
-        $this->addArticle();
-
-    }
-
     public function newReviewWithArticle(){
 
         $name = $_GET['nameReview'];
@@ -172,6 +149,23 @@ class PressReviewController extends Controller
         $_GET['idReview'] = $pressreview->_id;
         $this->addArticle();
     }
+
+    public function addToContrib(){
+
+        $idRev = $_GET['idReview'];
+        $nameRev = $_GET['nameReview'];
+        $descriptionRev = $_GET['descriptionRev'];
+
+        $user = Auth::user();
+
+        $contrib = $user->contribReviews;
+
+        $pressreviewobject = ['name' => $nameRev, 'description' => $descriptionRev, '_id' => $idRev];
+        $user->push('contribReviews',$pressreviewobject);
+
+    }
+
+
 
 }
 

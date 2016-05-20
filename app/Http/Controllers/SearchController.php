@@ -135,9 +135,20 @@ class SearchController extends Controller
             $tags = array();
             if( isset($_GET['tags']) && count($_GET['tags']) != 0){
                 $tags = $_GET['tags'];
-                $params['filter']['bool']['must']['terms']['Tags'] = $tags;
+                if( !isset($params['filter']['bool']['must']) ) $params['filter']['bool']['must'] = array();
+                array_push($params['filter']['bool']['must'], array( 'terms' => array( 'Tags' => $tags)));
+
             }
             $tags = json_encode($tags);
+
+            $news = array();
+            if( isset($_GET['news']) && count($_GET['news']) != 0){
+                $news = $_GET['news'];
+                if( !isset($params['query']['filtered']['filter']['bool']['must']) ) $params['query']['filtered']['filter']['bool']['must'] = array();
+                array_push($params['query']['filtered']['filter']['bool']['must'], array( 'terms' => array( 'TitleNewsPaper' => $news)));
+            }
+            $news = json_encode($news);
+
 
             //Sorting
             $sort = isset($_GET['sort'])?$_GET['sort']:0;
@@ -211,8 +222,19 @@ class SearchController extends Controller
             $savedTags = Autocomplete::search($paramsAutocompl);
             $savedTags = json_encode($savedTags[0]['Data']);
 
+            $paramsNewsPaper = [
+                'query' => [
+                    'match' => [
+                        'Name' => 'titleNewsPaper'
+                    ]
+                ]
+            ];
+            
+            $savedNewsPaper = Autocomplete::search($paramsNewsPaper);
+            $savedNewsPaper = json_encode($savedNewsPaper[0]['Data']);
 
-            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp', 'savedTags', 'tags'));
+
+            return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp', 'savedTags', 'tags', 'savedNewsPaper', 'news'));
         }
     }
 
@@ -234,15 +256,9 @@ class SearchController extends Controller
                     'query' => [
                         'bool' => [
                             'must' => [
-                                ['match' => [
-                                    'Title' => [
-                                        'query' => $text,
-                                        'operator' => 'and'
-                                    ]
-                                ]],
-                                [ 'match' => [
+                                'match' => [
                                     'NumberPage' => 1
-                                ]]
+                                ]
                             ]
                         ]
                     ],
@@ -319,13 +335,31 @@ class SearchController extends Controller
             }            
         }
 
+        $news = array();
+        if( isset($_GET['news']) && count($_GET['news']) != 0){
+            $news = $_GET['news'];
+            if( !isset($params['query']['filtered']['filter']['bool']['must']) ) $params['query']['filtered']['filter']['bool']['must'] = array();
+            array_push($params['query']['filtered']['filter']['bool']['must'], array( 'terms' => array( 'Title' => $news)));
+        }
+        $news = json_encode($news);
+
 
         $pages = Page::search($params);
-        //dd($articles);
+        
+        $paramsNewsPaper = [
+            'query' => [
+                'match' => [
+                    'Name' => 'titleNewsPaper'
+                ]
+            ]
+        ];
+        
+        $savedNewsPaper = Autocomplete::search($paramsNewsPaper);
+        $savedNewsPaper = json_encode($savedNewsPaper[0]['Data']);
 
         $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
 
-        return compact('pages', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax');
+        return compact('pages', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'savedNewsPaper', 'news');
     }
 
     public function paramArticle($text, $from){
