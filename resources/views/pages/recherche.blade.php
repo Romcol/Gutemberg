@@ -16,6 +16,7 @@
                 <option value="articles" <?= ($type=='articles')?'selected':'' ?>>Contenus des articles</option>
                 <option value="newspaper" <?= ($type=='newspaper')?'selected':'' ?>>Journaux</option>
                 <option value="titles" <?= ($type=='titles')?'selected':'' ?>>Titres des articles</option>
+                <option value="review" <?= ($type=='review')?'selected':'' ?>>Revues de presse</option>
               </select>
             </div>
 

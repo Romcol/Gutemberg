@@ -37,10 +37,13 @@ class ViewerController extends Controller
 
         $article = $this->searchArticle();
 
-        $filename = $pages[0]['Picture'].'.dzi';
-
-        if ( !file_exists(public_path().'/images/'.$filename)) {
-           $filename = 'default.dzi';
+        $filename = 'default.dzi';
+        $typeImage = false;
+        if ( file_exists(public_path().'/images/'.$pages[0]['Picture'].'.dzi')) {
+           $filename = $pages[0]['Picture'].'.dzi';
+        }else if(file_exists(public_path().'/images/'.$pages[0]['Picture'].'.jpg')) {
+            $filename = $pages[0]['Picture'].'.jpg';
+            $typeImage = true;
         }
 
         $keywords = '';
@@ -65,7 +68,8 @@ class ViewerController extends Controller
         $savedTags = json_encode($savedTags[0]['Data']);
 
 
-    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags'));
+
+    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage'));
     }
 
     public function searchArticle(){

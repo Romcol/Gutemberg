@@ -29,6 +29,7 @@
 					<option value="articles">Contenus des articles</option>
 					<option value="newspaper">Journaux</option>
 					<option value="titles">Titres des articles</option>
+                    <option value="review">Revues de presse</option>
   				</select>
 		  </div>
 		  <button type="submit" class="btn btn-lg btn-default">Recherche</button>

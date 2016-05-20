@@ -332,6 +332,16 @@
 				$('#search_form').remove();
 			}
 
+			var typeImage = <?php echo $typeImage; ?> ;
+			if( typeImage){
+				var tileSource = {
+			        type: 'image',
+			        url:  "images/"+filename,
+			        buildPyramid: false
+				}
+			}else{
+				var tileSource = "images/"+filename;
+			}
 
 			var viewer = OpenSeadragon({
 				id: "ourOpenseadragon",
@@ -349,7 +359,7 @@
 		        sequenceMode: true,
 		        visibilityRatio: 1.0,
 		        constrainDuringPan: true,
-				tileSources:"images/"+filename,
+				tileSources:tileSource,
 				//showReferenceStrip: true,
 				//referenceStripScroll: 'vertical',
 				overlays: overlays.concat(overlaysKwd, overlaysSlt),
@@ -868,10 +878,15 @@
 			}
 
 			function writeResults(results, entry, page){
-				$("#ReviewList").append('<h3>Résultats de la recherche pour "'+entry+'"</h3>')
+				$("#ReviewList").append('<h3>Résultats de la recherche pour "'+entry+'"</h3>');
+
+				if(results.length == 0){
+					$("#ReviewList").append('<p>Aucun résultat pour cette recherche.</p>');
+				}
+
 				for(var i =0; i<Math.min(5, results.length); i++){
 					var string = '';
-					string+='<review>';
+					string+='<div class="review">';
 			        string+='    <div class="panel panel-default">';
 			        string+='      <div class="panel-heading">';
 			        string+='       <a href="revue/'+results[i]._id+'"> <h3 class="panel-title">'+results[i].name+'</h3></a><button type="button" onClick="selectOther('+i+', \''+results[i]._id+'\',\''+results[i].name+'\')" class="btn btn-default btn-sm">Ajouter à cette revue</button>';
@@ -880,7 +895,7 @@
 			        string+='        <p id="'+i+'">'+results[i].description+'</p>'
 			        string+='      </div>';
 			        string+='    </div>';
-			      	string+='	</review>';
+			      	string+='	</div>';
 					$("#ReviewList").append(string);
 				}
 					pageButton = '<nav><ul class="pager">';

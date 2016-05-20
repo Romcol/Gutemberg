@@ -42,6 +42,17 @@ class SearchController extends Controller
 
             return view('pages.newspaper', $this->newsPaperSearch());
 
+        }else if( $type == 'review'){
+
+            $_GET['size'] = 10;
+            $regexp = (isset($_GET['regexp']))? $_GET['regexp'] : false;
+
+            $result = $this->reviewSearch();
+
+            $builturl="recherche?text=$text&type=$type&page=";
+
+            return view('pages.review', compact('result', 'text', 'builturl', 'type', 'page', 'regexp'));
+
         }else{
 
             if($text == ''){
@@ -149,18 +160,18 @@ class SearchController extends Controller
             //dd($articles);
             $configLength = 10;
             
-            foreach ($articles as $article) {
-                if($article->highlight('Words.Word'))
+            foreach ($articles as $review) {
+                if($review->highlight('Words.Word'))
                 {
                     $wordTab = [];
                     $i = 0;
                     $j = -1;
-                    foreach ($article['Words'] as $line) {
-                        $string = str_replace(['<em>','</em>'],'',$article->highlight('Words.Word'));
+                    foreach ($review['Words'] as $line) {
+                        $string = str_replace(['<em>','</em>'],'',$review->highlight('Words.Word'));
                         //if(($j < 0) && ((substr($line['Word'], 0, strlen($string))) == $string)){
                         if(($j < 0) && (strpos($line['Word'],$string) !== false)){
                             $j = $i+$configLength;
-                            $wordTab[$i] = $article->highlight('Words.Word');
+                            $wordTab[$i] = $review->highlight('Words.Word');
                         }
                         else $wordTab[$i] = $line['Word'];
                         if($j > 0 && $i > $j) break;
@@ -168,23 +179,23 @@ class SearchController extends Controller
                     }
                     //print_r($wordTab);
                     $beg = (($j-$configLength*2) > 0)?($j-$configLength*2):0;
-                    $article['Words'] = '';
+                    $review['Words'] = '';
                     for($k = $beg; $k<$j ;$k++)
                     {
                         if(!isset($wordTab[$k])) break;
-                        $article['Words'] .= $wordTab[$k].' ';
+                        $review['Words'] .= $wordTab[$k].' ';
                     }
-                    $article['Words'] .= '...';
+                    $review['Words'] .= '...';
                 }
                 else{
                         $i = 0;
                         $sample = '';
-                        foreach ($article['Words'] as $line) {
+                        foreach ($review['Words'] as $line) {
                             $sample .= $line['Word'].' ';
                             if($i > $configLength*2) break;
                             $i++;
                         }
-                        $article['Words'] = $sample.'...';
+                        $review['Words'] = $sample.'...';
                 }
             }
 
@@ -488,26 +499,21 @@ class SearchController extends Controller
 
             $params = [
                 'query' => [
-                    'filtered' => [
-                        'query' => [
-                            'bool' => [
-                                'should' => [
-                                    'regexp' => [
-                                        'name' => $text
-                                    ],
-                                    'regexp' => [
-                                        'description' => $text
-                                    ]
-                                ]
+                    'bool' => [
+                        'should' => [
+                            'regexp' => [
+                                'name' => $text
+                            ],
+                            'regexp' => [
+                                'description' => $text
                             ]
-                        ],
-                        'filter' => []
+                        ]
                     ]
                 ],
                 'highlight' => [
                     'fields' => [
-                        'Title' => new \stdClass,
-                        'Words.Word' => new \stdClass
+                        'name' => new \stdClass,
+                        'description' => new \stdClass
                     ]
                 ],
                 'from' => $from,
@@ -518,32 +524,27 @@ class SearchController extends Controller
 
            $params = [
                 'query' => [
-                    'filtered' => [
-                        'query' => [
-                            'bool' => [
-                                'should' => [
-                                    'match' => [
-                                        'name' => [
-                                            'query' => $text,
-                                            'operator' => 'and'
-                                        ]
-                                    ],
-                                    'match' => [
-                                        'description' => [
-                                            'query' => $text,
-                                            'operator' => 'and'
-                                        ]
-                                    ]
+                    'bool' => [
+                        'should' => [
+                            'match' => [
+                                'name' => [
+                                    'query' => $text,
+                                    'operator' => 'and'
+                                ]
+                            ],
+                            'match' => [
+                                'description' => [
+                                    'query' => $text,
+                                    'operator' => 'and'
                                 ]
                             ]
-                        ],
-                        'filter' => []
+                        ]
                     ]
                 ],
                 'highlight' => [
                     'fields' => [
-                        'Title' => new \stdClass,
-                        'Words.Word' => new \stdClass
+                        'name' => new \stdClass,
+                        'description' => new \stdClass
                     ]
                 ],
                 'from' => $from,
@@ -553,7 +554,15 @@ class SearchController extends Controller
 
 
         $result = PressReview::search($params);
+            
+        foreach ($result as $review) {
+            if( strlen($review['description']) > 500){
+                $review['description'] = substr($review['description'], 0, 500).'...';
+            }
+        }
 
         return $result;
+
+
     }
 }
