@@ -332,7 +332,7 @@
 				$('#search_form').remove();
 			}
 
-			var typeImage = <?php echo $typeImage; ?> ;
+			var typeImage = <?php if($typeImage) echo 'true'; else echo 'false'; ?> ;
 			if( typeImage){
 				var tileSource = {
 			        type: 'image',
