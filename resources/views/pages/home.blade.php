@@ -71,7 +71,7 @@
 		      		<article>
 		            <div class="panel panel-default">
 		              <div class="panel-heading">
-		               <a href="visionneuse?id={{$article['IdPage']}}&article={{$article['id']}}"> <h4 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h4></a>
+		               <a href="<?= url('visionneuse/page/'.$article['IdPage'].'/article/'.$article['id']); ?>"> <h4 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h4></a>
 		              </div>
 		              <div class="panel-body">
 		                <B class="title">{{$article['Title']}}</B>

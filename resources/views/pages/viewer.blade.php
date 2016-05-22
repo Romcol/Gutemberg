@@ -10,22 +10,25 @@
 
 <div class="row">
 	<div id="pageInfo">
-		<div id="hideInfo">
-			<img src="<?= asset('resources/viewer/back.svg') ?>" /> Cacher
+		<div>
+			<div id="hideInfo">
+				<img src="<?= asset('resources/viewer/back.svg') ?>" /> Masquer
+			</div>
+			<div style="clear:both;"></div>
 		</div>
 		<div class="section">
-			<h4>Informations sur la page</h4>
+			<h4>Page</h4>
 			<hr>
-			<strong>Titre :</strong> <?= $pages[0]['Title'] ?> <br>
-			<strong>Date :</strong> <?= $pages[0]['Date'] ?> <br>
-			<strong>Page :</strong> <?= $pages[0]['NumberPage'] ?> <br>
+			<strong>Titre :</strong> <?= $page['Title'] ?> <br>
+			<strong>Date :</strong> <?= $page['Date'] ?> <br>
+			<strong>Page :</strong> <?= $page['NumberPage'] ?> <br>
 
 		</div>
 		<div class="section">
 			<h4>Articles de la page</h4>
 			<hr>
 			<div id="pageArticlesList">
-				@foreach($pages[0]['Articles'] as $idx => $art)
+				@foreach($page['Articles'] as $idx => $art)
 				<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?> </p>
 				<p id="{{$art['IdArticle']}}" class="occurrenceNumber"></p>
 				@if( count($art['PictureKeys']) != 0)
@@ -43,25 +46,28 @@
 		</div>
 		<div id="currentArticle" style="display:none;" class="section">
 
-			<h4>Informations sur l'article</h4>
+			<h4>Article</h4>
 			<hr>
 			<div id="infoCurrentArticle">
-				<strong>Titre :</strong> <span id="currentTitle"></span>
-				<strong>Vues :</strong> <span id="currentViews"></span>
-				<p><strong>Tags :</strong> <span id="currentTags"></span>
+				<strong>Titre :</strong> <span id="currentTitle"></span><br>
+				<strong>Vues :</strong> <span id="currentViews"></span><br>
+				<p><strong>Tags :</strong><br>
 					@if( !Auth::guest() )
-					<div class="ui-widget">
-					  <input id="tags" placeholder="Ajouter un tag" style="margin: 5px 5px 5px 15px"> <button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="padding: 2px 5px 2px 5px"><img src="<?= asset('resources/viewer/plus-symbol.png') ?>" alt="Ajout" height="15px"/></button>
-					</div>
+		            <div class="form-group">
+		                <div class="input-group">
+		                <input class="form-control" id="tags" placeholder="Ajouter un tag"> <span class="input-group-btn"><button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+		                </div>
+		            </div>
 					@else
 					<div> <center style="color: grey; ">Connectez-vous pour pouvoir ajouter ou supprimer des tags</center> </div>
 					@endif
+					<span id="currentTags"></span>
 				</p>
 				@if( !Auth::guest() )
 				<button type="button" id="showAddReview" onclick="displayAddReview()" class="btn btn-default btn-sm">Ajouter cet article à une revue de presse</button>
 				@endif
 				<div class="form-group" style="display:inline-block;">
-					<strong>URL : </strong><input id="currentUrl">
+					<strong>URL : </strong><input id="currentUrl" />
 				</div>
 			</div>
 		</div>
@@ -93,17 +99,20 @@
 	    <div>
 		    <ul class="pager">
 				<li class="previous">
-					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($pages[0]['PreviousPage'])) echo 'class="btn btn-default  btn-xs disabled"' ; else echo 'class="btn btn-default  btn-xs"'; ?>><img src="<?= asset('resources/viewer/previous(1).png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
+					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($page['PreviousPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
 				</li>
 				<li class="next">
-					<a id="otherPage" onclick="nextPage()" <?php if( !isset($pages[0]['NextPage'])) echo 'class="btn btn-default  btn-xs disabled"' ; else echo 'class="btn btn-default  btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next(1).png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
+					<a id="otherPage" onclick="nextPage()" <?php if( !isset($page['NextPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
 				</li>
 			</ul>
 	    </div>
     </div>
     <div id="pageGuide">
-		<div id="hideGuide">
-			Cacher <img src="<?= asset('resources/viewer/next.svg') ?>" />
+    	<div>
+			<div id="hideGuide">
+				Masquer <img src="<?= asset('resources/viewer/next.svg') ?>" />
+			</div>
+			<div style="clear:both"></div>
 		</div>
 		<div class="section">
 			<h4>Articles proches</h4>
@@ -157,11 +166,11 @@
 					$("#currentTags").text('');
 					if( article.Tags != undefined){
 						for(var i = 0; i < article.Tags.length; i++){
-							$("#currentTags").append(' <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+article.Tags[i]+'</span>');
+							$("#currentTags").append('<span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tags[i]+'</span></span>');
 						}
 					}
-					var url = "<?php echo $_SERVER['HTTP_HOST']; ?>";
-					$("#currentUrl").attr('value', url+'/Gutemberg-Dev/public/visionneuse?id='+article.IdPage+'&article='+article._id);
+					var url = "<?= url('/visionneuse'); ?>";
+					$("#currentUrl").attr('value', url+'/page/'+article.IdPage+'/article/'+article._id);
 					$("#currentArticle").show();
 				}
 				else{
@@ -195,9 +204,7 @@
 			var keywords = '<?php echo $keywords; ?>' ;
 
 			$('#search_input').val(keywords);
-
-			var pages =  <?php echo $pages; ?> ;
-			var page = pages[0];
+			var page = <?= $page; ?>;
 			var articles = page.Articles;
 
 			var overlays = [];
@@ -230,10 +237,10 @@
 				}
 
 				var overlaysSlt = [];
-				var article =  <?php echo $article; ?> ;
+				var article =  <?= $article; ?> ;
+
 				updateCurrentArticle(article);
 				if( article != null ){
-					article = article[0];
 					updateCurrentArticle(article);
 
 					if( article.TitleCoord.length != 0){
@@ -315,11 +322,11 @@
 			if( typeImage){
 				var tileSource = {
 			        type: 'image',
-			        url:  "images/"+filename,
+			        url:  '<?= parse_url(url('images'))['path'].'/'; ?>'+filename,
 			        buildPyramid: false
 				}
 			}else{
-				var tileSource = "images/"+filename;
+				var tileSource = '<?= parse_url(url('images'))['path'].'/'; ?>'+filename;
 			}
 
 			var viewer = OpenSeadragon({
@@ -578,7 +585,7 @@
 
 					$.get(
 
-					    'newSearch', // Le fichier cible côté serveur.
+					    '<?= url('/').'/'; ?>'+'newSearch', // Le fichier cible côté serveur.
 
 					    {
 					    	id: page._id,
@@ -623,15 +630,14 @@
 
 					$.get(
 
-					    'changeArticle', // Le fichier cible côté serveur.
+					    '<?= url('/').'/'; ?>'+'changeArticle', // Le fichier cible côté serveur.
 
 					    {
 					    	article: idArticle
 					    },
 
 					    function(data){
-
-				   			article = data[0];
+				   			article = data;
 				   			updateCurrentArticle(article);
 				   			updateCloseArticles(article);
 				   			if(zoomBool) zoomOnArticle(article);
@@ -648,7 +654,7 @@
 			function previousPage(){
 				var idPage = page.PreviousPage;
 				var keywds = $('#search_input').val();
-				var link = "visionneuse?id="+idPage;
+				var link = "visionneuse/page/"+idPage;
 
 				if(keywds != '')
 				{
@@ -661,7 +667,7 @@
 			function nextPage(){
 				var idPage = page.NextPage;
 				var keywds = $('#search_input').val();
-				var link = "visionneuse?id="+idPage;
+				var link = "visionneuse/page/"+idPage;
 
 				if(keywds != '')
 				{
@@ -673,7 +679,7 @@
 
 			function closeArticle(parPage, parArticle){
 				var keywds = $('#search_input').val();
-				var link = "visionneuse?id="+parPage+"&article="+parArticle;
+				var link = "visionneuse/page/"+parPage+"/article/"+parArticle;
 
 				if(keywds != '')
 				{
@@ -729,13 +735,13 @@
 
 				if( tag != '' && !article.Tags.includes(tag)){
 
-					$("#currentTags").append(' <span onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag">'+tag+'</span>');
+					$("#currentTags").append('<span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tag+'</span></span>');
 
 					if( !savedTags.includes(tag)) savedTags.push(tag);
 
 					$.get(
 
-					    'newTag', // Le fichier cible côté serveur.
+					    '<?= url('/').'/'; ?>'+'newTag', // Le fichier cible côté serveur.
 
 					    {
 					    	article: article._id,
@@ -759,7 +765,7 @@
 
 					$.get(
 
-					    'removeTag', // Le fichier cible côté serveur.
+					    '<?= url('/').'/'; ?>'+'removeTag', // Le fichier cible côté serveur.
 
 					    {
 					    	article: article._id,
@@ -782,21 +788,21 @@
 			}
 
 			function closeTag(elemnt){
-				var removedTag = $(elemnt).closest('span').text();
+				var removedTag = $(elemnt).parent().children("span").text();
 				removeTag(removedTag);
 
-				$(elemnt).closest('span').remove();
+				$(elemnt).parent().children("span").remove();
 				$(elemnt).remove();
 			}
 
 			function tagMouseEnter(elemnt){
 				if(auth){
-					$(elemnt).append('<img src="<?= asset("resources/viewer/delete.png") ?>" class="closeTag" onclick="closeTag(this)" alt="Flèche gauche" />');
+					$(elemnt).append(' <a onclick="closeTag(this)">X</a>');
 				}
 			}
 
 			function tagMouseLeave(elemnt){
-				$(elemnt).find("img").remove();
+				$(elemnt).find("a").remove();
 			}
 
 			function existInReviews(idReview){
@@ -865,7 +871,7 @@
 
 				$.get(
 
-				    'addArticle', // Le fichier cible côté serveur.
+				    '<?= url('/').'/'; ?>'+'addArticle', // Le fichier cible côté serveur.
 
 				    {
 				    	idArticle: article._id,
@@ -896,7 +902,7 @@
 
 				$.get(
 
-				    'searchReview', // Le fichier cible côté serveur.
+				    '<?= url('/').'/'; ?>'+'searchReview', // Le fichier cible côté serveur.
 
 				    {
 				    	text: text,
@@ -924,7 +930,7 @@
 
 				$.get(
 
-				    'addArticleToOther', // Le fichier cible côté serveur.
+				    '<?= url('/').'/'; ?>'+'addArticleToOther', // Le fichier cible côté serveur.
 
 				    {
 				    	idArticle: article._id,
@@ -961,7 +967,7 @@
 
 				$.get(
 
-				    'newReview', // Le fichier cible côté serveur.
+				    '<?= url('/').'/'; ?>'+'newReview', // Le fichier cible côté serveur.
 
 				    {
 				    	idArticle: article._id,

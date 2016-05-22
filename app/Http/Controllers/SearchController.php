@@ -168,7 +168,7 @@ class SearchController extends Controller
 
 
             $articles = Article::search($params);
-            //dd($articles);
+
             $configLength = 10;
             
             foreach ($articles as $review) {
@@ -232,7 +232,6 @@ class SearchController extends Controller
             
             $savedNewsPaper = Autocomplete::search($paramsNewsPaper);
             $savedNewsPaper = json_encode($savedNewsPaper[0]['Data']);
-
 
             return view('pages.recherche', compact('articles', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'regexp', 'savedTags', 'tags', 'savedNewsPaper', 'news'));
         }

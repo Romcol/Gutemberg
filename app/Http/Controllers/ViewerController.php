@@ -14,19 +14,10 @@ use App\Utility;
 class ViewerController extends Controller
 {
 
-    public function index()
+    public function index($page_id,$article_id = null, $search = null)
     {
         
-        $id = $_GET['id'];
-        $params = [
-            'query' => [
-                'match' => [
-                    '_id' => $id
-                ]
-            ]
-        ];
-    	$pages = Page::search($params);
-        //dd($pages);
+    	$page = Page::find($page_id);
 
         session_start();
         if( isset($_SESSION['searchUri'])){
@@ -35,27 +26,27 @@ class ViewerController extends Controller
             $searchUri = null;
         }
 
-        $article = $this->searchArticle();
+        $article = $this->searchArticle($article_id);
 
         $filename = 'default.dzi';
         $typeImage = false;
-        if ( file_exists(public_path().'/images/'.$pages[0]['Picture'].'.dzi')) {
-           $filename = $pages[0]['Picture'].'.dzi';
-        }else if(file_exists(public_path().'/images/'.$pages[0]['Picture'].'.jpg')) {
-            $filename = $pages[0]['Picture'].'.jpg';
+
+        if ( file_exists(public_path().'/images/'.$page['Picture'].'.dzi')) {
+           $filename = $page['Picture'].'.dzi';
+        }else if(file_exists(public_path().'/images/'.$page['Picture'].'.jpg')) {
+            $filename = $page['Picture'].'.jpg';
             $typeImage = true;
         }
 
         $keywords = '';
         $searchedKeywords = [];
-        if( isset($_GET['search']) ){
-            $keywords = $_GET['search'];
-            $searchedKeywords = $this->searchKeyword();
+        if( $search != null ){
+            $keywords = $search;
+            $searchedKeywords = $this->searchKeyword($page_id,$keywords);
         }
 
         $searchedKeywords = json_encode($searchedKeywords);
 
-       // dd($pages);
         $paramsAutocompl = [
             'query' => [
                 'match' => [
@@ -69,31 +60,23 @@ class ViewerController extends Controller
 
 
 
-    	return view('pages.viewer', compact('pages','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage'));
+    	return view('pages.viewer', compact('page','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage'));
     }
 
-    public function searchArticle(){
-        $article = 'null';
-        if( isset($_GET['article']) ){
-            $id = $_GET['article'];
-            $paramsArticle = [
-                'query' => [
-                    'match' => [
-                        '_id' => $id
-                    ]
-                ]
-            ];
-            $article =  Article::search($paramsArticle);
+    public function searchArticle($id = null){
+        $article = null;
+        if(isset($_GET['article'])) $id = $_GET['article'];
+        if($id != null){
 
-            $viewArticle = Article::find($id);
-            $viewArticle->Views = $viewArticle->Views + 1;
-            $viewArticle->save();
+            $article =  Article::find($id);
+            $article->Views = $article->Views + 1;
+            $article->save();
 
+            $id_page = $article['IdPage']->{'$id'};
+            $titleNews = $article['TitleNewsPaper'];
+            $date = $article['Date'];
+            $title = ($article['Title'] != '(Sans Titre)')? $article['Title'] : '';
 
-            $id = $article[0]['IdPage'];
-            $titleNews = $article[0]['TitleNewsPaper'];
-            $date = $article[0]['Date'];
-            $title = ($article[0]['Title'] != '(Sans Titre)')? $article[0]['Title'] : '';
             $paramsClose = [
                 'query' => [
                     'filtered' => [
@@ -130,7 +113,7 @@ class ViewerController extends Controller
                         'filter' => [
                             'not' => [
                                 'term' => [
-                                    'IdPage' => $id
+                                    'IdPage' => $id_page
                                 ]
                             ]
                         ]
@@ -140,7 +123,7 @@ class ViewerController extends Controller
 
             $result = Article::search($paramsClose);
 
-            $article[0]['Close'] = $result;
+            $article['Close'] = $result;
 
         }
 
@@ -150,9 +133,7 @@ class ViewerController extends Controller
 
     }
 
-    public function searchKeyword(){
-        $id = $_GET['id'];
-        $keywords = $_GET['search'];
+    public function searchKeyword($page_id,$keywords){
         $paramsSearch = [
             'query' => [
                 'bool' => [
@@ -172,7 +153,7 @@ class ViewerController extends Controller
                     ],
                     'must' => [
                         'match' => [
-                            'IdPage' => $id
+                            'IdPage' => $page_id
                         ]
                     ]
                 ]

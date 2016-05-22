@@ -189,15 +189,16 @@ article em{
     border-radius:0px;
 }
 
-.pager a:focus, .pager a:hover, .pager a
+.pager a:focus, .pager a:active, .pager a:hover, .pager a
 {
     color:black;
 }
 
-.pager li>a:focus, .pager li>a:hover
+.pager li>a.btn:focus, .pager li>a.btn:active, .pager li>a.btn:hover
 {
     background-color: #bbe3e3;
 }
+
 /*Navbar*/
 
 .dropdown-menu{

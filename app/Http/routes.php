@@ -43,9 +43,12 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('recherche', 'SearchController@search');
 
-	Route::get('visionneuse', 'ViewerController@index');
-	Route::get( 'changeArticle', 'ViewerController@searchArticle');
-	Route::get( 'newSearch', 'ViewerController@searchKeyword');
+	Route::get('visionneuse/page/{page_id}/article/{article_id}/recherche/{search}', 'ViewerController@index');
+	Route::get('visionneuse/page/{page_id}/article/{article_id}', 'ViewerController@index');
+	Route::get('visionneuse/page/{page_id}', 'ViewerController@index');
+
+	Route::get('changeArticle', 'ViewerController@searchArticle');
+	Route::get('newSearch', 'ViewerController@searchKeyword');
 	Route::get('newTag', 'ViewerController@addTag');
 	Route::get('removeTag', 'ViewerController@removeTag');
 
