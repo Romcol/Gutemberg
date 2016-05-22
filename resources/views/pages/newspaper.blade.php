@@ -61,7 +61,7 @@
       		<page>
             <div class="panel panel-default">
               <div class="panel-heading">
-               <a href="visionneuse?id={{$onePage['Id']}}"> <h3 class="panel-title">{{$onePage['Title']}}, {{$onePage['Date']}}</h3></a>
+               <a href="<?= url('/visionneuse/page/'.$onePage['Id']); ?>"> <h3 class="panel-title">{{$onePage['Title']}}, {{$onePage['Date']}}</h3></a>
               </div>
             </div>
       		</page>

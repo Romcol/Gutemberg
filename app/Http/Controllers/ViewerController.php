@@ -65,7 +65,7 @@ class ViewerController extends Controller
 
     public function searchArticle($id = null){
         $article = null;
-        if(isset($_GET['article'])) $id = $_GET['article'];
+        if($id == null && isset($_GET['article'])) $id = $_GET['article'];
         if($id != null){
 
             $article =  Article::find($id);
@@ -133,7 +133,10 @@ class ViewerController extends Controller
 
     }
 
-    public function searchKeyword($page_id,$keywords){
+    public function searchKeyword($page_id = null,$keywords = null){
+        if($page_id == null && isset($_GET['id'])) $page_id = $_GET['id'];
+        if($keywords == null && isset($_GET['search'])) $keywords = $_GET['search'];
+
         $paramsSearch = [
             'query' => [
                 'bool' => [

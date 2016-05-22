@@ -22,6 +22,12 @@ footer {
     margin: 50px 0;
 }
 
+a#browseNewspapers, a#browseNewspapers:active, a#browseNewspapers:focus
+{
+    color:black;
+    text-decoration: underline;
+}
+
 /*Recherche*/
 
 .searchRow {
@@ -277,4 +283,15 @@ fieldset[disabled] .navbar-custom .btn-link:focus  {
 
 .pressreviewarticles article .panel{
     pointer-events: none;
+}
+
+#saveform
+{
+    float:left;
+    margin-right:10px;
+}
+
+.createdpressreviews
+{
+    padding-top:10px;
 }

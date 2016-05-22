@@ -32,37 +32,43 @@ class PressReviewController extends Controller
     	$name = $request->input('name');
     	$description = $request->input('description');
     	$user = Auth::user();
-    	$user_id = $user->_id;
-    	$user_name = $user->name;
+        if($user && $name && $description)
+        {
+        	$user_id = $user->_id;
+        	$user_name = $user->name;
 
-    	$pressreview = new PressReview;
-		$pressreview->name = $name;
-		$pressreview->description = $description;
-		$pressreview->owner_id = $user_id;
-		$pressreview->owner_name = $user_name;
-		$pressreview->articles = [];
-		$pressreview->save();
+        	$pressreview = new PressReview;
+    		$pressreview->name = $name;
+    		$pressreview->description = $description;
+    		$pressreview->owner_id = $user_id;
+    		$pressreview->owner_name = $user_name;
+    		$pressreview->articles = [];
+    		$pressreview->save();
 
-		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
-		$user->push('createdReviews',$pressreviewobject);
-
-    	return view('pages.pressreviewinsert', compact('pressreview'));
+    		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
+    		$user->push('createdReviews',$pressreviewobject);
+            return Redirect::to('profil')->with(['message' => 'Revue de presse "'.$name.'" créee.', 'status' => 'success']);
+        }   
+        return Redirect::to('profil')->with(['message' => "Erreur. La revue de presse n'a pas été créee.", 'status' => 'fail']);
     }
 
     public function delete($id)
     {
-    	//$user = Auth::user();
-    	$pressreview = PressReview::find($id);
-    	$reviews = $user->createdReviews;
-    	foreach($reviews as $i => $pr)
-    	{
-    		if($pr['_id'] == $id)
-    		{
-    			$user->pull('createdReviews',$reviews[$i]);
-	    		$pressreview->delete();
-	    		return Redirect::to('profil')->with(['message' => 'Revue de presse supprimée.', 'status' => 'success']);
-    		}
-    	}
+    	$user = Auth::user();
+        if($user && $id)
+        {
+        	$pressreview = PressReview::find($id);
+        	$reviews = $user->createdReviews;
+        	foreach($reviews as $i => $pr)
+        	{
+        		if($pr['_id'] == $id)
+        		{
+        			$user->pull('createdReviews',$reviews[$i]);
+    	    		$pressreview->delete();
+    	    		return Redirect::to('profil')->with(['message' => 'Revue de presse supprimée.', 'status' => 'success']);
+        		}
+        	}
+        }
         return Redirect::to('profil')->with(['message' => "La revue de presse n'a pas pu être supprimée.", 'status' => 'fail']);
     }
 

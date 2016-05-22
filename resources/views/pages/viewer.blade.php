@@ -64,9 +64,26 @@
 					<span id="currentTags"></span>
 				</p>
 				@if( !Auth::guest() )
-				<button type="button" id="showAddReview" onclick="displayAddReview()" class="btn btn-default btn-sm">Ajouter cet article à une revue de presse</button>
+				<div id="addpressreview">
+					<button type="button" id="showAddReview" onclick="displayAddReview()" class="btn btn-default btn-sm">Ajouter à une revue de presse</button>
+					<div id="reviewPart">
+						<div id="choice">
+						    <form role="form">
+						    <div class="form-group">
+						    <div class="input-group">
+								      	<select id="listMyReview" class="form-control">
+								      		<option selected disabled >Vide</option>
+									  	</select>
+									  	<span class="input-group-btn"><button type="button" id="addCreated" onclick="selectCreated()" class="btn btn-default btn-sm disabled">+</button></span>
+							</div>
+							</div>
+							 </form>
+						</div>
+						<div id="ReviewList"></div>
+					</div>
+				</div>
 				@endif
-				<div class="form-group" style="display:inline-block;">
+				<div class="form-group">
 					<strong>URL : </strong><input id="currentUrl" />
 				</div>
 			</div>
@@ -125,25 +142,6 @@
 	<div id="guideHidden">
 		<img src="<?= asset('resources/viewer/back.svg'); ?>"/>
 	</div>
-</div>
-
-<div class="row" id="reviewPart">
-	<hr>
-	<div class="col-lg-3 col-md-3 col-sm-3 col-xs-12" id="choice">
-		<center><h4>À quelle revue de presse voulez-vous ajouter cet article ?</h4></center>
-	    <form role="form">
-	    	<ul>
-			    <li>
-			    	<h5>Mes revues de presse créées et contribuées : </h5>
-			      	<select id="listMyReview" class="form-control">
-			      		<option selected disabled >Vous n'avez pas de revues de presse créées ni contribuées</option>
-				  	</select>
-				  	<button type="button" id="addCreated" onclick="selectCreated()" class="btn btn-default btn-sm disabled" ><h5>Ajouter</h5></button>
-			    </li>
-		    </ul>
-		 </form>
-	</div>
-	<div class="col-lg-8 col-md-8 col-sm-8 col-xs-12" id="ReviewList"></div>
 </div>
 @stop
 
@@ -237,8 +235,11 @@
 				}
 
 				var overlaysSlt = [];
+				@if($article)
 				var article =  <?= $article; ?> ;
-
+				@else
+				var article = null;
+				@endif
 				updateCurrentArticle(article);
 				if( article != null ){
 					updateCurrentArticle(article);
@@ -627,7 +628,6 @@
 			function selectArticle(idArticle, zoomBool){
 
 				if( idArticle != null){
-
 					$.get(
 
 					    '<?= url('/').'/'; ?>'+'changeArticle', // Le fichier cible côté serveur.
@@ -654,11 +654,11 @@
 			function previousPage(){
 				var idPage = page.PreviousPage;
 				var keywds = $('#search_input').val();
-				var link = "visionneuse/page/"+idPage;
+				var link = '<?= url('visionneuse').'/page/'; ?>'+idPage;
 
 				if(keywds != '')
 				{
-					link += "&search="+keywds;
+					link += "/search/"+keywds;
 				}
 
 				window.location.href = link;
@@ -667,11 +667,11 @@
 			function nextPage(){
 				var idPage = page.NextPage;
 				var keywds = $('#search_input').val();
-				var link = "visionneuse/page/"+idPage;
+				var link = '<?= url('visionneuse').'/page/'; ?>'+idPage;
 
 				if(keywds != '')
 				{
-					link += "&search="+keywds;
+					link += "/search/"+keywds;
 				}
 
 				window.location.href = link;
@@ -788,11 +788,9 @@
 			}
 
 			function closeTag(elemnt){
-				var removedTag = $(elemnt).parent().children("span").text();
+				var removedTag = $(elemnt).parent().find("span").text();
 				removeTag(removedTag);
-
-				$(elemnt).parent().children("span").remove();
-				$(elemnt).remove();
+				$(elemnt).parent().remove();
 			}
 
 			function tagMouseEnter(elemnt){
@@ -825,6 +823,7 @@
 
 			function displayAddReview(){
 
+				$('#showAddReview').hide();
 				$("#reviewPart").show();
 
 				if( createdReviews.length != 0 && contributedReviews.length != 0) $('#listMyReview').text('');
@@ -891,6 +890,7 @@
 				);
 
 				$("#reviewPart").hide();
+				$("#addpressreview").text('Article ajouté');
 
 			}
 
@@ -1024,7 +1024,7 @@
 
 			var articleId = CoordToNewArticleId(clickx, clicky);
 
-			selectArticle(articleId, false);
+			selectArticle(articleId.$id, false);
 
 		});
 

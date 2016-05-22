@@ -4,7 +4,8 @@
 @if($pressreview)
 	<h3>{{$pressreview['name']}}</h3>
 	<p><em>{{$pressreview['description']}}</em></p>
-	@if($pressreview['articles'] != '[]')
+	<hr>
+	@if($pressreview['articles'])
 		<div class="row">
 		<div class="col-md-12 col-lg-12 pressreviewarticles">
 		@foreach ($pressreview['articles'] as $ind => $article)

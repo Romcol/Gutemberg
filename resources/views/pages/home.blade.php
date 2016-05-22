@@ -31,8 +31,7 @@
                     <option value="review">Revues de presse</option>
   				</select>
 		  </div>
-		  <button type="submit" class="btn btn-lg btn-default">Recherche</button>
-          ou <a href="recherche?text=&type=newspaper">Parcourir les journaux</a>
+		  <button type="submit" class="btn btn-lg btn-default">Recherche</button> ou <a href="recherche?text=&type=newspaper" id="browseNewspapers">Parcourir les journaux</a>
 		</form>
 		</div>
 
@@ -74,7 +73,7 @@
 		               <a href="<?= url('visionneuse/page/'.$article['IdPage'].'/article/'.$article['id']); ?>"> <h4 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h4></a>
 		              </div>
 		              <div class="panel-body">
-		                <B class="title">{{$article['Title']}}</B>
+		                {{$article['Title']}}
 		              </div>
 		            </div>
 		      		</article>

@@ -3,11 +3,7 @@
 }
 
 #pageInfo, #pageGuide {
-	/*padding:0px 0px 0px 0px;
-	float:left;
-    border-style: solid;
-    border-width: 2px 2px 2px 0px;
-    border-color: black;*/
+	/*#d4dff3*/
     position:absolute;
     width:15%;
     z-index:100;
@@ -16,6 +12,11 @@
     display:none;
     height:700px;
     overflow-y:auto;
+}
+
+#pageInfo a, #pageInfo a:active, #pageInfo a:focus{
+    color:black;
+    text-decoration: underline;
 }
 
 #pageGuide {
@@ -171,23 +172,9 @@
    color: #C0C0C0;
 }
 
-#choice {
-    margin: 10px;
-    border-style: solid;
-    border-color: #E6E6FA;
-    padding-bottom: 5px;
-}
-
-#created {
-
-}
-
-#contributed {
-
-}
-
-#searchReview {
-
+#addpressreview
+{
+    margin-bottom:10px;
 }
 
 #newReview{
