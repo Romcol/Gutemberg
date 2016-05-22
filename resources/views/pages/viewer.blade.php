@@ -9,9 +9,9 @@
 <a id="backSearch" href="{{$searchUri}}" <?php if( $searchUri == null ) echo 'style="display: none"';?> class="btn btn-default btn-sm"><img src="<?= asset('resources/viewer/back(1).png') ?>" class="viewer-icon" alt="Flèche droite"/> <strong>Retour à la recherche</strong></a>
 
 <div class="row">
-	<div id="pageInfo" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+	<div id="pageInfo">
 		<div id="hideInfo">
-			<img src="<?= asset('resources/viewer/previous-white.png') ?>" height="20px" alt="Flèche gauche" /> Cacher 
+			<img src="<?= asset('resources/viewer/back.svg') ?>" /> Cacher
 		</div>
 		<div class="section">
 			<h4>Informations sur la page</h4>
@@ -67,9 +67,9 @@
 		</div>
 	</div>
 	<div id="infoHidden">
-		<img src="<?= asset('resources/viewer/next-white.png') ?>" height="20px" alt="Flèche gauche" />
+		<img src="<?= asset('resources/viewer/next.svg'); ?>"/>
 	</div>
-	<div id="viewer" class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+	<div id="viewer" class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 	    <div id="toolbarDiv" class="toolbar">
 		    <form class="form-inline" style='float:left;margin:10px 0 10px 20px'>
 		   			<a id="home" href="#home"><img src="<?= asset('resources/viewer/home.svg') ?>" alt="Accueil" class="viewer-icon"/></a> 
@@ -101,9 +101,9 @@
 			</ul>
 	    </div>
     </div>
-    <div id="pageGuide" class="col-lg-2 col-md-2 col-sm-2 col-xs-12">
+    <div id="pageGuide">
 		<div id="hideGuide">
-			Cacher <img src="<?= asset('resources/viewer/next-white.png') ?>" height="20px" alt="Flèche gauche" />
+			Cacher <img src="<?= asset('resources/viewer/next.svg') ?>" />
 		</div>
 		<div class="section">
 			<h4>Articles proches</h4>
@@ -114,7 +114,7 @@
 		</div>
 	</div>
 	<div id="guideHidden">
-		<img src="<?= asset('resources/viewer/previous-white.png') ?>" height="20px" alt="Flèche gauche" />
+		<img src="<?= asset('resources/viewer/back.svg'); ?>"/>
 	</div>
 </div>
 
@@ -645,26 +645,6 @@
 				}
 			}
 
-			function enlargeViewer(){
-				if( $('#viewer').attr('class') == 'col-lg-8 col-md-8 col-sm-8 col-xs-12'){
-					$('#viewer').removeClass('col-lg-8 col-md-8 col-sm-8 col-xs-12').addClass('col-lg-9 col-md-9 col-sm-9 col-xs-12');
-					$('#viewer').css('width', '77%');
-				}else{
-					$('#viewer').removeClass('col-lg-9 col-md-9 col-sm-9 col-xs-12').addClass('col-lg-10 col-md-10 col-sm-10 col-xs-12');
-					$('#viewer').css('width', '92%');
-				}
-			}
-
-			function reduceViewer(){
-				if( $('#viewer').attr('class') == 'col-lg-10 col-md-10 col-sm-10 col-xs-12'){
-					$('#viewer').removeClass('col-lg-10 col-md-10 col-sm-10 col-xs-12').addClass('col-lg-9 col-md-9 col-sm-9 col-xs-12');
-					$('#viewer').css('width', '77%');
-				}else{
-					$('#viewer').removeClass('col-lg-9 col-md-9 col-sm-9 col-xs-12').addClass('col-lg-8 col-md-8 col-sm-8 col-xs-12');
-					$('#viewer').css('width', '');
-				}
-			}
-
 			function previousPage(){
 				var idPage = page.PreviousPage;
 				var keywds = $('#search_input').val();
@@ -1091,25 +1071,21 @@
 		$("#hideInfo").click(function(){
     		$("#pageInfo").hide();
     		$("#infoHidden").show();
-    		enlargeViewer();
 		});
 
 		$("#infoHidden").click(function(){
 			$("#infoHidden").hide();
     		$("#pageInfo").show();
-    		reduceViewer();
 		});
 
 		$("#hideGuide").click(function(){
     		$("#pageGuide").hide();
     		$("#guideHidden").show();
-    		enlargeViewer();
 		});
 
 		$("#guideHidden").click(function(){
 			$("#guideHidden").hide();
     		$("#pageGuide").show();
-    		reduceViewer();
 		});
 
 

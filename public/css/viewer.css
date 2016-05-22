@@ -1,26 +1,49 @@
-#pageInfo {
-	padding:0px 0px 0px 0px;
+.toolbar{
+    height:50px;
+}
+
+#pageInfo, #pageGuide {
+	/*padding:0px 0px 0px 0px;
 	float:left;
     border-style: solid;
     border-width: 2px 2px 2px 0px;
-    border-color: black;
-
+    border-color: black;*/
+    position:absolute;
+    width:15%;
+    z-index:100;
+    background-color:white;
+    margin-top:50px;
+    display:none;
 }
 
 #pageGuide {
-    padding:0px 0px 0px 0px;
-    float:right;
-    border-style: solid;
-    border-width: 2px 0px 2px 2px;
-    border-color: black;
+    right:0;
+}
 
+#infoHidden, #guideHidden{
+    /*
+    padding:3px 0px 3px 25px;
+    border-radius:0px 2px 2px 0px;
+    */
+    position:absolute;
+    z-index:150;
+    margin-top:50px;
+    background-color:black;
+    color:white;
+    font-size:30px;
+    cursor:  pointer;
+}
+
+#infoHidden img, #guideHidden img{
+    height:25px;
+}
+
+#guideHidden{
+    right:0;
 }
 
 #ourOpenseadragon {
-    height: 700px; 
-    border-color: black;
-    border-width: 2px;
-    padding: 0px 0px 50px 0px;
+    height: 700px;
 }
 
 #pageInfo strong {
@@ -42,26 +65,6 @@
     overflow-y: auto;
 }
 
-#infoHidden {
-	float:left;
-	display:none;
-	background-color: black;
-	width:55px;
-	padding:3px 0px 3px 25px;
-    border-radius:0px 2px 2px 0px;
-    cursor:  pointer;
-}
-
-#guideHidden{
-    float:right;
-    display:none;
-    background-color: black;
-    width:55px;
-    padding:3px 0px 3px 10px;
-    border-radius:2px 0px 0px 2px;
-    cursor:  pointer;
-}
-
 #articleList:hover{
 	cursor:  pointer;
 	text-decoration: underline;
@@ -76,7 +79,10 @@
     border-color: black;
     cursor:pointer; 
     color: white;
+}
 
+#hideInfo img, #hideGuide img{
+    height:20px;
 }
 
 #hideGuide {

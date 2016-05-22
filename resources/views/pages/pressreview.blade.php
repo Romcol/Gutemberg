@@ -162,12 +162,18 @@ $(document).ready(function() {
 	        },
 	        // on lâche l élément
 	        drop: function(e) {
+	        	console.log('ok');
 	        	dropid = $(this).prop('id');
 	        	if(dropid != currentid)
 	        	{
 	        		invert(currentid, dropid);
 	        	}
 	        	$('.pressreviewarticles article').css('opacity', '1');
+		        $('.pressreviewarticles article .panel').css('border', 'none');
+	    	},
+	    	dragend: function(){
+	    		console.log('dragend');
+	    		$('.pressreviewarticles article').css('opacity', '1');
 		        $('.pressreviewarticles article .panel').css('border', 'none');
 	    	}
 	    });
