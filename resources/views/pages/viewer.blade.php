@@ -1091,7 +1091,7 @@
 
 			var articleId = CoordToNewArticleId(clickx, clicky);
 
-			selectArticle(articleId.$id, false);
+			selectArticle(articleId.id, false);
 
 		});
 
