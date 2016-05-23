@@ -45,7 +45,9 @@
 			</div>
 		</div>
 		<div id="currentArticle" style="display:none;" class="section">
-
+			@if(Auth::user())
+			<img src="<?= asset("resources/viewer/empty-star.svg") ?>" id="favorite" onClick="addFavorite()" style="float: right; width: 30px; cursor: pointer;"/>
+			@endif
 			<h4>Article</h4>
 			<hr>
 			<div id="infoCurrentArticle">
@@ -164,12 +166,23 @@
 					$("#currentTags").text('');
 					if( article.Tags != undefined){
 						for(var i = 0; i < article.Tags.length; i++){
-							$("#currentTags").append('<span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tags[i]+'</span></span>');
+							$("#currentTags").append('<span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+article.Tags[i]+'</span></span>');
 						}
 					}
 					var url = "<?= url('/visionneuse'); ?>";
 					$("#currentUrl").attr('value', url+'/page/'+article.IdPage+'/article/'+article._id);
 					$("#currentArticle").show();
+
+					$("#favorite").attr('src', '<?= asset("resources/viewer/empty-star.svg") ?>');
+					$("#favorite").attr('onClick', 'addFavorite()');
+					if(auth){
+						for(var i=0; i<favorites.length; i++){
+							if( favorites[i].id == article._id) {
+								$("#favorite").attr('src', '<?= asset("resources/viewer/star.svg") ?>');
+								$("#favorite").attr('onClick', 'removeFavorite()');
+							}
+						}
+					}
 				}
 				else{
 					$("#currentArticle").hide();
@@ -189,6 +202,7 @@
 				if(auth){
 					var createdReviews = <?php echo json_encode(Auth::user()->createdReviews); ?> ;
 					var contributedReviews = <?php echo json_encode(Auth::user()->contribReviews); ?> ;
+					var favorites = <?php echo json_encode(Auth::user()->favoriteArticles); ?> ;
 				}
 			<?php
 			}
@@ -892,6 +906,59 @@
 				$("#reviewPart").hide();
 				$("#addpressreview").text('Article ajouté');
 
+			}
+
+			function addFavorite(){
+
+				var description = "";
+				for(var i=0; i<Math.min(10, article.Words.length); i++){
+					description+=article.Words[i].Word;
+				}  
+				description+="...";
+
+				$.get(
+
+				    '<?= url('/').'/'; ?>'+'addFavorite', // Le fichier cible côté serveur.
+
+				    {
+				    	idArticle: article._id,
+				    	idPage: article.IdPage,
+				    	date: article.Date,
+				    	newspaper: article.TitleNewsPaper,
+				    	title: article.Title,
+				    	description: description
+				    },
+
+				    function(data){
+				    	favorites.push({ "id" : article._id});
+					}
+
+				);
+
+				$("#favorite").attr('src', '<?= asset("resources/viewer/star.svg") ?>');
+				$("#favorite").attr('onClick', 'removeFavorite()');
+			}
+
+			function removeFavorite(){
+
+				$.get(
+
+				    '<?= url('/').'/'; ?>'+'removeFavorite', // Le fichier cible côté serveur.
+
+				    {
+				    	idArticle: article._id,
+				    },
+
+				    function(data){
+				    	for(var i=0; i<favorites.length; i++){
+				    		if( favorites[i].id == article._id) favorites.splice(i, 1);
+				    	}
+					}
+
+				);
+
+				$("#favorite").attr('src', '<?= asset("resources/viewer/empty-star.svg") ?>');
+				$("#favorite").attr('onClick', 'addFavorite()');
 			}
 
 			function selectSearchReview(page){

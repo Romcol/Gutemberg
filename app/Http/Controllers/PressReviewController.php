@@ -43,6 +43,7 @@ class PressReviewController extends Controller
     		$pressreview->owner_id = $user_id;
     		$pressreview->owner_name = $user_name;
     		$pressreview->articles = [];
+            $pressreview->created = date("Y-m-d H:i:s");
     		$pressreview->save();
 
     		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
@@ -169,6 +170,69 @@ class PressReviewController extends Controller
         $pressreviewobject = ['name' => $nameRev, 'description' => $descriptionRev, '_id' => $idRev];
         $user->push('contribReviews',$pressreviewobject);
 
+    }
+
+    public function addFavorite(){
+        
+        $idArticle = $_GET['idArticle'];
+        $idPage = $_GET['idPage'];
+        $date = $_GET['date'];
+        $newsPaper = $_GET['newspaper'];
+        $title = $_GET['title'];
+        $description = $_GET['description'];
+
+        $articleToAdd = [
+             "id" => $idArticle,                         
+             "IdPage" => $idPage,                      
+             "Title" => $title,  
+             "TitleNewsPaper" => $newsPaper,                      
+             "date" => $date,                                      
+             "description" => $description
+        ];
+
+        $user = Auth::user();
+
+        $user->push('favoriteArticles',$articleToAdd);
+
+    }
+
+    public function removeFavorite(){
+
+            $idArticle = $_GET['idArticle'];
+
+            $user = Auth::user();
+            $favoriteList = Auth::user()->favoriteArticles;
+
+            $tab = $this->removeElement($idArticle, $favoriteList);
+
+            Auth::user()->favoriteArticles = $tab;
+            Auth::user()->save();
+
+    }
+
+    public function removeElement($element, $array){
+        $found = false;
+        $size = count($array);
+        for ($j = 0; $j < $size; $j++) {
+            if( $found){
+                if($j != $size-1){
+                    $array[$j]=$array[$j+1];
+                }else{
+                    unset($array[$j]);
+                }
+            }else{
+                if( $element == $array[$j]['id']){
+                    $found = true;
+                    if($j != $size-1){
+                        $array[$j]=$array[$j+1];
+                    }else{
+                        unset($array[$j]);
+                    }
+                }
+            }
+        }
+
+        return $array;
     }
 
 
