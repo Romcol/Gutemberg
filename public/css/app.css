@@ -285,6 +285,10 @@ fieldset[disabled] .navbar-custom .btn-link:focus  {
     pointer-events: none;
 }
 
+.pressreviewarticles article .panel a{
+    pointer-events: auto;
+}
+
 #saveform
 {
     float:left;

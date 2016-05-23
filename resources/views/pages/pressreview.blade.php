@@ -11,19 +11,15 @@
 		@foreach ($pressreview['articles'] as $ind => $article)
 				<div class="row">
 				<div class="col-md-1 col-lg-1">
-				@if($ind != 0)
 				<button type="button" class="btn btn-default btn-block upbtn">&uarr;</button>
-				@endif
 				<button type="button" class="btn btn-default btn-block deletebtn">X</button>
-				@if($ind != (count($pressreview['articles'])-1))
 				<button type="button" class="btn btn-default btn-block downbtn">&darr;</button>
-				@endif
 				</div>
 				<div id="zone-{{$ind}}" class="col-md-11 col-lg-11">
 			      	<article draggable="true" id="article-{{$article['id']}}">
 		            <div class="panel panel-default">
 		              <div class="panel-heading">
-		               <a href="visionneuse?id={{$article['IdPage']}}&article={{$article['id']}}"> <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['date']}}</h3></a>
+		               <h3 class="panel-title"><a href="<?= url('/visionneuse/page/'.$article['IdPage'].'/article/'.$article['id']); ?>" >{{$article['TitleNewsPaper']}}, {{$article['date']}}</a></h3>
 		              </div>
 		              <div class="panel-body">
 		                <B class="title">{{$article['Title']}}</B>
@@ -62,8 +58,17 @@ $(document).ready(function() {
 	var currentid, dropid;
 	var artregex = /article-(.+)/;
 
+	function disableButtons()
+	{
+		$('.pressreviewarticles .upbtn').first().removeClass('disabled');
+		$('.pressreviewarticles .downbtn').first().removeClass('disabled');
+		$('.pressreviewarticles .upbtn').first().addClass('disabled');
+		$('.pressreviewarticles .downbtn').last().addClass('disabled');
+	}
+
 	function showSave()
  	{
+ 		disableButtons();
  		$("#saveform input[type='hidden']").prop('value', pressreviewarticles.toString());
  		$('#saveform').show();
  	}
@@ -181,6 +186,7 @@ $(document).ready(function() {
 	}
 
 	addEventPressReview();
+	disableButtons();
 });
 </script>
 @stop
