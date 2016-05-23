@@ -64,6 +64,10 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('addArticle', 'PressReviewController@addArticle');
 
+	Route::get('addFavorite', 'PressReviewController@addFavorite');
+
+	Route::get('removeFavorite', 'PressReviewController@removeFavorite');
+
 	Route::get('addArticleToOther', 'PressReviewController@addArticleToOther');
 
 	Route::get('addToContrib', 'PressReviewController@addToContrib');
