@@ -1066,102 +1066,104 @@
 
 		<!-- Scripts for change on the fly -->
 		<script type="text/javascript">
+		$(function() {
+			$(window).load(function() {
 
-		$(window).load(function() {
+				 zoomOnArticle(article);
 
-			 zoomOnArticle(article);
+				var availableTags = savedTags;
+				$("#tags").autocomplete({
+				    source: availableTags,
+				    minLength: 0,
+				    select: function( event, ui ) { 
+				    	newTag(ui.item.value);
+				    }
+				});
 
-			var availableTags = savedTags;
-			$("#tags").autocomplete({
-			    source: availableTags,
-			    minLength: 0,
-			    select: function( event, ui ) { 
-			    	newTag(ui.item.value);
-			    }
 			});
 
-		});
+			viewer.addHandler('canvas-click', function(event) {
+				var viewportPoint = viewer.viewport.pointFromPixel(event.position);
+				var imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint.x, viewportPoint.y);
+				
+				var clickx = imagePoint.x;
+				var clicky = imagePoint.y;
 
-		viewer.addHandler('canvas-click', function(event) {
-			var viewportPoint = viewer.viewport.pointFromPixel(event.position);
-			var imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint.x, viewportPoint.y);
-			
-			var clickx = imagePoint.x;
-			var clicky = imagePoint.y;
+				var articleId = CoordToNewArticleId(clickx, clicky);
 
-			var articleId = CoordToNewArticleId(clickx, clicky);
+				if ( articleId != null ){
 
-			if ( articleId != null ){
-
-				selectArticle(articleId.$id, false);
-			}
-
-		});
-
-
-
-		$("#toggle-overlay").click(function() {
-			if (toggle) {
-				viewer.clearOverlays();
-
-				for(var i = 0; i<overlaysKwd.length; i++){
-					viewer.addOverlay(overlaysKwd[i]);
+					selectArticle(articleId.$id, false);
 				}
 
-				$('#toggle-overlay').text('Activer les calques');
-			} else {
-				var allOverlays = overlays.concat(overlaysSlt);
+			});
 
-				for(var i = 0; i<allOverlays.length; i++){
-					viewer.addOverlay(allOverlays[i]);
+
+
+			$("#toggle-overlay").click(function() {
+				if (toggle) {
+					viewer.clearOverlays();
+
+					for(var i = 0; i<overlaysKwd.length; i++){
+						viewer.addOverlay(overlaysKwd[i]);
+					}
+
+					$('#toggle-overlay').text('Activer les calques');
+				} else {
+					var allOverlays = overlays.concat(overlaysSlt);
+
+					for(var i = 0; i<allOverlays.length; i++){
+						viewer.addOverlay(allOverlays[i]);
+					}
+
+					$('#toggle-overlay').text('Désactiver les calques');
+
 				}
+				toggle = !toggle;
+				return false;
+			});
 
-				$('#toggle-overlay').text('Désactiver les calques');
+			$("#zoomOnArticle").click(function() {
+				
+				zoomOnArticle(article);
+				return false;
 
-			}
-			toggle = !toggle;
-			return false;
-		});
+			});
 
-		$("#zoomOnArticle").click(function() {
-			
-			zoomOnArticle(article);
-			return false;
+			$("#zoomOnRead").click(function() {
+				
+				zoomOnRead(article);
+				//return false;
 
-		});
+			});
 
-		$("#zoomOnRead").click(function() {
-			
-			zoomOnRead(article);
-			//return false;
+			$('#search_input').keydown(function(e) {
+			  if (e.which == 13) {
+			    if (e.preventDefault) e.preventDefault();
+			    newSearch();
+			  }
+			});
 
-		});
+			$("#hideInfo").click(function(){
+	    		$("#pageInfo").hide();
+	    		$("#infoHidden").show();
+			});
 
-		$('#search_input').keydown(function(e) {
-		  if (e.which == 13) {
-		    if (e.preventDefault) e.preventDefault();
-		    newSearch();
-		  }
-		});
+			$("#infoHidden").click(function(){
+				$("#infoHidden").hide();
+	    		$("#pageInfo").show();
+			});
 
-		$("#hideInfo").click(function(){
-    		$("#pageInfo").hide();
-    		$("#infoHidden").show();
-		});
+			$("#hideGuide").click(function(){
+	    		$("#pageGuide").hide();
+	    		$("#guideHidden").show();
+			});
 
-		$("#infoHidden").click(function(){
-			$("#infoHidden").hide();
-    		$("#pageInfo").show();
-		});
+			$("#guideHidden").click(function(){
+				$("#guideHidden").hide();
+	    		$("#pageGuide").show();
+			});
 
-		$("#hideGuide").click(function(){
-    		$("#pageGuide").hide();
-    		$("#guideHidden").show();
-		});
-
-		$("#guideHidden").click(function(){
-			$("#guideHidden").hide();
-    		$("#pageGuide").show();
 		});
 
 
