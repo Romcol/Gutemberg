@@ -1091,7 +1091,10 @@
 
 			var articleId = CoordToNewArticleId(clickx, clicky);
 
-			selectArticle(articleId.id, false);
+			if ( articleId != null ){
+
+				selectArticle(articleId.$id, false);
+			}
 
 		});
 
