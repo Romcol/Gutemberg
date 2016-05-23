@@ -22,7 +22,7 @@
             <h5>Journaux : </h5>
             <div class="form-group">
                 <div class="input-group">
-                  <select id="news">
+                  <select class="form-control" id="news">
                     <option value="null" disabled selected>Journaux</option>
                   </select>
                   <span class="input-group-btn"><button type="button" onclick="newNews()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>

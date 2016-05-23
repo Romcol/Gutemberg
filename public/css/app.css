@@ -55,13 +55,6 @@ a#browseNewspapers, a#browseNewspapers:active, a#browseNewspapers:focus
 
 }
 
-.viewer-icon
-{
-    height:20px;
-    color:grey;
-    cursor: pointer;
-}
-
 article em{
 	background-color: #ffec9b;
 }
