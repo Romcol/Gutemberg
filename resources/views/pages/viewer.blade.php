@@ -9,7 +9,7 @@
 <a id="backSearch" href="{{$searchUri}}" <?php if( $searchUri == null ) echo 'style="display: none"';?> class="btn btn-default btn-sm"><img src="<?= asset('resources/viewer/back-search.svg') ?>" class="viewer-icon"/> <strong>Retour à la recherche</strong></a>
 
 <div class="row">
-	<div id="pageInfo">
+	<div id="pageInfo" class="customScrollbar">
 		<div>
 			<div id="hideInfo">
 				<img src="<?= asset('resources/viewer/back.svg') ?>" /> Masquer
@@ -17,38 +17,14 @@
 			<div style="clear:both;"></div>
 		</div>
 		<div class="section">
-			<h4>Page</h4>
+			<h4><?= $page['Title'] ?> - <?= $page['Date'] ?> - page <?= $page['NumberPage'] ?></h4>
 			<hr>
-			<strong>Titre :</strong> <?= $page['Title'] ?> <br>
-			<strong>Date :</strong> <?= $page['Date'] ?> <br>
-			<strong>Page :</strong> <?= $page['NumberPage'] ?> <br>
-
 		</div>
-		<div class="section">
-			<h4>Articles de la page</h4>
-			<hr>
-			<div id="pageArticlesList">
-				@foreach($page['Articles'] as $idx => $art)
-				<p id="articleList" onclick="selectArticle('{{$art['IdArticle']}}', true)"><strong>Article {{$idx+1}} :</strong> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?> </p>
-				<p id="{{$art['IdArticle']}}" class="occurrenceNumber"></p>
-				@if( count($art['PictureKeys']) != 0)
-				<p class="pictureKeys">
-					<strong>Légendes :</strong>
-					<ul>
-						@foreach($art['PictureKeys'] as $pkeys)
-				  		<li>{{$pkeys}}</li>
-						@endforeach
-					</ul> 
-				</p>
-				@endif
-				@endforeach
-			</div>
-		</div>
-		<div id="currentArticle" style="display:none;" class="section">
+			<div id="currentArticle" style="display:none;" class="section">
 			@if(Auth::user())
 			<img src="<?= asset("resources/viewer/empty-star.svg") ?>" id="favorite" onClick="addFavorite()" style="float: right; width: 30px; cursor: pointer;"/>
 			@endif
-			<h4>Article</h4>
+			<h4>Article selectionné</h4>
 			<hr>
 			<div id="infoCurrentArticle">
 				<strong>Titre :</strong> <span id="currentTitle"></span><br>
@@ -90,6 +66,29 @@
 				</div>
 			</div>
 		</div>
+		<div class="section">
+			<h4>Articles de la page</h4>
+			<hr>
+			<div id="pageArticlesList" class="customScrollbar">
+				@foreach($page['Articles'] as $idx => $art)
+				<div class="articleListContainer">
+				<div class="articleListItem" onclick="selectArticle('{{$art['IdArticle']}}', true)"><div>{{$art['Title'][0]}}</div> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?></div>
+				<span id="{{$art['IdArticle']}}" class="occurrenceNumber"></span>
+				<div style="clear:both;"></div>
+				</div>
+				@if( count($art['PictureKeys']) != 0)
+				<p class="pictureKeys">
+					<strong>Légendes :</strong>
+					<ul>
+						@foreach($art['PictureKeys'] as $pkeys)
+				  		<li>{{$pkeys}}</li>
+						@endforeach
+					</ul> 
+				</p>
+				@endif
+				@endforeach
+			</div>
+		</div>
 	</div>
 	<div id="infoHidden">
 		<img src="<?= asset('resources/viewer/next.svg'); ?>"/>
@@ -126,7 +125,7 @@
 			</ul>
 	    </div>
     </div>
-    <div id="pageGuide">
+    <div id="pageGuide" class="customScrollbar">
     	<div>
 			<div id="hideGuide">
 				Masquer <img src="<?= asset('resources/viewer/next.svg') ?>" />
@@ -134,10 +133,9 @@
 			<div style="clear:both"></div>
 		</div>
 		<div class="section">
-			<h4>Articles proches</h4>
+			<h4>Articles similaires</h4>
 			<hr>
 			<div id="closeArticlesList">
-
 			</div>
 		</div>
 	</div>
@@ -283,7 +281,7 @@
 					for( var j=0; j<article.Close.length; j++){
 						var shortTitle = article.Close[j].Title;
                 		if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
-                        $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+                        $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
                     }
 				}
 
@@ -635,7 +633,7 @@
                 for( var j=0; j<param.Close.length; j++){
                 	var shortTitle = article.Close[j].Title;
                 	if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
-                    $('#closeArticlesList').append('<p id="articleList" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</p>');
+                    $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
                 }
             }
 
@@ -693,7 +691,7 @@
 
 			function closeArticle(parPage, parArticle){
 				var keywds = $('#search_input').val();
-				var link = "visionneuse/page/"+parPage+"/article/"+parArticle;
+				var link = '<?= url('/visionneuse/'); ?>'+"/page/"+parPage+"/article/"+parArticle;
 
 				if(keywds != '')
 				{

@@ -195,7 +195,7 @@ article em{
 
 .pager li>a.btn:focus, .pager li>a.btn:active, .pager li>a.btn:hover
 {
-    background-color: #bbe3e3;
+    background-color: #d4dff3;
 }
 
 /*Navbar*/
@@ -260,6 +260,17 @@ fieldset[disabled] .navbar-custom .btn-link:hover,
 .navbar-custom .btn-link[disabled]:focus,
 fieldset[disabled] .navbar-custom .btn-link:focus  {
   color: black;
+}
+
+.navbar-custom .navbar-toggle {
+  border-color: black;
+}
+.navbar-custom .navbar-toggle:hover,
+.navbar-custom .navbar-toggle:focus {
+  background-color: inherit;
+}
+.navbar-custom .navbar-toggle .icon-bar {
+  background-color: black;
 }
 
 /*Drag & Drop*/

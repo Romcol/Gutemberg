@@ -26,7 +26,10 @@
 			    @endforeach
 			</div>
 		</div>
-		<hr>
+	</div>
+	@endif
+	@if($user['contribReviews'])
+	<div class="createdpressreviews">
 		<h4>Revues de presse contribuées</h4>
 	    <hr>
 	    <div class="row">
@@ -45,7 +48,10 @@
 			    @endforeach
 			</div>
 		</div>
-		<hr>
+	</div>
+	@endif
+	@if($user['favoriteArticles'])
+	<div class="createdpressreviews">
 		<h4>Articles favoris</h4>
 	    <hr>
 	    <div class="row">
