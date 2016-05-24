@@ -62,13 +62,19 @@ class PressReviewController extends Controller
         {
         	$pressreview = PressReview::find($id);
         	$reviews = $user->createdReviews;
+            foreach($pressreview['articles'] as $art)
+            {
+                $current_article = Article::find($art['id']);
+                $current_article->pull('Reviews', $id);
+                $current_article->save();
+            }
         	foreach($reviews as $i => $pr)
         	{
         		if($pr['_id'] == $id)
         		{
         			$user->pull('createdReviews',$reviews[$i]);
     	    		$pressreview->delete();
-    	    		return Redirect::to('profil')->with(['message' => 'Revue de presse supprimée.', 'status' => 'success']);
+                    return Redirect::to('profil')->with(['message' => 'Revue de presse supprimée.', 'status' => 'success']);
         		}
         	}
         }

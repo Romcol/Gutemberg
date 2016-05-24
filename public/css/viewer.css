@@ -65,9 +65,13 @@
 	max-height: 200px;
 	overflow-y: auto;
 }
-
+#pageReviewList
+{
+    max-height:150px;
+    overflow-y:auto;
+}
 #pageGuide #closeArticlesList {
-    max-height: 450px;
+    max-height: 390px;
     overflow-y: auto;
 }
 .articleListContainer{

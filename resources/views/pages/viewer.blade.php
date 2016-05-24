@@ -725,7 +725,7 @@
 			}
 
 			function goReview(parRev){
-				var link = '<?= url('/revue/'); ?>'+"/"+parRev+"/edit";
+				var link = '<?= url('/revue/'); ?>'+"/"+parRev;
 
 				window.location.href = link;
 			}
