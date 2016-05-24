@@ -847,7 +847,7 @@
 						if( !existInReviews(createdReviews[i]._id) ){
 							$('#listMyReview').append('<option type="create" value='+i+'>'+createdReviews[i].name+'</option>');
 						}else{
-							$('#listMyReview').append('<option type="create" value='+i+'>'+createdReviews[i].name+' (déjà présent)</option>');
+							$('#listMyReview').append('<option type="create"  value='+i+'>'+createdReviews[i].name+' (déjà présent)</option>');
 						}
 					}
 				}
@@ -874,35 +874,39 @@
 				var type = $('#listMyReview').find(':selected').attr('type');
 				var tab = (type == 'create')? createdReviews : contributedReviews;
 
-				var description = "";
-				for(var i=0; i<Math.min(10, article.Words.length); i++){
-					description+=article.Words[i].Word;
-				}  
-				description+="...";
+				if( !existInReviews(tab[number]._id) ){
+					var description = "";
+					for(var i=0; i<Math.min(10, article.Words.length); i++){
+						description+=article.Words[i].Word;
+					}  
+					description+="...";
 
-				$.get(
+					$.get(
 
-				    '<?= url('/').'/'; ?>'+'addArticle', // Le fichier cible côté serveur.
+					    '<?= url('/').'/'; ?>'+'addArticle', // Le fichier cible côté serveur.
 
-				    {
-				    	idArticle: article._id,
-				    	idPage: article.IdPage,
-				    	date: article.Date,
-				    	newspaper: article.TitleNewsPaper,
-				    	title: article.Title,
-				    	description: description,
-				    	idReview: tab[number]._id,
-				    	nameReview: tab[number].name
-				    },
+					    {
+					    	idArticle: article._id,
+					    	idPage: article.IdPage,
+					    	date: article.Date,
+					    	newspaper: article.TitleNewsPaper,
+					    	title: article.Title,
+					    	description: description,
+					    	idReview: tab[number]._id,
+					    	nameReview: tab[number].name
+					    },
 
-				    function(data){
+					    function(data){
 
-					}
+						}
 
-				);
+					);
 
-				$("#reviewPart").hide();
-				$("#addpressreview").text('Article ajouté');
+					
+				}else{
+					$("#reviewPart").hide();
+					$("#addpressreview").text('Article déjà existant dans la revue');
+				}
 
 			}
 
