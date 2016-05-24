@@ -21,7 +21,7 @@ function in_array_r($needle, $haystack, $strict = false) {
           <hr>
           <form class="form-vertical" action="recherche">
             <div class="form-group">
-              <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}" required>
+              <input type="text" name="text" class="form-control" id="search_input" placeholder="Rechercher" value="{{$text}}" >
               <div class="checkbox"><label><input type="checkbox" name="regexp" value="true" <?php if( $regexp ) echo 'checked';?> > <small>Accepter les expressions régulières</small></label></div>
             </div>
             <div class="form-group">
