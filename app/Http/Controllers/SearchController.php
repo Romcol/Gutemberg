@@ -528,61 +528,80 @@ class SearchController extends Controller
         $from = ($page>0)?(($page-1)*$size):0;
         $regexp = isset($_GET['regexp']);
 
-        if( $regexp ){
+        if( $text == ''){
 
             $params = [
-                'query' => [
-                    'bool' => [
-                        'should' => [
-                            ['regexp' => [
-                                'name' => $text
-                            ]],
-                            ['regexp' => [
-                                'description' => $text
-                            ]]
+                    'query' => [
+                        'match_all' => []
+                    ],
+                    'highlight' => [
+                        'fields' => [
+                            'name' => new \stdClass,
+                            'description' => new \stdClass
                         ]
-                    ]
-                ],
-                'highlight' => [
-                    'fields' => [
-                        'name' => new \stdClass,
-                        'description' => new \stdClass
-                    ]
-                ],
-                'from' => $from,
-                'size' => $size+1
-            ];
+                    ],
+                    'from' => $from,
+                    'size' => $size+1
+                ];
 
         }else{
 
-           $params = [
-                'query' => [
-                    'bool' => [
-                        'should' => [
-                            ['match' => [
-                                'name' => [
-                                    'query' => $text,
-                                    'operator' => 'and'
-                                ]
-                            ]],
-                            ['match' => [
-                                'description' => [
-                                    'query' => $text,
-                                    'operator' => 'and'
-                                ]
-                            ]]
+            if( $regexp ){
+
+                $params = [
+                    'query' => [
+                        'bool' => [
+                            'should' => [
+                                ['regexp' => [
+                                    'name' => $text
+                                ]],
+                                ['regexp' => [
+                                    'description' => $text
+                                ]]
+                            ]
                         ]
-                    ]
-                ],
-                'highlight' => [
-                    'fields' => [
-                        'name' => new \stdClass,
-                        'description' => new \stdClass
-                    ]
-                ],
-                'from' => $from,
-                'size' => $size+1
-            ];
+                    ],
+                    'highlight' => [
+                        'fields' => [
+                            'name' => new \stdClass,
+                            'description' => new \stdClass
+                        ]
+                    ],
+                    'from' => $from,
+                    'size' => $size+1
+                ];
+
+            }else{
+
+               $params = [
+                    'query' => [
+                        'bool' => [
+                            'should' => [
+                                ['match' => [
+                                    'name' => [
+                                        'query' => $text,
+                                        'operator' => 'and'
+                                    ]
+                                ]],
+                                ['match' => [
+                                    'description' => [
+                                        'query' => $text,
+                                        'operator' => 'and'
+                                    ]
+                                ]]
+                            ]
+                        ]
+                    ],
+                    'highlight' => [
+                        'fields' => [
+                            'name' => new \stdClass,
+                            'description' => new \stdClass
+                        ]
+                    ],
+                    'from' => $from,
+                    'size' => $size+1
+                ];
+            }
         }
 
 

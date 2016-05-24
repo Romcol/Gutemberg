@@ -14,7 +14,7 @@
                             <label class="col-md-4 control-label">Pseudo</label>
 
                             <div class="col-md-6">
-                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" maxlength="255">
+                                <input type="text" class="form-control" name="name" value="{{ old('name') }}" maxlength="255" required>
 
                                 @if ($errors->has('name'))
                                     <span class="help-block">
@@ -28,7 +28,7 @@
                             <label class="col-md-4 control-label">Adresse mail</label>
 
                             <div class="col-md-6">
-                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" maxlength="255">
+                                <input type="email" class="form-control" name="email" value="{{ old('email') }}" maxlength="255" required>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
