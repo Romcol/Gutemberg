@@ -61,7 +61,7 @@
 						    <div class="form-group">
 						    <div class="input-group">
 								      	<select id="listMyReview" class="form-control">
-								      		<option selected disabled >Vide</option>
+								      		<option selected disabled >Sélectionner une revue</option>
 									  	</select>
 									  	<span class="input-group-btn"><button type="button" id="addCreated" onclick="selectCreated()" class="btn btn-default btn-sm disabled">+</button></span>
 							</div>
@@ -144,6 +144,11 @@
 			<div style="clear:both"></div>
 		</div>
 		<div class="section">
+			<h4 class="sectiontitle"><img src="<?= asset('resources/viewer/documents-symbol.svg'); ?>"/> Revues de presse associées</h4>
+			<div id="pageReviewList" class="customScrollbar">
+			</div>
+		</div>
+		<div class="section">
 			<h4 class="sectiontitle"><img src="<?= asset('resources/viewer/similar-article.svg'); ?>"/> Articles similaires</h4>
 			<div id="closeArticlesList" class="customScrollbar">
 			</div>
@@ -215,6 +220,14 @@
 			<?php
 			}
 			?>
+
+			var pageReviews = <?php echo $pageReviews; ?>;
+
+			for(var i=0; i<pageReviews.length; i++){
+				var shortTitle = pageReviews[i].Name;
+    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem" class="closeArticle" onClick="goReview(\''+pageReviews[i]._id+'\')" style="padding-bottom: 15px"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+'</strong></div></div>');
+ 
+			}
 
 			var zoom = true;
 			var toggle = true;
@@ -707,6 +720,12 @@
 				{
 					link += "&search="+keywds;
 				}
+
+				window.location.href = link;
+			}
+
+			function goReview(parRev){
+				var link = '<?= url('/revue/'); ?>'+"/"+parRev+"/edit";
 
 				window.location.href = link;
 			}

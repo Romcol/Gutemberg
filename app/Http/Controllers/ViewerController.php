@@ -70,8 +70,46 @@ class ViewerController extends Controller
         
         $savedTags = Autocomplete::search($paramsAutocompl);
         $savedTags = json_encode($savedTags[0]['Data']);
+<<<<<<< HEAD
         //dd($article);
     	return view('pages.viewer', compact('page','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage','pressreview'));
+=======
+
+        $paramsPageReviews = [
+            'query' => [
+                'filtered' =>[
+                    'query' => [
+                        'match_all' => []
+                    ],
+                    'filter' => [
+                        'term' => [
+                            'IdPage' => $page_id
+                        ]
+                    ]
+                ]
+                
+            ],
+            'size' => 100
+        ];
+
+        $searchPage = Article::search($paramsPageReviews);
+        $pageReviews = array();
+        $idList = array();
+        foreach ($searchPage as $pageArticle) {
+            foreach ($pageArticle['Reviews'] as $review) {
+                if( !in_array($review['_id'], $idList) ){
+                    array_push($pageReviews, $review);
+                    array_push($idList, $review['_id']);
+                }
+            }
+        }
+
+        $pageReviews = json_encode($pageReviews);
+
+
+
+    	return view('pages.viewer', compact('page','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage', 'pageReviews'));
+>>>>>>> 655e9a20cfd6ffa6950d860fbafe5e54333c06e5
     }
 
     public function searchArticle($id = null){

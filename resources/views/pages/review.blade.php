@@ -41,7 +41,7 @@ function in_array_r($needle, $haystack, $strict = false) {
     	    <!-- Title -->
     	    <div class="row">
   		      <div class="col-lg-12">
-  		        <h3>Résultats de la recherche pour "{{$text}}"</h3>
+  		        <h3>Résultats de la recherche pour <?php if( $text == '') echo 'tous les revues'; else echo '"'.$text.'"'; ?> </h3>
   		        <p>{{$result->total()}} occurrences trouvées ({{$result->took()}} ms)</p>
               <hr>
     		    </div>
@@ -60,9 +60,9 @@ function in_array_r($needle, $haystack, $strict = false) {
                     <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a>
                   @else
                     @if ( in_array_r($onePage['_id'], Auth::user()->contribReviews) )
-                    <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a><div style="color: grey; ">Ajoutée dans mes revues contribuées</div>
+                    <div style="color: grey; float: right">Ajoutée dans mes revues contribuées</div><a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a>
                     @else
-                   <a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a><button type="button" onClick="addToContrib(this, '{{$onePage['_id']}}', '{{$onePage['name']}}')" class="btn btn-default btn-sm">Ajouter cette revue à mes revues contribuées</button>
+                   <button type="button" onClick="addToContrib(this, '{{$onePage['_id']}}', '{{$onePage['name']}}')" class="btn btn-default btn-sm" style="float: right">Ajouter cette revue à mes revues contribuées</button><a href="revue/{{$onePage['_id']}}"> <h3 class="panel-title">{{$onePage['name']}} par {{$onePage['owner_name']}}</h3></a>
                     @endif
                   @endif
                 @endif
@@ -113,7 +113,7 @@ function in_array_r($needle, $haystack, $strict = false) {
           },
 
           function(data){
-            $(elemnt).after('<div style="color: grey; ">Ajoutée dans mes revues contribuées</div>');
+            $(elemnt).after('<div style="color: grey; float: right">Ajoutée dans mes revues contribuées</div>');
             $(elemnt).remove();
           }
 
