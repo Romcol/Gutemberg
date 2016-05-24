@@ -11,13 +11,25 @@ use App\Article;
 use App\Autocomplete;
 use App\Utility;
 use Illuminate\Support\Facades\Input;
+use App\PressReview;
 
 class ViewerController extends Controller
 {
 
-    public function index($page_id,$article_id = null, $search = null)
+    public function indexpressreview($id, $nb = 1)
     {
-        
+        $pressreview = PressReview::find($id);
+        if(isset($pressreview['articles'][($nb-1)]))
+        {
+            $article = $pressreview['articles'][($nb-1)];
+            $pressreview['index'] = $nb;
+            return $this->index($article['IdPage'], $article['id'], null, $pressreview);
+        }
+        return 'Offset non existant.';
+    }
+
+    public function index($page_id,$article_id = null, $search = null, $pressreview = null)
+    {
     	$page = Page::find($page_id);
 
         session_start();
@@ -58,10 +70,8 @@ class ViewerController extends Controller
         
         $savedTags = Autocomplete::search($paramsAutocompl);
         $savedTags = json_encode($savedTags[0]['Data']);
-
-
-
-    	return view('pages.viewer', compact('page','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage'));
+        //dd($article);
+    	return view('pages.viewer', compact('page','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage','pressreview'));
     }
 
     public function searchArticle($id = null){

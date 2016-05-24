@@ -239,3 +239,10 @@
     background-color: black;
     border: 2px solid black;
 }
+
+#pressReviewPlayer{
+    text-align:center;
+}
+#pressReviewPlayer h4{
+    display:inline;
+}

@@ -62,8 +62,8 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('revue/{id}/update', 'PressReviewController@update');
 
-	Route::get('revue/{id}/article/{nb}', 'PressReviewController@index');
-	Route::get('revue/{id}', 'PressReviewController@index');
+	Route::get('revue/{id}/article/{nb}', 'ViewerController@indexpressreview');
+	Route::get('revue/{id}', 'ViewerController@indexpressreview');
 
 	Route::get('addArticle', 'PressReviewController@addArticle');
 
