@@ -16,8 +16,8 @@
     background-color:white;
     margin-top:50px;
     height:700px;
-    overflow-y:auto;
-    background-color:#ffeadc;
+    /*overflow-y:auto;*/
+    /*background-color:#ffeadc;*/
 }
 
 #pageInfo a, #pageInfo a:active, #pageInfo a:focus{
@@ -67,7 +67,7 @@
 }
 
 #pageGuide #closeArticlesList {
-    /*max-height: 590px;*/
+    max-height: 590px;
     overflow-y: auto;
 }
 .articleListContainer{
@@ -111,7 +111,7 @@
     float:left;
 }
 #hideInfo img, #hideGuide img{
-    height:20px;
+    height:15px;
 }
 
 
@@ -128,8 +128,26 @@
     margin: -10px 0px 10px 0px;
 }
 
+.headinfo{
+    font-style: italic;
+}
+
+.headinfo img{
+    height:30px;
+    float:left;
+    margin-right:5px;
+}
+
 .section {
     margin:10px;
+}
+
+.sectiontitle{
+    padding: 5px;
+}
+
+.sectiontitle img{
+    height:20px;
 }
 
 .overlayArt {

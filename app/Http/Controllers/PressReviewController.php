@@ -11,11 +11,24 @@ use App\User;
 use App\Article;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Route;
 
 class PressReviewController extends Controller
 {
 
-	public function index($id)
+    public function index($id, $nb = 1)
+    {
+        $pressreview = PressReview::find($id);
+        if(isset($pressreview['articles'][($nb-1)]))
+        {
+            $article = $pressreview['articles'][($nb-1)];
+            $request = Request::create('visionneuse/page/'.$article['IdPage'].'/article/'.$article['id'], 'GET', ['pressreview' => $pressreview['owner_id']]);
+            return Route::dispatch($request)->getContent();
+        }
+        return 'Offset non existant.';
+    }
+
+	public function edit($id)
     {
     	$pressreview = PressReview::find($id);
 

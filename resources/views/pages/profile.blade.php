@@ -17,7 +17,7 @@
 			    @foreach ($user['createdReviews'] as $i => $pressreview)
 				   	<div class="panel panel-default">
 				              <div class="panel-heading">
-				               <a href="<?= url('revue/'.$pressreview['_id']) ?>"> <h4 class="panel-title">{{$pressreview['name']}}</h4></a>
+				               <a href="<?= url('revue/'.$pressreview['_id']).'/edit' ?>"> <h4 class="panel-title">{{$pressreview['name']}}</h4></a>
 				              </div>
 				              <div class="panel-body">
 				                {{$pressreview['description']}}

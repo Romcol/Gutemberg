@@ -56,11 +56,14 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::post('revue/create', 'PressReviewController@insert');
 
-	Route::get('revue/{id}', 'PressReviewController@index');
+	Route::get('revue/{id}/edit', 'PressReviewController@edit');
 
 	Route::get('revue/{id}/delete', 'PressReviewController@delete');
 
 	Route::get('revue/{id}/update', 'PressReviewController@update');
+
+	Route::get('revue/{id}/article/{nb}', 'PressReviewController@index');
+	Route::get('revue/{id}', 'PressReviewController@index');
 
 	Route::get('addArticle', 'PressReviewController@addArticle');
 

@@ -10,6 +10,7 @@ use App\Page;
 use App\Article;
 use App\Autocomplete;
 use App\Utility;
+use Illuminate\Support\Facades\Input;
 
 class ViewerController extends Controller
 {

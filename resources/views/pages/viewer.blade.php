@@ -9,23 +9,22 @@
 <a id="backSearch" href="{{$searchUri}}" <?php if( $searchUri == null ) echo 'style="display: none"';?> class="btn btn-default btn-sm"><img src="<?= asset('resources/viewer/back-search.svg') ?>" class="viewer-icon"/> <strong>Retour à la recherche</strong></a>
 
 <div class="row">
-	<div id="pageInfo" class="customScrollbar">
+	<div id="pageInfo">
 		<div>
 			<div id="hideInfo">
-				<img src="<?= asset('resources/viewer/back.svg') ?>" /> Masquer
+				<img src="<?= asset('resources/viewer/back.svg') ?>" /> <small>Masquer</small>
 			</div>
 			<div style="clear:both;"></div>
 		</div>
-		<div class="section">
-			<h4><?= $page['Title'] ?> - <?= $page['Date'] ?> - page <?= $page['NumberPage'] ?></h4>
+		<div class="section headinfo">
+			<img src="<?= asset('resources/viewer/newspaper.svg') ?>" /> <h4><?= $page['Title'] ?> - <?= $page['Date'] ?> - Page <?= $page['NumberPage'] ?></h4>
 			<hr>
 		</div>
 			<div id="currentArticle" style="display:none;" class="section">
 			@if(Auth::user())
 			<img src="<?= asset("resources/viewer/empty-star.svg") ?>" id="favorite" onClick="addFavorite()" style="float: right; width: 30px; cursor: pointer;"/>
 			@endif
-			<h4>Article selectionné</h4>
-			<hr>
+			<h4 class="sectiontitle"> <img src="<?= asset('resources/viewer/article.svg'); ?>" /> Article selectionné</h4>
 			<div id="infoCurrentArticle">
 				<strong>Titre :</strong> <span id="currentTitle"></span><br>
 				<strong>Vues :</strong> <span id="currentViews"></span><br>
@@ -65,10 +64,10 @@
 					<strong>URL : </strong><input id="currentUrl" />
 				</div>
 			</div>
+			<hr>
 		</div>
 		<div class="section">
-			<h4>Articles de la page</h4>
-			<hr>
+			<h4 class="sectiontitle"><img src="<?= asset('resources/viewer/page-article.svg'); ?>" /> Articles de la page</h4>
 			<div id="pageArticlesList" class="customScrollbar">
 				@foreach($page['Articles'] as $idx => $art)
 				<div class="articleListContainer">
@@ -128,14 +127,13 @@
     <div id="pageGuide" class="customScrollbar">
     	<div>
 			<div id="hideGuide">
-				Masquer <img src="<?= asset('resources/viewer/next.svg') ?>" />
+				<small>Masquer</small> <img src="<?= asset('resources/viewer/next.svg') ?>" />
 			</div>
 			<div style="clear:both"></div>
 		</div>
 		<div class="section">
-			<h4>Articles similaires</h4>
-			<hr>
-			<div id="closeArticlesList">
+			<h4 class="sectiontitle"><img src="<?= asset('resources/viewer/similar-article.svg'); ?>"/> Articles similaires</h4>
+			<div id="closeArticlesList" class="customScrollbar">
 			</div>
 		</div>
 	</div>
