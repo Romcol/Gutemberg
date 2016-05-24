@@ -8,7 +8,7 @@
     <form action="<?= url('/revue/create') ?>" method="post">
   <div class="form-group">
     <label for="name">Nom de la revue</label>
-    <input type="text" class="form-control" name="name" placeholder="Nom...">
+    <input type="text" class="form-control" name="name" placeholder="Nom..." maxlength="50">
   </div>
   <div class="form-group">
     <label for="exampleInputPassword1">Description</label>
