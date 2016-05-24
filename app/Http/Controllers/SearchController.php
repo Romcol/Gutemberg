@@ -49,7 +49,8 @@ class SearchController extends Controller
 
             $result = $this->reviewSearch();
 
-            $builturl="recherche?text=$text&type=$type&page=";
+            $builturl=str_replace("&page=".$page, "", $_SERVER['REQUEST_URI']);
+            $builturl.="&page=";
 
             return view('pages.review', compact('result', 'text', 'builturl', 'type', 'page', 'regexp'));
 
@@ -210,7 +211,8 @@ class SearchController extends Controller
                 }
             }
 
-            $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
+            $builturl=str_replace("&page=".$page, "", $_SERVER['REQUEST_URI']);
+            $builturl.="&page=";
 
             $paramsAutocompl = [
                 'query' => [
@@ -356,7 +358,8 @@ class SearchController extends Controller
         $savedNewsPaper = Autocomplete::search($paramsNewsPaper);
         $savedNewsPaper = json_encode($savedNewsPaper[0]['Data']);
 
-        $builturl="recherche?text=$text&type=$type&dateMin=$dateMin&dateMax=$dateMax&sort=$sort&page=";
+        $builturl=str_replace("&page=".$page, "", $_SERVER['REQUEST_URI']);
+        $builturl.="&page=";
 
         return compact('pages', 'text', 'dateMin', 'dateMax', 'builturl', 'type', 'page', 'defaultMin', 'defaultMax', 'savedNewsPaper', 'news');
     }
