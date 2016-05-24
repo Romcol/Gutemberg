@@ -98,7 +98,7 @@
                     <article>
                     <div class="panel panel-default">
                       <div class="panel-heading">
-                       <a href="<?= url('revue/'.$review['_id']); ?>">{{$review['name']}}</a>
+                       <a href="<?= url('revue/'.$review['_id'].'/edit'); ?>">{{$review['name']}}</a>
                       </div>
                     </div>
                     </article>
