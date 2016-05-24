@@ -11,10 +11,6 @@
 |
 */
 
-
-
-Route::get( 'pressreview', 'PressReviewController@index');
-
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -31,19 +27,17 @@ Route::group(['middleware' => ['web']], function () {
 });
 
 Route::group(['middleware' => 'web'], function () {
+
     Route::auth();
 
-    Route::get('/home', 'HomeController@index');
-
-    Route::get('/', function () {
-	    return view('pages.home');
-	});
+    Route::get('/', 'HomeController@index');
 
 	Route::get('articles', 'SearchController@index');
 
 	Route::get('recherche', 'SearchController@search');
 
 	Route::get('visionneuse/page/{page_id}/article/{article_id}/recherche/{search}', 'ViewerController@index');
+	Route::get('visionneuse/page/{page_id}/recherche/{search}', 'ViewerController@pagesearch');
 	Route::get('visionneuse/page/{page_id}/article/{article_id}', 'ViewerController@index');
 	Route::get('visionneuse/page/{page_id}', 'ViewerController@index');
 
@@ -84,6 +78,7 @@ Route::group(['middleware' => 'web'], function () {
 	Route::get('register', function () {
 	    return view('auth.register');
 	});
+
 	Route::get('login', function () {
 	    return view('auth.login');
 	});

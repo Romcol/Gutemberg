@@ -4,11 +4,12 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
+/*ebebeb*/
 body {
     padding-top: 10px;
     background-color:#fcf6dd;
     color:black;
-/* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+    font-family: 'PT Sans', "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 .hero-spacer {
@@ -216,12 +217,30 @@ article em{
     background-color:#d4dff3;
 }
 
-.navbar-custom .navbar-brand, .navbar-text, .navbar-custom .navbar-nav > li > a {
-  color: black;
+.navbar-custom{
+  margin-bottom:10px;
+}
+
+.navbar-custom .navbar-brand::first-letter{
+  font-size:25px;
+  padding:3px;
+  border:2px solid black;
+  margin:3px;
 }
 
 .navbar-custom .navbar-brand:hover,
 .navbar-custom .navbar-brand:focus,
+{
+  color:black;
+  text-decoration:none;
+  background-color: transparent;
+}
+
+.navbar-custom .navbar-brand, .navbar-text, .navbar-custom .navbar-nav > li > a {
+  color: black;
+}
+
+
 .navbar-custom .navbar-nav > li > a:hover,
 .navbar-custom .navbar-nav > li > a:focus,
 .navbar-custom .navbar-nav > .active > a,

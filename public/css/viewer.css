@@ -1,3 +1,4 @@
+
 .viewer-icon
 {
     height:20px;
@@ -117,13 +118,6 @@
 #hideInfo img, #hideGuide img{
     height:15px;
 }
-
-
-#infoCurrentArticle {
-    /*max-height: 120px;*/
-    overflow-y: auto;
-}
-
 #otherPage {
     color: black;
 }

@@ -143,11 +143,13 @@
 			</div>
 			<div style="clear:both"></div>
 		</div>
+		@if($pageReviews != '[]')
 		<div class="section">
 			<h4 class="sectiontitle"><img src="<?= asset('resources/viewer/documents-symbol.svg'); ?>"/> Revues de presse associées</h4>
 			<div id="pageReviewList" class="customScrollbar">
 			</div>
 		</div>
+		@endif
 		<div class="section">
 			<h4 class="sectiontitle"><img src="<?= asset('resources/viewer/similar-article.svg'); ?>"/> Articles similaires</h4>
 			<div id="closeArticlesList" class="customScrollbar">
@@ -171,10 +173,15 @@
 		<!-- Initialization script -->
 		<script type="text/javascript">
 
+			String.prototype.trunc = String.prototype.trunc ||
+		      function(n){
+		          return (this.length > n) ? this.substr(0,n-1)+'&hellip;' : this;
+      			};
+
 			function updateCurrentArticle(article){
 				if(article != null)
 				{
-					$("#currentTitle").text(article.Title);
+					$("#currentTitle").text(article.Title.trunc(50));
 					$("#currentViews").text(article.Views);
 					$("#currentTags").text('');
 					if( article.Tags != undefined){
@@ -693,7 +700,7 @@
 
 				if(keywds != '')
 				{
-					link += "/search/"+keywds;
+					link += "/recherche/"+keywds;
 				}
 
 				window.location.href = link;
@@ -706,7 +713,7 @@
 
 				if(keywds != '')
 				{
-					link += "/search/"+keywds;
+					link += "/recherche/"+keywds;
 				}
 
 				window.location.href = link;
@@ -718,7 +725,7 @@
 
 				if(keywds != '')
 				{
-					link += "&search="+keywds;
+					link += "/recherche/"+keywds;
 				}
 
 				window.location.href = link;

@@ -9,7 +9,7 @@ class PressReview extends Moloquent
 {
   use BouncyTrait;
 
-  protected $fillable = ['name', 'description', 'owner_id', 'owner_name', 'articles'];
+  protected $fillable = ['name', 'description', 'owner_id', 'owner_name', 'articles', 'created'];
 
   public $timestamps  = false;
   protected $collection = 'PressReviews';

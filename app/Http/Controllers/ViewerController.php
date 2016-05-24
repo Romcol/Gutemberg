@@ -28,8 +28,19 @@ class ViewerController extends Controller
         return 'Offset non existant.';
     }
 
-    public function index($page_id,$article_id = null, $search = null, $pressreview = null)
+    public function pagesearch($page_id, $search)
     {
+        return $this->index($page_id,null,$search);
+    }
+
+    public function index($page_id = null,$article_id = null, $search = null, $pressreview = null)
+    {
+        if($page_id == null && isset($_GET['page'])) $page_id = $_GET['page'];
+
+        if($article_id == null && isset($_GET['article'])) $article_id = $_GET['article'];
+
+        if($search == null && isset($_GET['recherche'])) $search = $_GET['recherche'];
+
     	$page = Page::find($page_id);
 
         session_start();
