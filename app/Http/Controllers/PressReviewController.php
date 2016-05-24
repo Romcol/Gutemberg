@@ -50,9 +50,9 @@ class PressReviewController extends Controller
 
     		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
     		$user->push('createdReviews',$pressreviewobject);
-            return Redirect::to('profil')->with(['message' => 'Revue de presse "'.$name.'" créee.', 'status' => 'success']);
+            return Redirect::to('profil')->with(['message' => 'Revue de presse "'.$name.'" créée.', 'status' => 'success']);
         }   
-        return Redirect::to('profil')->with(['message' => "Erreur. La revue de presse n'a pas été créee.", 'status' => 'fail']);
+        return Redirect::to('profil')->with(['message' => "Erreur. La revue de presse n'a pas été créée.", 'status' => 'fail']);
     }
 
     public function delete($id)

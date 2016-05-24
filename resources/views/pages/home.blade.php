@@ -40,6 +40,7 @@
         <!-- PHP code for the next articles list and initiate the searchUri value-->
         <?php
         use App\Article;
+        use App\PressReview;
 
         session_start();
         $_SESSION['searchUri'] = null;
@@ -56,6 +57,17 @@
         ];
 
         $articles = Article::search($params);
+
+        $params2 = [
+          'sort' => [
+            'created' => [
+              'order' => 'desc'
+            ]
+          ],
+          'size' => 5
+        ];
+
+        $reviews = PressReview::search($params2);
         ?>
         <!-- /PHP -->
 
@@ -79,6 +91,20 @@
 		      		</article>
 			     @endforeach
             </div>
+            <div class="col-md-4 col-sm-6 hero-feature">
+            <!-- Title -->
+                <h3 style="margin-bottom:30px">Revues récemment créées</h3>
+                @foreach ($reviews as $index => $review)
+                    <article>
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                       <a href="<?= url('revue/'.$review['_id'].'/edit'); ?>">{{$review['name']}}</a>
+                      </div>
+                    </div>
+                    </article>
+                 @endforeach
+            </div>
+            <!--
             <!--
             <div class="col-md-4 col-sm-6 hero-feature">
                 <div class="thumbnail">
