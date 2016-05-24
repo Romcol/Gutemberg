@@ -67,7 +67,7 @@
 }
 
 #pageGuide #closeArticlesList {
-    max-height: 590px;
+    max-height: 450px;
     overflow-y: auto;
 }
 .articleListContainer{
