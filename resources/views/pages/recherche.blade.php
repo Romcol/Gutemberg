@@ -81,6 +81,9 @@
       		<article>
             <div class="panel panel-default">
               <div class="panel-heading">
+              @if( count($article['Reviews']) != 0)
+                  <img src="<?= asset("resources/viewer/documents-symbol.svg") ?>" title="Cette article est présent une/des revue(s) de presse" style="float: right; width: 20px"/>
+               @endif
                <a href="<?= url('visionneuse/page/'.$article['IdPage'].'/article/'.$article['id'].'/recherche/'.$text); ?>"> <h3 class="panel-title">{{$article['TitleNewsPaper']}}, {{$article['Date']}}</h3></a>
               </div>
               <div class="panel-body">
