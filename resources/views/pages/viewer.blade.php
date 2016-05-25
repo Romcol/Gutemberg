@@ -36,7 +36,7 @@
 			@if(Auth::user())
 			<img src="<?= asset("resources/viewer/empty-star.svg") ?>" id="favorite" onClick="addFavorite()" style="float: right; width: 30px; cursor: pointer;"/>
 			@endif
-			<h4 class="sectiontitle"> <img src="<?= asset('resources/viewer/article.svg'); ?>" /> Article selectionné</h4>
+			<h4 class="sectiontitle"> <img src="<?= asset('resources/viewer/article.svg'); ?>" /> Article sélectionné</h4>
 			<div id="infoCurrentArticle">
 				<strong>Titre :</strong> <span id="currentTitle"></span><br>
 				<strong>Vues :</strong> <span id="currentViews"></span><br>
