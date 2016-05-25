@@ -6,7 +6,7 @@
 
 @section('page_content')
 @if($pressreview)
-<div id="pressReviewPlayer"><h4>{{$pressreview['name']}}</h4> par <em>{{$pressreview['owner_name']}}</em> - {{$pressreviewindex}}/{{count($pressreview['articles'])}}
+<div id="pressReviewPlayer"><h4>Revue de presse "{{$pressreview['name']}}"</h4> par <em>{{$pressreview['owner_name']}}</em> - {{$pressreviewindex}}/{{count($pressreview['articles'])}}
 <div>
 			    <ul class="pager">
 				<li class="previous">
@@ -270,7 +270,8 @@
 					$("#currentArticle").hide();
 				}
 
-				$('.tag').mouseenter(function(){
+				$('.tag').mouseenter(function(e){
+					e.stopPropagation();
 					tagMouseEnter(this);
 				});
 
@@ -289,7 +290,6 @@
 			}
 
 			function zoomOnArticle(articleparam){
-				console.log("zooooom");
 				if( articleparam != null && zoom  && image){
 					if( articleparam.TitleCoord.length != 0){
 						var px = articleparam.TitleCoord[0];
@@ -595,7 +595,8 @@
 
 					$("#currentTags").append('<span class="btn btn-default tag"><span>'+tag+'</span></span>');
 
-					$('.tag').mouseenter(function(){
+					$('.tag').mouseenter(function(e){
+						e.stopPropagation();
 						tagMouseEnter(this);
 					});
 
@@ -659,13 +660,15 @@
 				$(elemnt).parent().remove();
 			}
 
-			function tagMouseEnter(elemnt){
+			function tagMouseEnter(elemnt,e){
 				if(auth){
-					
+					console.log(elemnt);
+					$(elemnt).append(' <a class="closetag">X</a>');
 					$(".closetag").click(function(){
 						closeTag(this);
 					});
 				}
+				e.stopPropagation();
 			}
 
 			function tagMouseLeave(elemnt){

@@ -267,6 +267,8 @@
 
 #pressReviewPlayer{
     text-align:center;
+    border:3px solid black;
+    padding:10px;
 }
 #pressReviewPlayer h4{
     display:inline;
