@@ -66,6 +66,34 @@
 	max-height: 200px;
 	overflow-y: auto;
 }
+
+#pageInfo .addtag{
+    background-color:#d4dff3;
+    padding:5px;
+}
+
+#currentTags .btn-default, #addpressreview #showAddReview{
+    background-color:#d4dff3;
+}
+
+#addpressreview em{
+    background-color:#d4dff3;
+    padding:5px;
+    display:block;
+}
+
+#addpressreview .input-group
+{
+    background-color:#d4dff3;
+    padding:5px;
+}
+
+#addpressreview{
+    text-align:center;
+}
+#currentTags .btn{
+    margin:0 5px 5px 0;
+}
 #pageReviewList
 {
     max-height:150px;

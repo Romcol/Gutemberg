@@ -42,7 +42,7 @@
 				<strong>Vues :</strong> <span id="currentViews"></span><br>
 				<p><strong>Tags :</strong><br>
 					@if( !Auth::guest() )
-		            <div class="form-group">
+		            <div class="form-group addtag">
 		                <div class="input-group">
 		                <input class="form-control" id="tags" placeholder="Ajouter un tag"> <span class="input-group-btn"><button type="button" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
 		                </div>
@@ -50,7 +50,7 @@
 					@else
 					<div> <center style="color: grey; ">Connectez-vous pour pouvoir ajouter ou supprimer des tags</center> </div>
 					@endif
-					<span id="currentTags"></span>
+					<div id="currentTags">Pas de tags</div>
 				</p>
 				@if( !Auth::guest() )
 				<div id="addpressreview">
@@ -63,7 +63,7 @@
 								      	<select id="listMyReview" class="form-control">
 								      		<option selected disabled >Sélectionner une revue</option>
 									  	</select>
-									  	<span class="input-group-btn"><button type="button" id="addCreated" class="btn btn-default btn-sm disabled">+</button></span>
+									  	<span class="input-group-btn"><button type="button" style="height:34px;" id="addCreated" class="btn btn-default btn-sm disabled">+</button></span>
 							</div>
 							</div>
 							 </form>
@@ -128,10 +128,10 @@
 	    <div>
 		    <ul class="pager">
 				<li class="previous">
-					<a class="otherPage otherPageBack" <?php if( !isset($page['PreviousPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon"/> <strong>Page précédente</strong></a>
+					<a class="otherPage otherPageBack btn btn-default btn-xs <?php if( !isset($page['PreviousPage'])) echo 'disabled'; ?>" ><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon"/> <strong>Page précédente</strong></a>
 				</li>
 				<li class="next">
-					<a class="otherPage otherPageNext" <?php if( !isset($page['NextPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon"/></a>
+					<a class="otherPage otherPageNext btn btn-default btn-xs <?php if( !isset($page['NextPage'])) echo 'disabled'; ?>"><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon"/></a>
 				</li>
 			</ul>
 	    </div>
@@ -239,9 +239,18 @@
 					$("#currentTags").text('');
 					if( article.Tags != undefined){
 						for(var i = 0; i < article.Tags.length; i++){
-							$("#currentTags").append('<span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+article.Tags[i]+'</span></span>');
+							$("#currentTags").append('<span class="btn btn-default tag"><span>'+article.Tags[i]+'</span></span>');
 						}
 					}
+
+					$('.tag').mouseenter(function(){
+						tagMouseEnter(this);
+					});
+
+					$('.tag').mouseleave(function(){
+						tagMouseLeave(this);
+					});
+
 					var url = "<?= url('/visionneuse'); ?>";
 					$("#currentUrl").attr('value', url+'/page/'+article.IdPage+'/article/'+article._id);
 					$("#currentArticle").show();
@@ -266,6 +275,7 @@
 				else{
 					$("#currentArticle").hide();
 				}
+				pageArticlesListHeight();
 			}
 
 			function newImage() {
@@ -276,7 +286,7 @@
 			}
 
 			function zoomOnArticle(articleparam){
-
+				console.log("zooooom");
 				if( articleparam != null && zoom  && image){
 					if( articleparam.TitleCoord.length != 0){
 						var px = articleparam.TitleCoord[0];
@@ -580,7 +590,15 @@
 
 				if( tag != '' && !article.Tags.includes(tag)){
 
-					$("#currentTags").append('<span class="btn btn-default" onmouseenter="tagMouseEnter(this)" onmouseleave="tagMouseLeave(this)" class="tag"><span>'+tag+'</span></span>');
+					$("#currentTags").append('<span class="btn btn-default tag"><span>'+tag+'</span></span>');
+
+					$('.tag').mouseenter(function(){
+						tagMouseEnter(this);
+					});
+
+					$('.tag').mouseleave(function(){
+						tagMouseLeave(this);
+					});
 
 					if( !savedTags.includes(tag)) savedTags.push(tag);
 
@@ -640,7 +658,7 @@
 
 			function tagMouseEnter(elemnt){
 				if(auth){
-					$(elemnt).append(' <a class=".closetag">X</a>');
+					$(elemnt).append(' <a class="closetag">X</a>');
 					$(".closetag").click(function(){
 						closeTag(this);
 					});
@@ -648,7 +666,7 @@
 			}
 
 			function tagMouseLeave(elemnt){
-				$(elemnt).find("a").remove();
+				$(elemnt).children("a").remove();
 			}
 
 			function existInReviews(idReview){
@@ -739,12 +757,12 @@
 					);
 
 					$("#reviewPart").hide();
-					$("#addpressreview").text('Article ajouté à la revue');
+					$("#addpressreview").html('<em>Article ajouté à la revue</em>');
 
 					
 				}else{
 					$("#reviewPart").hide();
-					$("#addpressreview").text('Article déjà existant dans la revue');
+					$("#addpressreview").html('<em>Article déjà existant dans la revue</em>');
 				}
 
 			}
@@ -1158,8 +1176,6 @@
 
 		// Scripts for change on the fly
 
-		zoomOnArticle(article);
-
 		var availableTags = savedTags;
 		$("#tags").autocomplete({
 		    source: availableTags,
@@ -1220,7 +1236,7 @@
 		$("#zoomOnRead").click(function() {
 			
 			zoomOnRead(article);
-			//return false;
+			return false;
 
 		});
 
@@ -1290,6 +1306,13 @@
 		addHandlerArticleListItem();
 		closeArticlesListHeight();
 		pageArticlesListHeight();
+
+		$(window).load(function() {
+			if(article)
+			{
+				zoomOnArticle(article);
+			}
+		});
 
 		});
 		</script>
