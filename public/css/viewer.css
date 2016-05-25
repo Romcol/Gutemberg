@@ -117,8 +117,9 @@
 #hideInfo img, #hideGuide img{
     height:15px;
 }
-.otherPage {
+.otherPage, .otherOcc {
     color: black;
+    cursor: pointer;
 }
 #backSearch {
     margin: -10px 0px 10px 0px;

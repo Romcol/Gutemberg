@@ -120,18 +120,18 @@
 					    <input id="search_input">
 					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span>
 					  </div>
-					<a class="otherPage otherPageBack"><img src="<?= asset('resources/viewer/back.png') ?>" class="viewer-icon"/></a> 
-		            <a class="otherPage otherPageNext"><img src="<?= asset('resources/viewer/next.png') ?>" class="viewer-icon"/></a>
+					<a class="otherOcc otherOccBack"><img src="<?= asset('resources/viewer/back.png') ?>" class="viewer-icon"/></a> 
+		            <a class="otherOcc otherOccNext"><img src="<?= asset('resources/viewer/next.png') ?>" class="viewer-icon"/></a>
 		    </form>
 	    </div>
 	    <div id="ourOpenseadragon" class="openseadragon"></div>
 	    <div>
 		    <ul class="pager">
 				<li class="previous">
-					<a class="otherPage otherPageBack" <?php if( !isset($page['PreviousPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
+					<a class="otherPage otherPageBack" <?php if( !isset($page['PreviousPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon"/> <strong>Page précédente</strong></a>
 				</li>
 				<li class="next">
-					<a class="otherPage otherPageNext" <?php if( !isset($page['NextPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
+					<a class="otherPage otherPageNext" <?php if( !isset($page['NextPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon"/></a>
 				</li>
 			</ul>
 	    </div>
@@ -505,6 +505,7 @@
                 });
 
                 addHandlerArticleListItem();
+                pageArticlesListHeight();
             }
 
 			function previousPage(){
@@ -1267,9 +1268,17 @@
 		});
 		$('.otherPageBack').click(function()
 		{
-			previousKeyword();
+			previousPage();
 		});
 		$('.otherPageNext').click(function()
+		{
+			nextPage();
+		});
+		$('.otherOccBack').click(function()
+		{
+			previousKeyword();
+		});
+		$('.otherOccNext').click(function()
 		{
 			nextKeyword();
 		});
