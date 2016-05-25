@@ -39,7 +39,9 @@
 	<input type="hidden" name="data" value=""/>
 	<input type="submit" class="btn btn-default" value="Enregistrer"/>
 	</form>
+	@if(($user = Auth::user()) && ($pressreview['owner_id'] == $user['_id']))
 	<a href="<?= url('/revue/'.$pressreview['_id'].'/delete') ?>" class="btn btn-default" role="button">Supprimer la revue de presse</a>
+	@endif
 @else
     <p>Aucun résultat pour cette revue de presse.</p>
 @endif

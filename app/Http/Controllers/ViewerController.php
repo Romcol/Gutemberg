@@ -12,6 +12,7 @@ use App\Autocomplete;
 use App\Utility;
 use Illuminate\Support\Facades\Input;
 use App\PressReview;
+use Illuminate\Support\Facades\Redirect;
 
 class ViewerController extends Controller
 {
@@ -24,7 +25,7 @@ class ViewerController extends Controller
             $article = $pressreview['articles'][($nb-1)];
             return $this->index($article['IdPage'], $article['id'], null, $pressreview, $nb);
         }
-        return 'Offset non existant.';
+        return Redirect::to('revue/'.$id.'/edit');
     }
 
     public function pagesearch($page_id, $search)

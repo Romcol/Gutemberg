@@ -34,7 +34,7 @@
 		</div>
 			<div id="currentArticle" style="display:none;" class="section">
 			@if(Auth::user())
-			<img src="<?= asset("resources/viewer/empty-star.svg") ?>" id="favorite" onClick="addFavorite()" style="float: right; width: 30px; cursor: pointer;"/>
+			<img src="<?= asset("resources/viewer/empty-star.svg") ?>" id="favorite" style="float: right; width: 30px; cursor: pointer;"/>
 			@endif
 			<h4 class="sectiontitle"> <img src="<?= asset('resources/viewer/article.svg'); ?>" /> Article selectionné</h4>
 			<div id="infoCurrentArticle">
@@ -44,7 +44,7 @@
 					@if( !Auth::guest() )
 		            <div class="form-group">
 		                <div class="input-group">
-		                <input class="form-control" id="tags" placeholder="Ajouter un tag"> <span class="input-group-btn"><button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+		                <input class="form-control" id="tags" placeholder="Ajouter un tag"> <span class="input-group-btn"><button type="button" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
 		                </div>
 		            </div>
 					@else
@@ -54,7 +54,7 @@
 				</p>
 				@if( !Auth::guest() )
 				<div id="addpressreview">
-					<button type="button" id="showAddReview" onclick="displayAddReview()" class="btn btn-default btn-sm">Ajouter à une revue de presse</button>
+					<button type="button" id="showAddReview" class="btn btn-default btn-sm">Ajouter à une revue de presse</button>
 					<div id="reviewPart">
 						<div id="choice">
 						    <form role="form">
@@ -63,7 +63,7 @@
 								      	<select id="listMyReview" class="form-control">
 								      		<option selected disabled >Sélectionner une revue</option>
 									  	</select>
-									  	<span class="input-group-btn"><button type="button" id="addCreated" onclick="selectCreated()" class="btn btn-default btn-sm disabled">+</button></span>
+									  	<span class="input-group-btn"><button type="button" id="addCreated" class="btn btn-default btn-sm disabled">+</button></span>
 							</div>
 							</div>
 							 </form>
@@ -83,7 +83,7 @@
 			<div id="pageArticlesList" class="customScrollbar">
 				@foreach($page['Articles'] as $idx => $art)
 				<div class="articleListContainer">
-				<div class="articleListItem" onclick="selectArticle('{{$art['IdArticle']}}', true)"><div>{{$art['Title'][0]}}</div> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?></div>
+				<div class="articleListItem" id="articleListItem-{{$art['IdArticle']}}"><div>{{$art['Title'][0]}}</div> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?></div>
 				<span id="{{$art['IdArticle']}}" class="occurrenceNumber"></span>
 				<div style="clear:both;"></div>
 				</div>
@@ -120,18 +120,18 @@
 					    <input id="search_input" onchange="newSearch()">
 					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span>
 					  </div>
-					<a id="otherPage" onclick="previousKeyword()" ><img src="<?= asset('resources/viewer/back.png') ?>" alt="Flèche gauche" class="viewer-icon"/></a> 
-		            <a id="otherPage" onclick="nextKeyword()" ><img src="<?= asset('resources/viewer/next.png') ?>" alt="Flèche droite" class="viewer-icon"/></a>
+					<a class="otherPage otherPageBack"><img src="<?= asset('resources/viewer/back.png') ?>" class="viewer-icon"/></a> 
+		            <a class="otherPage otherPageNext"><img src="<?= asset('resources/viewer/next.png') ?>" class="viewer-icon"/></a>
 		    </form>
 	    </div>
 	    <div id="ourOpenseadragon" class="openseadragon"></div>
 	    <div>
 		    <ul class="pager">
 				<li class="previous">
-					<a id="otherPage"  onclick="previousPage()" <?php if( !isset($page['PreviousPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
+					<a class="otherPage otherPageBack" <?php if( !isset($page['PreviousPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon" alt="Flèche gauche" /> <strong>Page précédente</strong></a>
 				</li>
 				<li class="next">
-					<a id="otherPage" onclick="nextPage()" <?php if( !isset($page['NextPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
+					<a class="otherPage otherPageNext" <?php if( !isset($page['NextPage'])) echo 'class="btn btn-default btn-xs disabled"' ; else echo 'class="btn btn-default btn-xs"'; ?>><strong>Page suivante</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon" alt="Flèche droite"/></a>
 				</li>
 			</ul>
 	    </div>
@@ -172,11 +172,64 @@
 
 		<!-- Initialization script -->
 		<script type="text/javascript">
+			$(function() {
+
+			/*Functions definitions*/
+
+			function selectArticle(idArticle, zoomBool){
+
+				if( idArticle != null){
+					$.get(
+
+					    '<?= url('/').'/'; ?>'+'changeArticle', // Le fichier cible côté serveur.
+
+					    {
+					    	article: idArticle
+					    },
+
+					    function(data){
+				   			article = data;
+				   			updateCurrentArticle(article);
+				   			updateCloseArticles(article);
+				   			if(zoomBool) zoomOnArticle(article);
+				   			removeSelectedOverlays();
+							addSelectedOverlays(article);
+
+						}
+
+					);
+
+				}
+			}
+
+			function closeArticle(parPage, parArticle){
+				var keywds = $('#search_input').val();
+				var link = '<?= url('/visionneuse/'); ?>'+"/page/"+parPage+"/article/"+parArticle;
+
+				if(keywds != '')
+				{
+					link += "/recherche/"+keywds;
+				}
+
+				window.location.href = link;
+			}
+
+			function closeArticlesListHeight()
+			{
+				var height = 680-($('#closeArticlesList').offset().top-$('#pageGuide').offset().top);
+				$('#closeArticlesList').css('max-height',height)
+			}
+
+			function pageArticlesListHeight()
+			{
+				var height = 680-($('#pageArticlesList').offset().top-$('#pageInfo').offset().top);
+				$('#pageArticlesList').css('max-height',height);
+			}
 
 			String.prototype.trunc = String.prototype.trunc ||
 		      function(n){
 		          return (this.length > n) ? this.substr(0,n-1)+'&hellip;' : this;
-      			};
+      		};
 
 			function updateCurrentArticle(article){
 				if(article != null)
@@ -194,12 +247,18 @@
 					$("#currentArticle").show();
 
 					$("#favorite").attr('src', '<?= asset("resources/viewer/empty-star.svg") ?>');
-					$("#favorite").attr('onClick', 'addFavorite()');
+					$('#favorite').click(function()
+					{
+						addFavorite();
+					});
 					if(auth){
 						for(var i=0; i<favorites.length; i++){
 							if( favorites[i].id == article._id) {
 								$("#favorite").attr('src', '<?= asset("resources/viewer/star.svg") ?>');
-								$("#favorite").attr('onClick', 'removeFavorite()');
+									$('#favorite').click(function()
+									{
+										removeFavorite();
+									});
 							}
 						}
 					}
@@ -209,240 +268,12 @@
 				}
 			}
 
-			$('#reviewPart').hide();
-
-			var savedTags = <?php echo $savedTags; ?> ;
-
-			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?> ;
-
-			<?php
-			if(Auth::user())
-			{
-			?>
-				if(auth){
-					var createdReviews = <?php echo json_encode(Auth::user()->createdReviews); ?> ;
-					var contributedReviews = <?php echo json_encode(Auth::user()->contribReviews); ?> ;
-					var favorites = <?php echo json_encode(Auth::user()->favoriteArticles); ?> ;
-				}
-			<?php
-			}
-			?>
-
-			var pageReviews = <?php echo $pageReviews; ?>;
-
-			for(var i=0; i<pageReviews.length; i++){
-				var shortTitle = pageReviews[i].Name;
-    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem" class="closeArticle" onClick="goReview(\''+pageReviews[i]._id+'\')" style="padding-bottom: 15px"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+'</strong></div></div>');
- 
-			}
-
-			var zoom = true;
-			var toggle = true;
-			var filename = '<?php echo $filename ?>';
-			var image = filename != 'default.dzi';
-
-			var keywords = '<?php echo $keywords; ?>' ;
-
-			$('#search_input').val(keywords);
-			var page = <?= $page; ?>;
-			var articles = page.Articles;
-
-			var overlays = [];
-
-			if(image){
-				for(var i = 0; i< articles.length; i++) {
-					var number  = Math.floor(Math.random()*10);
-
-					if( articles[i].TitleCoord != null){
-						overlays.push({
-								id: 'i:'+i+' '+'Title',
-						        px: articles[i].TitleCoord[0], 
-						        py: articles[i].TitleCoord[1],
-						        width: articles[i].TitleCoord[2] - articles[i].TitleCoord[0], 
-						        height: articles[i].TitleCoord[3] - articles[i].TitleCoord[1],
-						        className: 'overlay'+number
-						});
-					}
-
-					for(var j = 0; j< articles[i].Coord.length; j++){
-						overlays.push({
-							id: 'i:'+i+' '+'j:'+j,
-					        px: articles[i].Coord[j][0], 
-					        py: articles[i].Coord[j][1],
-					        width: articles[i].Coord[j][2] - articles[i].Coord[j][0], 
-					        height: articles[i].Coord[j][3] - articles[i].Coord[j][1],
-					        className: 'overlay'+number
-						});
-					}
-				}
-
-				var overlaysSlt = [];
-				@if($article)
-				var article =  <?= $article; ?> ;
-				@else
-				var article = null;
-				@endif
-				updateCurrentArticle(article);
-				if( article != null ){
-					updateCurrentArticle(article);
-
-					if( article.TitleCoord.length != 0){
-						overlaysSlt.push({
-								id: 'overlaySelectedTitle',
-						        px: article.TitleCoord[0], 
-						        py: article.TitleCoord[1],
-						        width: article.TitleCoord[2] - article.TitleCoord[0], 
-						        height: article.TitleCoord[3] - article.TitleCoord[1],
-						        className: 'overlayArt'
-						});
-					}
-
-					for( var i = 0; i<article.Coord.length; i++){
-						overlaysSlt.push({
-							id: 'overlaySelected'+i,
-					        px: article.Coord[i][0], 
-					        py: article.Coord[i][1],
-					        width: article.Coord[i][2] - article.Coord[i][0], 
-					        height: article.Coord[i][3] - article.Coord[i][1],
-					        className: 'overlayArt'
-						});
-					}
-
-					for( var j=0; j<article.Close.length; j++){
-						var shortTitle = article.Close[j].Title;
-                		if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
-                        $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
-                    }
-				}
-
-				var searchArray = <?php echo $searchedKeywords; ?>;
-				var search = searchArray[0];
-				var occurrence = searchArray[1];
-				var overlaysKwd = [];
-				var iterator = 0;
-
-				function newImage() {
+			function newImage() {
 			        var img = document.createElement("img");
 			        img.src = "<?= asset('resources/viewer/Red_Arrow_Right.svg') ?>";
 			        img.width = 20;
 			        return img;
-			    }
-
-				if( search != undefined && search.length != 0){
-					for( var i=0; i< search.length ; i++){
-						var elt = {
-							id: newImage(),
-					        px: search[i][0], 
-					        py: (search[i][3] - search[i][1])/2 + search[i][1],
-					        placement: 'RIGHT'
-						};
-						overlaysKwd.push(elt);
-					}
-
-					//Display occurrence number in articles list
-					$.each(occurrence, function (index, value) {
-					    if( value != 0 ){
-					    	$('#'+index).text(+value+' occurrence(s) de "'+$('#search_input').val()+'"');
-					    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" height="20px"/> ');
-					    } 
-					});
-					if( search.length > 1 ){
-						$('#occurrence').text(search.length+' occurrences');
-					}else{
-						$('#occurrence').text(search.length+' occurrence');
-					}
-				}
-
-
-			}else{
-				$('#toggle-overlay').remove();
-				$('#zoomOnArticle').remove();
-				$('#zoomOnRead').remove();
-				$('#search_form').remove();
 			}
-
-			var typeImage = <?php if($typeImage) echo 'true'; else echo 'false'; ?> ;
-			if( typeImage){
-				var tileSource = {
-			        type: 'image',
-			        url:  '<?= parse_url(url('images'))['path'].'/'; ?>'+filename,
-			        buildPyramid: false
-				}
-			}else{
-				var tileSource = '<?= parse_url(url('images'))['path'].'/'; ?>'+filename;
-			}
-
-			var viewer = OpenSeadragon({
-				id: "ourOpenseadragon",
-				showRotationControl: true,
-			    showNavigator:  true,
-				prefixUrl: "/openseadragon/images/",
-		        toolbar:        "toolbarDiv",
-		        zoomInButton:   "zoom-in",
-		        zoomOutButton:  "zoom-out",
-		        homeButton:     "home",
-		        fullPageButton: "full-page",
-		        nextButton:     "next",
-		        previousButton: "previous",
-		        showNavigator:  true,
-		        sequenceMode: true,
-		        visibilityRatio: 1.0,
-		        constrainDuringPan: true,
-				tileSources:tileSource,
-				//showReferenceStrip: true,
-				//referenceStripScroll: 'vertical',
-				overlays: overlays.concat(overlaysKwd, overlaysSlt),
-
-			});
-
-			viewer.gestureSettingsMouse.clickToZoom = false;
-			viewer.gestureSettingsMouse.dblClickToZoom = true;
-
-			var selection = viewer.selection({
-				element:                 null, 
-				showSelectionControl:    true, 
-				toggleButton:            null, 
-				showConfirmDenyButtons:  true,
-				styleConfirmDenyButtons: true,
-				returnPixelCoordinates:  true,
-				keyboardShortcut:        'c',
-				rect:                    null, 
-				startRotated:            false, 
-				startRotatedHeight:      0.1, 
-				restrictToImage:         false, 
-				onSelection:             function(rect) {},
-				prefixUrl:               null, 
-				navImages:               { 
-					selection: {
-						REST:   '/selection_rest.png',
-						GROUP:  '/selection_grouphover.png',
-						HOVER:  '/selection_hover.png',
-						DOWN:   '/selection_pressed.png'
-					},
-					selectionConfirm: {
-						REST:   '/selection_confirm_rest.png',
-						GROUP:  '/selection_confirm_grouphover.png',
-						HOVER:  '/selection_confirm_hover.png',
-						DOWN:   '/selection_confirm_pressed.png'
-					},
-					selectionCancel: {
-						REST:   '/selection_cancel_rest.png',
-						GROUP:  '/selection_cancel_grouphover.png',
-						HOVER:  '/selection_cancel_hover.png',
-						DOWN:   '/selection_cancel_pressed.png'
-					},
-				}
-			});
-			//selection.enable();
-			//selection.toggleState();
-
-		</script>
-		<!-- End of initialization script -->
-
-
-
-		<!-- Functions definition -->
-		<script type="text/javascript">
 
 			function zoomOnArticle(articleparam){
 
@@ -657,41 +488,24 @@
 			}
 
 			function updateCloseArticles(param){
-
                 $('.closeArticle').remove();
 
-                for( var j=0; j<param.Close.length; j++){
+                for(var j=0; j<param.Close.length; j++){
                 	var shortTitle = article.Close[j].Title;
                 	if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
-                    $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem" class="closeArticle" onClick=\'closeArticle("'+article.Close[j].IdPage+'","'+article.Close[j]._id+'")\'><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
+                    $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" id="closeArticle-'+article.Close[j].IdPage+'-'+article.Close[j]._id+'"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
                 }
+
+                $(".closeArticle").click(function(){
+            		var closepropid = $(this).prop('id');
+					var closeregex = /closeArticle-([0-9a-z]+)-([0-9a-z]+)/;
+					var idart1 = closeregex.exec(closepropid)[1];
+					var idart2 = closeregex.exec(closepropid)[2];
+					closeArticle(idart1, idart2);
+                });
+
+                addHandlerArticleListItem();
             }
-
-			function selectArticle(idArticle, zoomBool){
-
-				if( idArticle != null){
-					$.get(
-
-					    '<?= url('/').'/'; ?>'+'changeArticle', // Le fichier cible côté serveur.
-
-					    {
-					    	article: idArticle
-					    },
-
-					    function(data){
-				   			article = data;
-				   			updateCurrentArticle(article);
-				   			updateCloseArticles(article);
-				   			if(zoomBool) zoomOnArticle(article);
-				   			removeSelectedOverlays();
-							addSelectedOverlays(article);
-
-						}
-
-					);
-
-				}
-			}
 
 			function previousPage(){
 				var idPage = page.PreviousPage;
@@ -715,24 +529,6 @@
 				{
 					link += "/recherche/"+keywds;
 				}
-
-				window.location.href = link;
-			}
-
-			function closeArticle(parPage, parArticle){
-				var keywds = $('#search_input').val();
-				var link = '<?= url('/visionneuse/'); ?>'+"/page/"+parPage+"/article/"+parArticle;
-
-				if(keywds != '')
-				{
-					link += "/recherche/"+keywds;
-				}
-
-				window.location.href = link;
-			}
-
-			function goReview(parRev){
-				var link = '<?= url('/revue/'); ?>'+"/"+parRev;
 
 				window.location.href = link;
 			}
@@ -843,7 +639,10 @@
 
 			function tagMouseEnter(elemnt){
 				if(auth){
-					$(elemnt).append(' <a onclick="closeTag(this)">X</a>');
+					$(elemnt).append(' <a class=".closetag">X</a>');
+					$(".closetag").click(function(){
+						closeTag(this);
+					});
 				}
 			}
 
@@ -977,7 +776,10 @@
 				);
 
 				$("#favorite").attr('src', '<?= asset("resources/viewer/star.svg") ?>');
-				$("#favorite").attr('onClick', 'removeFavorite()');
+				$('#favorite').click(function()
+				{
+					removeFavorite();
+				});
 			}
 
 			function removeFavorite(){
@@ -999,7 +801,9 @@
 				);
 
 				$("#favorite").attr('src', '<?= asset("resources/viewer/empty-star.svg") ?>');
-				$("#favorite").attr('onClick', 'addFavorite()');
+				$('#favorite').click(function(){
+					addFavorite();
+				});
 			}
 
 			function selectSearchReview(page){
@@ -1098,29 +902,270 @@
 				$("#reviewPart").hide();
 			}
 
+		    function addHandlerArticleListItem()
+			{
+			    $('.articleListItem').click(function(){
+					var artpropid = $(this).prop('id');
+					var artregex = /articleListItem-(.+)/;
+					var idart = artregex.exec(artpropid)[1];
+					selectArticle(idart, true);
+			    });
+			}
+
+			//End of functions definitions
+
+			//Debut of init script
+
+			$('#reviewPart').hide();
+
+			var savedTags = <?php echo $savedTags; ?> ;
+
+			var auth = <?php if(Auth::guest()) echo 'false'; else echo 'true';?> ;
+
+			<?php
+			if(Auth::user())
+			{
+			?>
+				if(auth){
+					var createdReviews = <?php echo json_encode(Auth::user()->createdReviews); ?> ;
+					var contributedReviews = <?php echo json_encode(Auth::user()->contribReviews); ?> ;
+					var favorites = <?php echo json_encode(Auth::user()->favoriteArticles); ?> ;
+				}
+			<?php
+			}
+			?>
+
+			var pageReviews = <?php echo $pageReviews; ?>;
+
+			for(var i=0; i<pageReviews.length; i++){
+				var shortTitle = pageReviews[i].Name;
+    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" style="padding-bottom: 15px"><a href="<?= url('/revue/').'/'; ?>'+pageReviews[i]._id+'"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+'</strong></a></div></div>');
+			}
+
+			$(".closeArticle").click(function(){
+	    		var closepropid = $(this).prop('id');
+				var closeregex = /closeArticle-([0-9a-z]+)-([0-9a-z]+)/;
+				var idart1 = closeregex.exec(closepropid)[1];
+				var idart2 = closeregex.exec(closepropid)[2];
+				closeArticle(idart1, idart2);
+			 });
+
+			var zoom = true;
+			var toggle = true;
+			var filename = '<?php echo $filename ?>';
+			var image = filename != 'default.dzi';
+
+			var keywords = '<?php echo $keywords; ?>' ;
+
+			$('#search_input').val(keywords);
+			var page = <?= $page; ?>;
+			var articles = page.Articles;
+
+			var overlays = [];
+
+			if(image){
+				for(var i = 0; i< articles.length; i++) {
+					var number  = Math.floor(Math.random()*10);
+
+					if( articles[i].TitleCoord != null){
+						overlays.push({
+								id: 'i:'+i+' '+'Title',
+						        px: articles[i].TitleCoord[0], 
+						        py: articles[i].TitleCoord[1],
+						        width: articles[i].TitleCoord[2] - articles[i].TitleCoord[0], 
+						        height: articles[i].TitleCoord[3] - articles[i].TitleCoord[1],
+						        className: 'overlay'+number
+						});
+					}
+
+					for(var j = 0; j< articles[i].Coord.length; j++){
+						overlays.push({
+							id: 'i:'+i+' '+'j:'+j,
+					        px: articles[i].Coord[j][0], 
+					        py: articles[i].Coord[j][1],
+					        width: articles[i].Coord[j][2] - articles[i].Coord[j][0], 
+					        height: articles[i].Coord[j][3] - articles[i].Coord[j][1],
+					        className: 'overlay'+number
+						});
+					}
+				}
+
+				var overlaysSlt = [];
+				@if($article)
+				var article =  <?= $article; ?> ;
+				@else
+				var article = null;
+				@endif
+				updateCurrentArticle(article);
+				if( article != null ){
+					updateCurrentArticle(article);
+
+					if( article.TitleCoord.length != 0){
+						overlaysSlt.push({
+								id: 'overlaySelectedTitle',
+						        px: article.TitleCoord[0], 
+						        py: article.TitleCoord[1],
+						        width: article.TitleCoord[2] - article.TitleCoord[0], 
+						        height: article.TitleCoord[3] - article.TitleCoord[1],
+						        className: 'overlayArt'
+						});
+					}
+
+					for( var i = 0; i<article.Coord.length; i++){
+						overlaysSlt.push({
+							id: 'overlaySelected'+i,
+					        px: article.Coord[i][0], 
+					        py: article.Coord[i][1],
+					        width: article.Coord[i][2] - article.Coord[i][0], 
+					        height: article.Coord[i][3] - article.Coord[i][1],
+					        className: 'overlayArt'
+						});
+					}
+
+					for( var j=0; j<article.Close.length; j++){
+						var shortTitle = article.Close[j].Title;
+                		if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
+                        $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" id="closeArticle-'+article.Close[j].IdPage+'-'+article.Close[j]._id+'"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
+                    }
+
+			        $(".closeArticle").click(function(){
+			    		var closepropid = $(this).prop('id');
+						var closeregex = /closeArticle-([0-9a-z]+)-([0-9a-z]+)/;
+						var idart1 = closeregex.exec(closepropid)[1];
+						var idart2 = closeregex.exec(closepropid)[2];
+						closeArticle(idart1, idart2);
+			        });
+				}
+
+				var searchArray = <?php echo $searchedKeywords; ?>;
+				var search = searchArray[0];
+				var occurrence = searchArray[1];
+				var overlaysKwd = [];
+				var iterator = 0;
+
+				if( search != undefined && search.length != 0){
+					for( var i=0; i< search.length ; i++){
+						var elt = {
+							id: newImage(),
+					        px: search[i][0], 
+					        py: (search[i][3] - search[i][1])/2 + search[i][1],
+					        placement: 'RIGHT'
+						};
+						overlaysKwd.push(elt);
+					}
+
+					//Display occurrence number in articles list
+					$.each(occurrence, function (index, value) {
+					    if( value != 0 ){
+					    	$('#'+index).text(+value+' occurrence(s) de "'+$('#search_input').val()+'"');
+					    	$('#'+index).prepend('<img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" height="20px"/> ');
+					    } 
+					});
+					if( search.length > 1 ){
+						$('#occurrence').text(search.length+' occurrences');
+					}else{
+						$('#occurrence').text(search.length+' occurrence');
+					}
+				}
 
 
-		</script>
-		<!-- End of functions definition -->
+			}else{
+				$('#toggle-overlay').remove();
+				$('#zoomOnArticle').remove();
+				$('#zoomOnRead').remove();
+				$('#search_form').remove();
+			}
 
+			var typeImage = <?php if($typeImage) echo 'true'; else echo 'false'; ?> ;
+			if( typeImage){
+				var tileSource = {
+			        type: 'image',
+			        url:  '<?= parse_url(url('images'))['path'].'/'; ?>'+filename,
+			        buildPyramid: false
+				}
+			}else{
+				var tileSource = '<?= parse_url(url('images'))['path'].'/'; ?>'+filename;
+			}
 
+			var viewer = OpenSeadragon({
+				id: "ourOpenseadragon",
+				showRotationControl: true,
+			    showNavigator:  true,
+				prefixUrl: "/openseadragon/images/",
+		        toolbar:        "toolbarDiv",
+		        zoomInButton:   "zoom-in",
+		        zoomOutButton:  "zoom-out",
+		        homeButton:     "home",
+		        fullPageButton: "full-page",
+		        nextButton:     "next",
+		        previousButton: "previous",
+		        showNavigator:  true,
+		        sequenceMode: true,
+		        visibilityRatio: 1.0,
+		        constrainDuringPan: true,
+				tileSources:tileSource,
+				//showReferenceStrip: true,
+				//referenceStripScroll: 'vertical',
+				overlays: overlays.concat(overlaysKwd, overlaysSlt),
 
-		<!-- Scripts for change on the fly -->
-		<script type="text/javascript">
-
-		$(window).load(function() {
-
-			 zoomOnArticle(article);
-
-			var availableTags = savedTags;
-			$("#tags").autocomplete({
-			    source: availableTags,
-			    minLength: 0,
-			    select: function( event, ui ) { 
-			    	newTag(ui.item.value);
-			    }
 			});
 
+			viewer.gestureSettingsMouse.clickToZoom = false;
+			viewer.gestureSettingsMouse.dblClickToZoom = true;
+
+			var selection = viewer.selection({
+				element:                 null, 
+				showSelectionControl:    true, 
+				toggleButton:            null, 
+				showConfirmDenyButtons:  true,
+				styleConfirmDenyButtons: true,
+				returnPixelCoordinates:  true,
+				keyboardShortcut:        'c',
+				rect:                    null, 
+				startRotated:            false, 
+				startRotatedHeight:      0.1, 
+				restrictToImage:         false, 
+				onSelection:             function(rect) {},
+				prefixUrl:               null, 
+				navImages:               { 
+					selection: {
+						REST:   '/selection_rest.png',
+						GROUP:  '/selection_grouphover.png',
+						HOVER:  '/selection_hover.png',
+						DOWN:   '/selection_pressed.png'
+					},
+					selectionConfirm: {
+						REST:   '/selection_confirm_rest.png',
+						GROUP:  '/selection_confirm_grouphover.png',
+						HOVER:  '/selection_confirm_hover.png',
+						DOWN:   '/selection_confirm_pressed.png'
+					},
+					selectionCancel: {
+						REST:   '/selection_cancel_rest.png',
+						GROUP:  '/selection_cancel_grouphover.png',
+						HOVER:  '/selection_cancel_hover.png',
+						DOWN:   '/selection_cancel_pressed.png'
+					},
+				}
+			});
+			//selection.enable();
+			//selection.toggleState();
+
+		// End of initialization script
+
+
+
+		// Scripts for change on the fly
+
+		zoomOnArticle(article);
+
+		var availableTags = savedTags;
+		$("#tags").autocomplete({
+		    source: availableTags,
+		    minLength: 0,
+		    select: function( event, ui ) { 
+		    	newTag(ui.item.value);
+		    }
 		});
 
 		viewer.addHandler('canvas-click', function(event) {
@@ -1205,7 +1250,35 @@
     		$("#pageGuide").show();
 		});
 
+		$('#favorite').click(function(){
+			addFavorite();
+		});
+		$('#tag_button').click(function()
+		{
+			newTag();
+		});
+		$('#showAddReview').click(function()
+		{
+			displayAddReview();
+		});
+		$('#addCreated').click(function()
+		{
+			selectCreated();
+		});
+		$('.otherPageBack').click(function()
+		{
+			previousKeyword();
+		});
+		$('.otherPageNext').click(function()
+		{
+			nextKeyword();
+		});
 
+		addHandlerArticleListItem();
+		closeArticlesListHeight();
+		pageArticlesListHeight();
+
+		});
 		</script>
 
 @stop

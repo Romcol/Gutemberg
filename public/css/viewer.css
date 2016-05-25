@@ -21,7 +21,7 @@
     /*background-color:#ffeadc;*/
 }
 
-#pageInfo a, #pageInfo a:active, #pageInfo a:focus{
+#pageInfo a, #pageInfo a:active, #pageInfo a:focus, #pageGuide a, #pageGuide a:active, #pageGuide a:focus{
     color:black;
     text-decoration: underline;
 }
@@ -72,7 +72,6 @@
     overflow-y:auto;
 }
 #pageGuide #closeArticlesList {
-    max-height: 390px;
     overflow-y: auto;
 }
 .articleListContainer{
@@ -118,10 +117,9 @@
 #hideInfo img, #hideGuide img{
     height:15px;
 }
-#otherPage {
+.otherPage {
     color: black;
 }
-
 #backSearch {
     margin: -10px 0px 10px 0px;
 }

@@ -50,7 +50,7 @@ class PressReviewController extends Controller
 
     		$pressreviewobject = ['name' => $name, 'description' => $description, '_id' => $pressreview->_id];
     		$user->push('createdReviews',$pressreviewobject);
-            return Redirect::to('profil')->with(['message' => 'Revue de presse "'.$name.'" créée.', 'status' => 'success']);
+            return Redirect::to('profil')->with(['message' => 'La revue de presse "'.$name.'" créée.', 'status' => 'success']);
         }   
         return Redirect::to('profil')->with(['message' => "Erreur. La revue de presse n'a pas été créée.", 'status' => 'fail']);
     }
@@ -58,9 +58,10 @@ class PressReviewController extends Controller
     public function delete($id)
     {
     	$user = Auth::user();
-        if($user && $id)
+        $pressreview = PressReview::find($id);
+        if($user && ($pressreview['owner_id'] == $user['_id']))
         {
-        	$pressreview = PressReview::find($id);
+        	
         	$reviews = $user->createdReviews;
             foreach($pressreview['articles'] as $art)
             {
@@ -83,28 +84,29 @@ class PressReviewController extends Controller
 
     public function update($id)
     {
-        //$user = Auth::user();
+        $user = Auth::user();
         $pressreview = PressReview::find($id);
-        $data = $_GET['data'];
-        $newarticles = [];
-        $ids = explode(",", $data);
-        foreach($ids as $articleid)
+        if($user && ($pressreview['owner_id'] == $user['_id']))
         {
-            foreach($pressreview->articles as $article)
+            $data = $_GET['data'];
+            $newarticles = [];
+            $ids = explode(",", $data);
+            foreach($ids as $articleid)
             {
-                if($article['id'] == $articleid){
-                    array_push($newarticles, $article);
+                foreach($pressreview->articles as $article)
+                {
+                    if($article['id'] == $articleid){
+                        array_push($newarticles, $article);
+                    }
                 }
             }
+            $pressreview->articles = $newarticles;
+            if($pressreview->save())
+            {
+                return Redirect::to('profil')->with(['message' => 'La revue de presse a été mise à jour.', 'status' => 'success']);
+            }
         }
-        $pressreview->articles = $newarticles;
-        if($pressreview->save())
-        {
-            return Redirect::to('profil')->with(['message' => 'Revue de presse a été mise à jour.', 'status' => 'success']);
-        }
-        else{
-            return Redirect::to('profil')->with(['message' => "La revue de presse n'a pas pu être mise à jour.", 'status' => 'fail']);
-        }
+        return Redirect::to('profil')->with(['message' => "La revue de presse n'a pas pu être mise à jour.", 'status' => 'fail']);
     }
 
     public function addArticle(){
