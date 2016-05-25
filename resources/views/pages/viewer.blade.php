@@ -200,6 +200,7 @@
 					);
 
 				}
+
 			}
 
 			function closeArticle(parPage, parArticle){
@@ -243,13 +244,6 @@
 						}
 					}
 
-					$('.tag').mouseenter(function(){
-						tagMouseEnter(this);
-					});
-
-					$('.tag').mouseleave(function(){
-						tagMouseLeave(this);
-					});
 
 					var url = "<?= url('/visionneuse'); ?>";
 					$("#currentUrl").attr('value', url+'/page/'+article.IdPage+'/article/'+article._id);
@@ -275,6 +269,15 @@
 				else{
 					$("#currentArticle").hide();
 				}
+
+				$('.tag').mouseenter(function(){
+					tagMouseEnter(this);
+				});
+
+				$('.tag').mouseleave(function(){
+					tagMouseLeave(this);
+				});
+
 				pageArticlesListHeight();
 			}
 
@@ -658,7 +661,7 @@
 
 			function tagMouseEnter(elemnt){
 				if(auth){
-					$(elemnt).append(' <a class="closetag">X</a>');
+					
 					$(".closetag").click(function(){
 						closeTag(this);
 					});
@@ -958,16 +961,8 @@
 
 			for(var i=0; i<pageReviews.length; i++){
 				var shortTitle = pageReviews[i].Name;
-    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" style="padding-bottom: 15px"><a href="<?= url('/revue/').'/'; ?>'+pageReviews[i]._id+'"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+'</strong></a></div></div>');
+    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem" style="padding-bottom: 15px"><a href="<?= url('/revue/').'/'; ?>'+pageReviews[i]._id+'"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+'</strong></a></div></div>');
 			}
-
-			$(".closeArticle").click(function(){
-	    		var closepropid = $(this).prop('id');
-				var closeregex = /closeArticle-([0-9a-z]+)-([0-9a-z]+)/;
-				var idart1 = closeregex.exec(closepropid)[1];
-				var idart2 = closeregex.exec(closepropid)[2];
-				closeArticle(idart1, idart2);
-			 });
 
 			var zoom = true;
 			var toggle = true;

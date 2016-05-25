@@ -6,7 +6,6 @@
     <hr>
     <p><strong>Nom :</strong> {{$user['name']}}</p>
     <p><strong>Email :</strong> {{$user['email']}}</p>
-    <p><a class="btn btn-default" href="#">Modifier le profil (TODO)</a></p>
     <p><a class="btn btn-default" href="{{ url('/revue/create') }}">Créer une nouvelle revue de presse</a></p>
    	@if(session('message') && session('status'))
     	<div class="row">
