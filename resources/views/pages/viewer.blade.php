@@ -938,6 +938,9 @@
 
 					);
 
+					$("#reviewPart").hide();
+					$("#addpressreview").text('Article ajouté à la revue');
+
 					
 				}else{
 					$("#reviewPart").hide();
