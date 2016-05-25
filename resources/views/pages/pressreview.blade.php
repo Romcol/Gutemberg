@@ -2,7 +2,7 @@
 
 @section('page_content_notfluid')
 @if($pressreview)
-	<h3>{{$pressreview['name']}}</h3>
+	<h3><a href="<?= url('/revue/'.$pressreview['id']);?>">{{$pressreview['name']}}</a> <small>par <em>{{$pressreview['owner_name']}}</em></small></h3>
 	<p><em>{{$pressreview['description']}}</em></p>
 	<hr>
 	@if($pressreview['articles'])
