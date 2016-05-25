@@ -6,14 +6,14 @@
 
 @section('page_content')
 @if($pressreview)
-<div id="pressReviewPlayer"><h4>{{$pressreview['name']}}</h4> par <em>{{$pressreview['owner_name']}}</em> - {{$pressreview['index']}}/{{count($pressreview['articles'])}}
+<div id="pressReviewPlayer"><h4>{{$pressreview['name']}}</h4> par <em>{{$pressreview['owner_name']}}</em> - {{$pressreviewindex}}/{{count($pressreview['articles'])}}
 <div>
 			    <ul class="pager">
 				<li class="previous">
-					<a href="<?= url('/revue/'.$pressreview['id'].'/article/'.($pressreview['index']-1)) ?>" class="btn btn-default btn-xs <?php if($pressreview['index'] == 1) echo 'disabled'; ?>"><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon" /> <strong>Article précédent</strong></a>
+					<a href="<?= url('/revue/'.$pressreview['id'].'/article/'.($pressreviewindex-1)) ?>" class="btn btn-default btn-xs <?php if($pressreviewindex == 1) echo 'disabled'; ?>"><img src="<?= asset('resources/viewer/back_pager.png') ?>" class="viewer-icon" /> <strong>Article précédent</strong></a>
 				</li>
 				<li class="next">
-					<a href="<?= url('/revue/'.$pressreview['id'].'/article/'.($pressreview['index']+1)) ?>" class="btn btn-default btn-xs <?php if($pressreview['index'] == count($pressreview['articles'])) echo 'disabled'; ?>"><strong>Article suivant</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon"/></a>
+					<a href="<?= url('/revue/'.$pressreview['id'].'/article/'.($pressreviewindex+1)) ?>" class="btn btn-default btn-xs <?php if($pressreviewindex == count($pressreview['articles'])) echo 'disabled'; ?>"><strong>Article suivant</strong> <img src="<?= asset('resources/viewer/next_pager.png') ?>" class="viewer-icon"/></a>
 				</li>
 			</ul>
 </div></div>

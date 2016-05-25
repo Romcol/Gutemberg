@@ -22,8 +22,7 @@ class ViewerController extends Controller
         if(isset($pressreview['articles'][($nb-1)]))
         {
             $article = $pressreview['articles'][($nb-1)];
-            $pressreview['index'] = $nb;
-            return $this->index($article['IdPage'], $article['id'], null, $pressreview);
+            return $this->index($article['IdPage'], $article['id'], null, $pressreview, $nb);
         }
         return 'Offset non existant.';
     }
@@ -33,7 +32,7 @@ class ViewerController extends Controller
         return $this->index($page_id,null,$search);
     }
 
-    public function index($page_id = null,$article_id = null, $search = null, $pressreview = null)
+    public function index($page_id = null,$article_id = null, $search = null, $pressreview = null, $pressreviewindex = null)
     {
         if($page_id == null && isset($_GET['page'])) $page_id = $_GET['page'];
 
@@ -113,7 +112,7 @@ class ViewerController extends Controller
 
         $pageReviews = json_encode($pageReviews);
 
-    	return view('pages.viewer', compact('page','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage','pressreview', 'pageReviews'));
+    	return view('pages.viewer', compact('page','article', 'filename', 'keywords', 'searchedKeywords', 'searchUri', 'savedTags', 'typeImage','pressreview', 'pageReviews', 'pressreviewindex'));
     }
 
     public function searchArticle($id = null){
