@@ -488,8 +488,8 @@
 			}
 
 			function updateCloseArticles(param){
+				$('.closeArticle').closest('.articleListContainer').remove();
                 $('.closeArticle').remove();
-
                 for(var j=0; j<param.Close.length; j++){
                 	var shortTitle = article.Close[j].Title;
                 	if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
