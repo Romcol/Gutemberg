@@ -117,7 +117,7 @@
 		    </form>
 		    <form class="form-inline" style='float:right;margin:10px 20px 10px 0'>
 		          	<div class="form-group" style="display:inline-block;">
-					    <input id="search_input" onchange="newSearch()">
+					    <input id="search_input">
 					    <button type="button" id="search_button" class="btn btn-default btn-sm"><img src="<?= asset("resources/viewer/file.png") ?>" alt="Occurrence" class="viewer-icon"/> Recherche</button>   <span id="occurrence"></span>
 					  </div>
 					<a class="otherPage otherPageBack"><img src="<?= asset('resources/viewer/back.png') ?>" class="viewer-icon"/></a> 
@@ -1273,6 +1273,10 @@
 		{
 			nextKeyword();
 		});
+
+	    $("#search_input").change(function(){
+      		newSearch();
+      	});
 
 		addHandlerArticleListItem();
 		closeArticlesListHeight();
