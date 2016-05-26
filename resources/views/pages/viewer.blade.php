@@ -660,15 +660,13 @@
 				$(elemnt).parent().remove();
 			}
 
-			function tagMouseEnter(elemnt,e){
+			function tagMouseEnter(elemnt){
 				if(auth){
-					console.log(elemnt);
 					$(elemnt).append(' <a class="closetag">X</a>');
 					$(".closetag").click(function(){
 						closeTag(this);
 					});
 				}
-				e.stopPropagation();
 			}
 
 			function tagMouseLeave(elemnt){

@@ -324,10 +324,11 @@ fieldset[disabled] .navbar-custom .btn-link:focus  {
 
 #saveform
 {
-    float:left;
-    margin-right:10px;
+    display:inline-block;
 }
-
+#saveform .btn{
+  margin-right: 5px;
+}
 .createdpressreviews
 {
     padding-top:10px;

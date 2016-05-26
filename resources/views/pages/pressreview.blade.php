@@ -42,6 +42,7 @@
 	<form id="saveform" style="display:none;" action="<?= url('/revue/'.$pressreview['_id'].'/update') ?>">
 	<input type="hidden" name="data" value=""/>
 	<input type="submit" class="btn btn-default" value="Enregistrer"/>
+	<a class="btn btn-default" href="<?= url('/revue/'.$pressreview['_id'].'/edit') ?>" >Annuler</a>
 	</form>
 	@if(($user = Auth::user()) && ($pressreview['owner_id'] == $user['_id']))
 	<a href="<?= url('/revue/'.$pressreview['_id'].'/delete') ?>" class="btn btn-default" role="button">Supprimer la revue de presse</a>
