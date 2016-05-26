@@ -10,12 +10,16 @@
 		<div class="col-md-12 col-lg-12 pressreviewarticles">
 		@foreach ($pressreview['articles'] as $ind => $article)
 				<div class="row">
+				@if(($user = Auth::user()) && ($pressreview['owner_id'] == $user['_id']))
 				<div class="col-md-1 col-lg-1">
 				<button type="button" class="btn btn-default btn-block upbtn">&uarr;</button>
 				<button type="button" class="btn btn-default btn-block deletebtn">X</button>
 				<button type="button" class="btn btn-default btn-block downbtn">&darr;</button>
 				</div>
 				<div id="zone-{{$ind}}" class="col-md-11 col-lg-11">
+				@else
+				<div id="zone-{{$ind}}" class="col-md-12 col-lg-12">
+				@endif
 			      	<article draggable="true" id="article-{{$article['id']}}">
 		            <div class="panel panel-default">
 		              <div class="panel-heading">

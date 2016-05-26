@@ -21,7 +21,9 @@
     /*background-color:#ffeadc;*/
 }
 
-#pageInfo a, #pageInfo a:active, #pageInfo a:focus, #pageGuide a, #pageGuide a:active, #pageGuide a:focus{
+#pageInfo a, #pageInfo a:active, #pageInfo a:focus,
+#pageGuide a, #pageGuide a:active, #pageGuide a:focus,
+#pressReviewPlayer a, #pressReviewPlayer a:active, #pressReviewPlayer a:focus{
     color:black;
     text-decoration: underline;
 }

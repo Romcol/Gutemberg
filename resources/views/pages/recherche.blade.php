@@ -89,11 +89,11 @@
               <div class="panel-body">
                 <B class="title">@if($article->highlight('Title')) {!! $article->highlight('Title') !!} @else {{$article['Title']}} @endif</B>
                 <p style="margin-top:20px">{!! $article['Words'] !!}</p>
-                <p>
+                <div class="container_tag_search">
                 @foreach ($article['Tags'] as $tag)
-                <span class="tag"> {{$tag}}</span>
+                <span class="tag_search">{{$tag}}</span>
                 @endforeach
-                </p>
+                </div>
               </div>
             </div>
       		</article>

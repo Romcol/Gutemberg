@@ -6,7 +6,7 @@
 
 @section('page_content')
 @if($pressreview)
-<div id="pressReviewPlayer"><h4>Revue de presse "{{$pressreview['name']}}"</h4> par <em>{{$pressreview['owner_name']}}</em> - {{$pressreviewindex}}/{{count($pressreview['articles'])}}
+<div id="pressReviewPlayer"><a href="<?= url('/revue/'.$pressreview['id'].'/edit'); ?>"><h4>Revue de presse "{{$pressreview['name']}}"</h4></a> par <em>{{$pressreview['owner_name']}}</em> - {{$pressreviewindex}}/{{count($pressreview['articles'])}}
 <div>
 			    <ul class="pager">
 				<li class="previous">
