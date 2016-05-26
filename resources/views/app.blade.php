@@ -72,9 +72,6 @@
                             <a href="<?= url('/profil') ?>">Votre profil</a>
                         </li>
                     @endif
-                    <li>
-                        <a href="#">Aide</a>
-                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->

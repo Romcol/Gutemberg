@@ -964,7 +964,7 @@
 
 			for(var i=0; i<pageReviews.length; i++){
 				var shortTitle = pageReviews[i].Name;
-    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem" style="padding-bottom: 15px"><a href="<?= url('/revue/').'/'; ?>'+pageReviews[i]._id+'"><img src="<?= asset('resources/viewer/article-thumb.jpg'); ?>" /><strong>'+shortTitle+'</strong></a></div></div>');
+    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem" style="padding-bottom: 15px"><a href="<?= url('/revue/').'/'; ?>'+pageReviews[i]._id+'"><img src="<?= asset('resources/viewer/article-thumb.jpg'); ?>" /><strong>'+shortTitle+'</strong></a><div style="clear:both;"></div></div></div>');
 			}
 
 			var zoom = true;
@@ -1042,7 +1042,7 @@
 					for( var j=0; j<article.Close.length; j++){
 						var shortTitle = article.Close[j].Title;
                 		if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
-                        $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" id="closeArticle-'+article.Close[j].IdPage+'-'+article.Close[j]._id+'"><img src="<?= asset('resources/viewer/article-thumb.jpg'); ?>" /><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
+                        $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" id="closeArticle-'+article.Close[j].IdPage+'-'+article.Close[j]._id+'"><img src="<?= asset('resources/viewer/article-thumb.jpg'); ?>" /><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'<div style="clear:both;"></div></div></div>');
                     }
 
 			        $(".closeArticle").click(function(){
