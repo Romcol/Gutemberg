@@ -114,7 +114,7 @@
 .articleListItem{
     margin-bottom:5px;
 }
-.articleListItem div{
+/*.articleListItem div{
     width:40px;
     height:40px;
     text-align: center;
@@ -126,6 +126,11 @@
     float:left;
     margin-right:5px;
     font-weight:bold;
+}*/
+
+.articleListItem img{
+    float:left;
+    margin-right:5px;
 }
 
 #hideInfo, #hideGuide {

@@ -83,7 +83,7 @@
 			<div id="pageArticlesList" class="customScrollbar">
 				@foreach($page['Articles'] as $idx => $art)
 				<div class="articleListContainer">
-				<div class="articleListItem" id="articleListItem-{{$art['IdArticle']}}"><div>{{$art['Title'][0]}}</div> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?></div>
+				<div class="articleListItem" id="articleListItem-{{$art['IdArticle']}}"><img src="<?= asset('resources/viewer/article-thumb.jpg'); ?>" /> <?php if( strlen($art['Title']) > 90) echo substr($art['Title'], 0, 89).'...' ; else echo $art['Title']; ?></div>
 				<span id="{{$art['IdArticle']}}" class="occurrenceNumber"></span>
 				<div style="clear:both;"></div>
 				</div>
@@ -964,7 +964,7 @@
 
 			for(var i=0; i<pageReviews.length; i++){
 				var shortTitle = pageReviews[i].Name;
-    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem" style="padding-bottom: 15px"><a href="<?= url('/revue/').'/'; ?>'+pageReviews[i]._id+'"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+'</strong></a></div></div>');
+    			$('#pageReviewList').append('<div class="articleListContainer"><div class="articleListItem" style="padding-bottom: 15px"><a href="<?= url('/revue/').'/'; ?>'+pageReviews[i]._id+'"><img src="<?= asset('resources/viewer/article-thumb.jpg'); ?>" /><strong>'+shortTitle+'</strong></a></div></div>');
 			}
 
 			var zoom = true;
@@ -1042,7 +1042,7 @@
 					for( var j=0; j<article.Close.length; j++){
 						var shortTitle = article.Close[j].Title;
                 		if( shortTitle.length > 90 ) shortTitle = shortTitle.substring(0, 89)+"...";
-                        $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" id="closeArticle-'+article.Close[j].IdPage+'-'+article.Close[j]._id+'"><div>'+shortTitle.charAt(0)+'</div><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
+                        $('#closeArticlesList').append('<div class="articleListContainer"><div class="articleListItem closeArticle" id="closeArticle-'+article.Close[j].IdPage+'-'+article.Close[j]._id+'"><img src="<?= asset('resources/viewer/article-thumb.jpg'); ?>" /><strong>'+shortTitle+', </strong>'+article.Close[j].TitleNewsPaper+', '+article.Close[j].Date+'</div></div>');
                     }
 
 			        $(".closeArticle").click(function(){
