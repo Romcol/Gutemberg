@@ -23,7 +23,7 @@
 
 #pageInfo a, #pageInfo a:active, #pageInfo a:focus,
 #pageGuide a, #pageGuide a:active, #pageGuide a:focus,
-#pressReviewPlayer a, #pressReviewPlayer a:active, #pressReviewPlayer a:focus{
+#pressReviewPlayer a.prlink, #pressReviewPlayer a.prlink:active, #pressReviewPlayer a.prlink:focus{
     color:black;
     text-decoration: underline;
 }
