@@ -1,0 +1,24 @@
+Pour ajouter des données, il faut les fichiers xml et un fichier de metadata écrit comme suit :
+<Nom du journal>
+<Date>
+<Nom fichier page 1>
+<Nom fichier page 2>
+<Nom fichier page 3>
+
+Exemple : 
+
+Le Progres de Rambouillet
+1933-02-17
+FRAD078_PER1100_018_1933021583_001
+FRAD078_PER1100_018_1933021583_002
+
+Puis d'exécuter le script parser.sh : 
+
+parser.sh : <fichiermetadata>
+
+----
+Il est aussi possible d'utiliser le script allFiles.sh qui crée automatiquement les fichiers metadata avec l'extension .test
+Vous pouvez alors exécuter le script allTest.sh qui exécute parser.sh sur tous les fichiers .test du dossier.
+Attention ! Le script allFiles.sh est adapté à un format de nom de fichier xml : <nomjournal>_<nombre>_<date>_<numéropage>.xml
+Il remplace les _ par des espaces dans le nom du journal. Il faut donc l'adapter s'il s'agit d'une apostrophe en réalité.
+

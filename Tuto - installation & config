@@ -1,0 +1,131 @@
+INSTALLATION SERVEUR LINUX :
+
+Voilà les différents modules nécessaires à installer pour faire tourner l'application
+
+- Apache : https://doc.ubuntu-fr.org/apache2
+- Mongodb : https://docs.mongodb.com/v3.0/tutorial/install-mongodb-on-ubuntu/
+- java  : https://doc.ubuntu-fr.org/openjdk
+	-> $JAVA_HOME : http://www.wikihow.com/Set-Up-Your-Java_Home-Path-in-Ubuntu
+- elasticsearch : https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-elasticsearch-on-ubuntu-14-04
+- river : https://github.com/richardwilly98/elasticsearch-river-mongodb/wiki
+- head :  https://github.com/mobz/elasticsearch-head		//Non obligatoire mais pratique pour voir l'état d'elasticsearch
+
+- php : sudo apt-get install php libapache2-mod-php php-mcrypt php-mysql
+- mongo pour php : http://php.net/manual/fr/mongo.installation.php
+
+- composer : https://doc.ubuntu-fr.org/composer
+
+Dans le dossier de l'application, exécuter : 
+
+	composer install
+
+pour installer les fichiers laravel et ses plugins.
+
+Configuration du mapping et des indexs d'elasticsearch : 
+
+curl -XPUT 'http://localhost:9200/articles' -d '
+{
+	"mappings": {
+    	"json" : {
+	        "properties" : {
+	            "Tags" : {
+	            	"type" : "string", 
+	            	"index" : "not_analyzed" 
+	            },
+	            "TitleNewsPaper" : {
+	            	"type" : "string",
+	            	"index" : "not_analyzed"
+	            }
+	        }
+	    }
+	}
+}'
+
+curl -XPUT 'http://localhost:9200/pages' -d '
+{
+	"mappings": {
+    	"json" : {
+	        "properties" : {
+	            "Title" : {
+	            	"type" : "string",
+	            	"index" : "not_analyzed"
+	            }
+	        }
+	    }
+	}
+}' 
+
+curl -XPUT "localhost:9200/_river/autocomplete/_meta" -d '
+ {
+   "index": {
+     "name": "autocomplete",
+     "type": "data"
+   },
+   "type": "mongodb",
+   "mongodb": {
+     "collection": "AutocompleteData",
+     "db": "test"
+   }
+}'
+
+curl -XPUT "localhost:9200/_river/users/_meta" -d '
+ {
+   "index": {
+     "name": "users",
+     "type": "account"
+   },
+   "type": "mongodb",
+   "mongodb": {
+     "collection": "Users",
+     "db": "test"
+   }
+}'
+
+curl -XPUT "localhost:9200/_river/pressreviews/_meta" -d '
+{
+   "index": {
+     "name": "pressreviews",
+     "type": "json"
+   },
+   "type": "mongodb",
+   "mongodb": {
+     "collection": "PressReviews",
+     "db": "test"
+   }
+}'
+
+  curl -XPUT "localhost:9200/_river/pages/_meta" -d '
+{
+  "index": {
+    "name": "pages",
+    "type": "json"
+  },
+  "type": "mongodb",
+  "mongodb": {
+    "collection": "Pages",
+    "db": "test"
+  }
+}'
+
+  curl -XPUT "localhost:9200/_river/articles/_meta" -d '
+{
+  "index": {
+    "name": "articles",
+    "type": "json"
+  },
+  "type": "mongodb",
+  "mongodb": {
+    "collection": "Articles",
+    "db": "test"
+  }
+}'
+
+Mail utlisé pour le "reset password":
+
+Gutemberg-4INFO
+
+
+Your email : gutemberg4info@gmail.com
+Password : ProjGutDev
+
+
