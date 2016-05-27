@@ -35,7 +35,7 @@
                   <select class="form-control" id="news">
                     <option value="null" disabled selected>Journaux</option>
                   </select>
-                  <span class="input-group-btn"><button type="button" onclick="newNews()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+                  <span class="input-group-btn"><button type="button" id="newsbtn" onclick="newNews()" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
                 </div>
             </div>
             <div id="newsForm">
@@ -44,7 +44,7 @@
             <h5>Tags : </h5>
             <div class="form-group">
                 <div class="input-group">
-                <input class="form-control" id="tags" placeholder="Ajouter un tag"> <span class="input-group-btn"><button type="button" onclick="newTag()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+                <input class="form-control" id="tags" placeholder="Ajouter un tag"> <span class="input-group-btn"><button type="button" onclick="newTag()" id="tagbtn" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
                 </div>
             </div>
             <div id="tagForm">
@@ -220,6 +220,14 @@
       function tagMouseLeave(elemnt){
         $(elemnt).find("a").remove();
       }
+
+      $( "#news" ).change(function() {
+        $('#newsbtn').trigger('click');
+      });
+
+      $('#tags').bind(
+          "autocompleteclose", function(event, ui) { $('#tagbtn').trigger('click'); }
+      );
 
       $(window).load(function() {
 

@@ -25,7 +25,7 @@
                   <select class="form-control" id="news">
                     <option value="null" disabled selected>Journaux</option>
                   </select>
-                  <span class="input-group-btn"><button type="button" onclick="newNews()" id="tag_button" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
+                  <span class="input-group-btn"><button type="button" id="newsbtn" onclick="newNews()" class="btn btn-default btn-sm" style="height:34px;">+</button></span>
                 </div>
             </div>
             <div id="newsForm">
@@ -147,5 +147,8 @@
         $(elemnt).find("a").remove();
       }
 
+      $( "#news" ).change(function() {
+        $('#newsbtn').trigger('click');
+      });
   </script>
 @stop
