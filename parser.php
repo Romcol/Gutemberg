@@ -47,6 +47,11 @@ if( (count($argv) != 5 && $argv[1] != '-f') || (count($argv) != 6 && $argv[1] ==
 
   $PageCollection->insert($dataPage);
 
+  $Autocompl = $db->AutoCompleteData;
+  $Autocompl->update(array('Name' => 'titleNewsPaper'), array('$addToSet' => array('Data' => $titlePageText)));
+
+
+
   //Articles table for the page data
   $pageArticles = array();
 
