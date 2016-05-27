@@ -20,10 +20,10 @@
 				@else
 				<div id="zone-{{$ind}}" class="col-md-12 col-lg-12">
 				@endif
-			      	<article draggable="true" id="article-{{$article['id']}}">
+			      	<article @if(($user = Auth::user()) && ($pressreview['owner_id'] == $user['_id'])) draggable="true" @endif id="article-{{$article['id']}}">
 		            <div class="panel panel-default">
 		              <div class="panel-heading">
-		               <h3 class="panel-title"><a href="<?= url('/visionneuse/page/'.$article['IdPage'].'/article/'.$article['id']); ?>" >{{$article['TitleNewsPaper']}}, {{$article['date']}}</a></h3>
+		               <h3 class="panel-title"><a href="<?= url('/revue/'.$pressreview['_id'].'/article/'.($ind+1)); ?>" >{{$article['TitleNewsPaper']}}, {{$article['date']}}</a></h3>
 		              </div>
 		              <div class="panel-body">
 		                <B class="title">{{$article['Title']}}</B>
@@ -39,12 +39,12 @@
 	@else
 	<p>Revue de presse vide.<p>
 	@endif
+	@if(($user = Auth::user()) && ($pressreview['owner_id'] == $user['_id']))
 	<form id="saveform" style="display:none;" action="<?= url('/revue/'.$pressreview['_id'].'/update') ?>">
 	<input type="hidden" name="data" value=""/>
 	<input type="submit" class="btn btn-default" value="Enregistrer"/>
 	<a class="btn btn-default" href="<?= url('/revue/'.$pressreview['_id'].'/edit') ?>" >Annuler</a>
 	</form>
-	@if(($user = Auth::user()) && ($pressreview['owner_id'] == $user['_id']))
 	<a href="<?= url('/revue/'.$pressreview['_id'].'/delete') ?>" class="btn btn-default" role="button">Supprimer la revue de presse</a>
 	@endif
 @else
@@ -192,8 +192,10 @@ $(document).ready(function() {
 	    });
 	}
 
+	@if(($user = Auth::user()) && ($pressreview['owner_id'] == $user['_id']))
 	addEventPressReview();
 	disableButtons();
+	@endif
 });
 </script>
 @stop

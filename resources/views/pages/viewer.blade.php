@@ -270,14 +270,15 @@
 					$("#currentArticle").hide();
 				}
 
-				$('.tag').mouseenter(function(e){
-					e.stopPropagation();
-					tagMouseEnter(this);
-				});
 
-				$('.tag').mouseleave(function(){
-					tagMouseLeave(this);
-				});
+				$( ".tag" ).unbind();
+				$( ".tag" ).hover(
+				  function() {
+					tagMouseEnter(this);
+				  }, function() {
+				    tagMouseLeave(this);
+				  }
+				);
 
 				pageArticlesListHeight();
 			}
@@ -595,14 +596,14 @@
 
 					$("#currentTags").append('<span class="btn btn-default tag"><span>'+tag+'</span></span>');
 
-					$('.tag').mouseenter(function(e){
-						e.stopPropagation();
+					$( ".tag" ).unbind();
+					$( ".tag" ).hover(
+					  function() {
 						tagMouseEnter(this);
-					});
-
-					$('.tag').mouseleave(function(){
-						tagMouseLeave(this);
-					});
+					  }, function() {
+					    tagMouseLeave(this);
+					  }
+					);
 
 					if( !savedTags.includes(tag)) savedTags.push(tag);
 

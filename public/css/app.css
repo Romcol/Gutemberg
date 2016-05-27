@@ -64,6 +64,7 @@ a#browseNewspapers, a#browseNewspapers:active, a#browseNewspapers:focus
 .tag_search{
   padding:6px 12px;
   background-color: #dbf3d0;
+  margin-right:5px;
 }
 
 article em{
