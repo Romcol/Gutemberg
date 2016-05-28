@@ -249,20 +249,26 @@
 					$("#currentUrl").attr('value', url+'/page/'+article.IdPage+'/article/'+article._id);
 					$("#currentArticle").show();
 
-					$("#favorite").attr('src', '<?= asset("resources/viewer/empty-star.svg") ?>');
-					$('#favorite').click(function()
-					{
-						addFavorite();
-					});
+
 					if(auth){
+						var notFound = true;
 						for(var i=0; i<favorites.length; i++){
 							if( favorites[i].id == article._id) {
 								$("#favorite").attr('src', '<?= asset("resources/viewer/star.svg") ?>');
-									$('#favorite').click(function()
-									{
-										removeFavorite();
-									});
+								$('#favorite').click(function()
+								{
+									removeFavorite();
+								});	
+								notFound = false;
 							}
+
+						}
+						if(notFound){
+							$("#favorite").attr('src', '<?= asset("resources/viewer/empty-star.svg") ?>');
+							$('#favorite').click(function()
+							{
+								addFavorite();
+							});
 						}
 					}
 				}
@@ -361,7 +367,7 @@
 						if( px >= articles[i].Coord[j][0] && px <= articles[i].Coord[j][2]){
 							if( py >= articles[i].Coord[j][1] && py <= articles[i].Coord[j][3]){
 								if( article == null || articles[i].IdArticle != article._id){
-									return articles[i].IdArticle;
+									return  articles[i].IdArticle;
 								}else{
 									return null;
 								}
@@ -976,7 +982,6 @@
 			$('#search_input').val(keywords);
 			var page = <?= $page; ?>;
 			var articles = page.Articles;
-
 			var overlays = [];
 
 			if(image){
@@ -1183,6 +1188,7 @@
 		});
 
 		viewer.addHandler('canvas-click', function(event) {
+
 			var viewportPoint = viewer.viewport.pointFromPixel(event.position);
 			var imagePoint = viewer.viewport.viewportToImageCoordinates(viewportPoint.x, viewportPoint.y);
 			
@@ -1193,7 +1199,7 @@
 
 			if ( articleId != null ){
 
-				selectArticle(articleId.$id, false);
+				selectArticle(articleId, false);
 			}
 
 		});
@@ -1264,9 +1270,6 @@
     		$("#pageGuide").show();
 		});
 
-		$('#favorite').click(function(){
-			addFavorite();
-		});
 		$('#tag_button').click(function()
 		{
 			newTag();

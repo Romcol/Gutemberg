@@ -41,7 +41,20 @@ class ViewerController extends Controller
 
         if($search == null && isset($_GET['recherche'])) $search = $_GET['recherche'];
 
-    	$page = Page::find($page_id);
+    	
+
+        $paramsPage = [
+            'query' => [
+                'match' => [
+                    '_id' => $page_id
+                ]
+            ]
+        ];
+        
+        $page = Page::search($paramsPage);
+
+	$page = $page[0];
+
 
         session_start();
         if( isset($_SESSION['searchUri'])){
@@ -125,7 +138,7 @@ class ViewerController extends Controller
             $article->Views = $article->Views + 1;
             $article->save();
 
-            $id_page = $article['IdPage']->{'$id'};
+            $id_page = (string) $article['IdPage'];
             $titleNews = $article['TitleNewsPaper'];
             $date = $article['Date'];
             $title = ($article['Title'] != '(Sans Titre)')? $article['Title'] : '';
